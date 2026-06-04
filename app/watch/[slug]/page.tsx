@@ -8,7 +8,6 @@ import { ContentRail as ContentRailType } from '@/services/types';
 
 export default function WatchPage({ params }: { params: Promise<{ slug: string }> }) {
   const [hasAccess, setHasAccess] = useState(false); // Toggle this to test paywall
-  const [isPlaying, setIsPlaying] = useState(false);
   
   // Use React.use to unwrap the params promise if we want, or just wait for it in a server component.
   // Since it's a client component, we use React.use() in next 15
@@ -29,9 +28,9 @@ export default function WatchPage({ params }: { params: Promise<{ slug: string }
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-nara-black">
       {/* Player Section */}
-      <div className="w-full bg-black relative aspect-video max-h-[85vh] flex items-center justify-center">
+      <div className="w-full bg-black relative aspect-[16/9] max-h-[85vh] flex items-center justify-center mt-16 md:mt-0">
         {hasAccess ? (
           <div className="relative w-full h-full group">
             <video 
@@ -58,47 +57,47 @@ export default function WatchPage({ params }: { params: Promise<{ slug: string }
                 Subscribe to Nara TV to watch this premium fight and get access to our full library.
               </p>
               
-              <div className="flex flex-col gap-3 w-full">
-                <Link href="/subscriptions" className="bg-nara-red hover:bg-nara-red/90 text-white font-bold py-3 px-6 rounded-sm transition-colors w-full">
+              <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+                <Link href="/subscriptions" className="bg-white hover:bg-gray-200 focus:bg-gray-200 text-nara-black font-bold py-3.5 px-8 rounded-sm transition-colors text-center">
                   Subscribe Now
                 </Link>
-                <Link href="/checkout" className="bg-white/10 border border-white/20 hover:bg-white/20 text-white font-bold py-3 px-6 rounded-sm transition-colors w-full">
+                <Link href="/checkout" className="bg-[#2A2B2E] hover:bg-[#3A3B3E] text-white font-bold py-3.5 px-8 rounded-sm transition-colors text-center">
                   Buy Single Pass
                 </Link>
-                <button onClick={() => setHasAccess(true)} className="text-nara-text-muted mt-4 text-sm hover:text-white underline">
-                  [Debug] Bypass Paywall
-                </button>
               </div>
+              <button onClick={() => setHasAccess(true)} className="text-nara-text-muted mt-6 text-xs hover:text-white underline">
+                [Debug] Bypass Paywall
+              </button>
             </div>
           </div>
         )}
       </div>
 
       {/* Metadata Section */}
-      <div className="max-w-[1920px] mx-auto w-full px-4 md:px-6 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-6 border-b border-nara-border pb-8">
+      <div className="max-w-[1920px] mx-auto w-full px-4 md:px-8 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-6 border-b border-[#2A2B2E] pb-6">
           <div>
-            <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 capitalize">
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-3 capitalize tracking-tight">
               {slug.replace(/-/g, ' ')}
             </h1>
-            <div className="flex items-center gap-4 text-sm text-nara-text-muted">
+            <div className="flex items-center gap-3 text-xs md:text-sm text-nara-text-muted font-medium uppercase tracking-wider">
               <span>Nara Boxing</span>
-              <span>•</span>
+              <span className="text-gray-600">|</span>
               <span>2024</span>
-              <span>•</span>
-              <span className="bg-nara-surface border border-nara-border px-2 rounded-sm text-white">Full Replay</span>
+              <span className="text-gray-600">|</span>
+              <span className="bg-white text-nara-black px-2 py-0.5 rounded-[2px] font-bold">Full Replay</span>
             </div>
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <button className="flex-1 md:flex-none border border-nara-border hover:bg-white/10 px-6 py-2.5 rounded-sm font-medium transition-colors">
+            <button className="flex-1 md:flex-none border border-[#2A2B2E] bg-nara-black hover:bg-[#2A2B2E] text-white px-8 py-3 rounded-sm font-bold uppercase tracking-wider text-xs transition-colors">
               Share
             </button>
           </div>
         </div>
 
-        <div className="mt-8">
-          <p className="text-nara-text-muted max-w-3xl leading-relaxed">
+        <div className="mt-6">
+          <p className="text-gray-300 max-w-3xl leading-relaxed text-sm md:text-base">
             Experience the full fight from start to finish. Commentary by the official Nara TV team. 
             All rights reserved to Nara Promotionz.
           </p>

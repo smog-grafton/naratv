@@ -20,33 +20,70 @@ const generateDummyVideos = (count: number, prefix: string): Video[] => {
 };
 
 export async function getHomeRails(): Promise<ContentRail[]> {
-  // In a real app we'd fetch from MOCK_API_BASE + '/home/rails'
-  // For the AI Studio prototype, we'll return structured dummy data
-  
   return [
     {
-      id: 'rail-free',
-      title: 'Free to watch',
-      type: 'videos',
-      items: generateDummyVideos(8, 'Free Action'),
+      id: 'rail-dont-miss',
+      title: "Don't Miss",
+      type: 'mixed',
+      layout: 'banner',
+      items: generateDummyVideos(4, 'Don\'t Miss Event'),
     },
     {
-      id: 'rail-biggest',
-      title: 'Biggest Fights',
+      id: 'rail-biggest-fights',
+      title: 'The Biggest Fights',
+      type: 'events',
+      layout: 'poster',
+      items: generateDummyVideos(8, 'Fighter Title Match'),
+    },
+    {
+      id: 'rail-locker-room',
+      title: 'The Locker Room - Latest Features',
       type: 'videos',
-      items: generateDummyVideos(8, 'Championship'),
+      layout: 'video',
+      items: generateDummyVideos(8, 'Fighter Feature').map(v => ({ ...v, category: 'Day In The Life' })),
+    },
+    {
+      id: 'rail-live-tv',
+      title: 'Live TV',
+      type: 'videos',
+      layout: 'video',
+      items: generateDummyVideos(6, 'Live Channel').map(v => ({ ...v, is_live: true, durations_seconds: 3600 })),
+    },
+    {
+      id: 'rail-highlights',
+      title: 'Latest Fight Highlights',
+      type: 'videos',
+      layout: 'video',
+      items: generateDummyVideos(8, 'Fight Highlights'),
+    },
+    {
+      id: 'rail-featured-event',
+      title: 'Undisputed World Championship',
+      type: 'videos',
+      layout: 'featured-event',
+      badge: 'NARA.TV LIVE',
+      description: "The road to undisputed glory. Watch exclusive behind-the-scenes access and the complete chase for boxing's ultimate prize.",
+      backgroundImage: 'https://picsum.photos/seed/naratv-boxing/1920/1080',
+      items: generateDummyVideos(6, 'Championship'),
     },
     {
       id: 'rail-replays',
-      title: 'Premium Replays',
+      title: 'Full Event Replays & Highlights',
       type: 'videos',
-      items: generateDummyVideos(6, 'Full Replay').map(v => ({ ...v, is_premium: true, is_free: false })),
+      layout: 'video',
+      items: generateDummyVideos(8, 'Full Event Replay'),
     },
     {
-      id: 'rail-interviews',
-      title: 'Interviews & Press Conferences',
-      type: 'videos',
-      items: generateDummyVideos(6, 'Interview'),
+      id: 'rail-top-sports',
+      title: 'Top Sports and Competitions',
+      type: 'mixed',
+      layout: 'square',
+      items: [
+        { id: 'cat-boxing', title: 'Boxing', slug: 'cat-boxing', thumbnail_url: 'https://picsum.photos/seed/cat-boxing/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'cat-fifa', title: 'FIFA+', slug: 'cat-fifa', thumbnail_url: 'https://picsum.photos/seed/cat-fifa/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'cat-nhl', title: 'NHL.TV', slug: 'cat-nhl', thumbnail_url: 'https://picsum.photos/seed/cat-nhl/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'cat-rally', title: 'Rally TV', slug: 'cat-rally', thumbnail_url: 'https://picsum.photos/seed/cat-rally/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
+      ],
     }
   ];
 }

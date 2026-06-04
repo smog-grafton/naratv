@@ -38,7 +38,7 @@ export default function SearchPage() {
   ] : [];
 
   return (
-    <div className="min-h-screen bg-nara-black pt-8 md:pt-16 pb-12 px-4 md:px-6">
+    <div className="min-h-screen bg-nara-black pt-24 md:pt-28 pb-12 px-4 md:px-8">
       <div className="max-w-[1920px] mx-auto">
         {/* Mobile Header / Back */}
         <button 
@@ -51,24 +51,32 @@ export default function SearchPage() {
 
         {/* Search Input Centered */}
         <div className="max-w-4xl mx-auto mb-16">
-          <div className="relative border-b border-nara-border focus-within:border-white transition-colors pb-2">
-            <IconSearch className="absolute left-0 top-1/2 -translate-y-1/2 w-6 h-6 text-nara-text-muted" />
-            <input 
-              type="text" 
-              autoFocus
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search fights, fighters, events"
-              className="w-full bg-transparent text-2xl md:text-4xl text-white outline-none pl-12 placeholder:text-nara-text-muted/50"
-            />
-            {query && (
-              <button 
-                onClick={() => setQuery('')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 p-2 text-nara-text-muted hover:text-white"
-              >
-                <IconClose className="w-6 h-6" />
-              </button>
-            )}
+          <div className="flex items-center gap-4 border-b border-nara-border focus-within:border-white transition-colors pb-2">
+            <div className="relative flex-1 flex items-center">
+              <IconSearch className="w-6 h-6 text-nara-text-muted absolute left-0" />
+              <input 
+                type="text" 
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search fights, fighters, events"
+                className="w-full bg-transparent text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white outline-none pl-10 pr-10 placeholder:text-nara-text-muted/50"
+              />
+              {query && (
+                <button 
+                  onClick={() => setQuery('')}
+                  className="absolute right-0 p-2 text-nara-text-muted hover:text-white"
+                >
+                  <IconClose className="w-6 h-6" />
+                </button>
+              )}
+            </div>
+            <button 
+              onClick={() => router.back()} 
+              className="text-nara-text-muted hover:text-white font-bold tracking-wide uppercase text-sm px-2 animate-in fade-in"
+            >
+              Cancel
+            </button>
           </div>
         </div>
 

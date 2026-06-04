@@ -41,4 +41,8 @@ export interface ContentRail {
   title: string;
   items: (Video | Event)[];
   type: 'mixed' | 'videos' | 'events';
+  layout?: 'banner' | 'poster' | 'video' | 'square' | 'featured-event';
+  badge?: string;
+  description?: string;
+  backgroundImage?: string;
 }

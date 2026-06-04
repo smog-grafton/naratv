@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
@@ -8,6 +8,22 @@ import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
 export default function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const isHome = pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const headerClass = `fixed w-full top-0 z-50 transition-colors duration-300 ${
+    isHome && !scrolled ? 'bg-transparent' : 'bg-nara-surface border-b border-nara-border'
+  }`;
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -18,43 +34,54 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-nara-black/95 backdrop-blur-sm border-b border-nara-border">
-        <div className="flex h-16 items-center px-4 md:px-6 max-w-[1920px] mx-auto">
-          <Link href="/" className="flex items-center gap-2 mr-6 text-white hover:text-white/80 transition-colors">
-            <IconLogo className="w-8 h-8" />
-            <span className="font-bold text-xl tracking-tight hidden sm:inline-block">NARA<span className="text-nara-red">TV</span></span>
-          </Link>
-          
-          <nav className="hidden md:flex gap-6 text-sm font-medium">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`transition-colors hover:text-white ${
-                  pathname === link.href ? 'text-white border-b-2 border-nara-red py-5' : 'text-nara-text-muted py-5'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
+      <header className={headerClass}>
+        <div className="flex h-16 items-center px-4 md:px-6 w-full mx-auto">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center gap-2 mr-6 md:mr-10 text-white hover:text-white/80 transition-colors">
+              <IconLogo className="w-8 h-8" />
+              <span className="font-bold text-xl tracking-tight hidden sm:inline-block">NARA<span className="text-nara-red">TV</span></span>
+            </Link>
+            
+            <nav className="hidden md:flex gap-6 text-sm font-medium">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`transition-colors py-5 ${
+                      isActive ? 'text-white font-bold' : 'text-nara-text-muted hover:text-white'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
 
           <div className="ml-auto flex items-center gap-4">
-            <Link href="/search" className="p-2 text-nara-text-muted hover:text-white transition-colors" aria-label="Search">
+            <Link href="/search" className="p-2 text-white hover:text-nara-text-muted transition-colors" aria-label="Search">
               <IconSearch className="w-5 h-5" />
             </Link>
             
             <div className="hidden sm:flex items-center gap-3">
-              <Link href="/login" className="text-sm font-medium text-white hover:bg-white/10 px-4 py-2 rounded-md transition-colors bg-white/5">
+              <Link 
+                href="/login" 
+                className="text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
+              >
                 Log in
               </Link>
-              <Link href="/register" className="text-sm font-medium text-nara-black bg-white hover:bg-white/90 px-4 py-2 rounded-md transition-colors">
+              <Link 
+                href="/register" 
+                className="text-sm font-bold text-nara-black bg-white hover:bg-gray-200 px-4 py-2 rounded-sm transition-colors"
+              >
                 Get started
               </Link>
             </div>
 
             <button 
-              className="p-2 text-nara-text-muted hover:text-white md:hidden"
+              className="p-2 text-white hover:text-nara-text-muted md:hidden"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Menu"
             >
@@ -80,14 +107,14 @@ export default function Header() {
             </div>
             
             <div className="flex-1 overflow-y-auto py-4">
-              <nav className="flex flex-col px-2 gap-1">
+              <nav className="flex flex-col px-0 gap-0">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                      pathname === link.href ? 'bg-white/10 text-white' : 'text-nara-text-muted hover:bg-white/5 hover:text-white'
+                    className={`px-6 py-4 border-b border-nara-border text-base font-medium transition-colors ${
+                      pathname === link.href ? 'bg-white/5 text-white border-l-4 border-l-nara-red' : 'text-nara-text-muted hover:bg-white/5 hover:text-white border-l-4 border-l-transparent'
                     }`}
                   >
                     {link.name}
@@ -95,18 +122,19 @@ export default function Header() {
                 ))}
               </nav>
 
+              {/* Action Buttons */}
               <div className="mt-8 px-6 border-t border-nara-border pt-8 flex flex-col gap-3">
                 <Link 
                   href="/login" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-md font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
+                  className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
                 >
                   Log in
                 </Link>
                 <Link 
                   href="/register" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-md font-medium text-nara-black bg-white hover:bg-white/90 transition-colors"
+                  className="w-full py-3 text-center rounded-sm font-bold text-nara-black bg-white hover:bg-gray-200 transition-colors"
                 >
                   Get started
                 </Link>

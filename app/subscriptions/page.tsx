@@ -50,30 +50,30 @@ export default function SubscriptionsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-6xl">
           {plans.map((plan) => (
             <div 
               key={plan.id}
-              className={`relative flex flex-col p-8 rounded-lg border ${
-                plan.popular ? 'border-nara-red bg-nara-surface md:-translate-y-4 shadow-2xl shadow-nara-red/10' : 'border-nara-border bg-nara-surface/50'
+              className={`relative flex flex-col p-8 md:p-10 rounded-[2px] border ${
+                plan.popular ? 'border-nara-red bg-[#10141a]' : 'border-[#2A2B2E] bg-nara-black'
               }`}
             >
               {plan.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-nara-red text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm">
-                  Most Popular
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-nara-red text-white text-[11px] font-bold px-4 py-1.5 uppercase tracking-[0.2em] rounded-sm">
+                  Best Value
                 </div>
               )}
               
-              <h3 className="text-xl font-medium text-white mb-2">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-sm font-medium text-nara-text-muted">UGX</span>
-                <span className="text-4xl font-bold text-white">{plan.price}</span>
+              <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-wide">{plan.name}</h3>
+              <div className="flex items-baseline gap-1 mb-8">
+                <span className="text-lg font-bold text-nara-text-muted">UGX</span>
+                <span className="text-5xl font-bold text-white tracking-tighter">{plan.price}</span>
               </div>
               
-              <div className="border-t border-nara-border pt-6 mb-8 flex-grow">
-                <ul className="flex flex-col gap-4">
+              <div className="border-t border-[#2A2B2E] pt-8 mb-10 flex-grow">
+                <ul className="flex flex-col gap-5">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-sm text-nara-text-muted">
+                    <li key={idx} className="flex items-start gap-4 text-sm font-medium text-gray-300">
                       <InternalCheck />
                       <span>{feature}</span>
                     </li>
@@ -83,13 +83,13 @@ export default function SubscriptionsPage() {
 
               <Link 
                 href={`/checkout?plan=${plan.id}`}
-                className={`w-full py-4 text-center rounded-sm font-bold transition-colors ${
+                className={`w-full py-4 text-center rounded-sm font-bold uppercase tracking-wider text-sm transition-colors ${
                   plan.popular 
                     ? 'bg-nara-red text-white hover:bg-nara-red/90' 
-                    : 'bg-white text-nara-black hover:bg-white/90'
+                    : 'bg-white text-nara-black hover:bg-gray-200'
                 }`}
               >
-                Select {plan.name}
+                Get Started
               </Link>
             </div>
           ))}

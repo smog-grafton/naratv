@@ -4,7 +4,7 @@ import { IconPlay, IconLock } from '@/components/icons';
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-[80vh] bg-nara-black pt-12 pb-24 px-4 md:px-6">
+    <div className="min-h-[80vh] bg-nara-black pt-24 pb-24 px-4 md:px-8">
       <div className="max-w-[1920px] mx-auto flex flex-col md:flex-row gap-8 lg:gap-16">
         
         {/* Sidebar */}
