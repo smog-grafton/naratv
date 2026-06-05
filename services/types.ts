@@ -13,8 +13,8 @@ export interface Video {
   thumbnail_url: string;
   video_url: string;
   is_premium: boolean;
-  is_live: boolean;
-  is_free: boolean;
+  is_live?: boolean;
+  is_free?: boolean;
   category?: string;
   source_label?: string;
   published_at?: string;
@@ -34,11 +34,14 @@ export interface Event {
   status: 'upcoming' | 'live' | 'completed';
   price?: number;
   currency?: string;
+  source_label?: string;
+  category?: string;
 }
 
 export interface ContentRail {
   id: string;
   title: string;
+  titlePrefix?: string;
   items: (Video | Event)[];
   type: 'mixed' | 'videos' | 'events';
   layout?: 'banner' | 'poster' | 'video' | 'square' | 'featured-event';

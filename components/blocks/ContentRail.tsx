@@ -138,10 +138,22 @@ export default function ContentRail({ rail, index = 0 }: { rail: ContentRailType
       transition={{ duration: 0.6, delay: Math.min(index * 0.1, 0.3) }}
       className="w-full py-4 md:py-6"
     >
-      <div className="flex items-center justify-between px-4 md:px-8 max-w-[1920px] mx-auto mb-4">
-        <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">
-          {rail.title}
-        </h2>
+      <div className="flex items-end justify-between px-4 md:px-8 max-w-[1920px] mx-auto mb-4">
+        <div>
+          {rail.titlePrefix && (
+            <div className="text-[#f0c800] text-sm md:text-xs font-bold tracking-wider uppercase mb-1">
+              {rail.titlePrefix}
+            </div>
+          )}
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-1">
+            {rail.title}
+          </h2>
+          {rail.description && (
+            <p className="text-gray-400 text-sm md:text-base max-w-2xl mt-1 line-clamp-2 md:line-clamp-none">
+              {rail.description}
+            </p>
+          )}
+        </div>
         
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-2">

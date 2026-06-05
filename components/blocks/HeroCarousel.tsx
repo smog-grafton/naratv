@@ -4,14 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Event } from '@/services/types';
 import { IconChevronLeft, IconChevronRight, IconPlay, IconGlobe } from '@/components/icons';
+import { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy } from 'lucide-react';
 
 const categories = [
-  { name: 'Boxing', icon: '🥊' },
-  { name: 'MMA', icon: '🥋' },
-  { name: 'Kickboxing', icon: '🥷' },
-  { name: 'Nara Originals', icon: '🎬' },
-  { name: 'Interviews', icon: '🎤' },
-  { name: 'Classics', icon: '📼' },
+  { name: 'Home', icon: Home },
+  { name: 'Live Cards', icon: Radio },
+  { name: 'Nara Originals', icon: Clapperboard },
+  { name: 'Fight Highlights', icon: Zap },
+  { name: 'Interviews', icon: Mic },
+  { name: 'Archive', icon: Archive },
+  { name: 'Fighter Profiles', icon: User },
+  { name: 'Leaderboards', icon: Trophy },
 ];
 
 export default function HeroCarousel({ events }: { events: Event[] }) {
@@ -39,13 +42,13 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
   if (!events || events.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[65vh] md:h-[85vh] bg-nara-surface overflow-hidden group">
+    <div className="relative w-full h-full bg-nara-surface overflow-hidden group">
       {events.map((event, idx) => (
         <div 
           key={event.id}
           className={`absolute inset-0 transition-opacity duration-1000 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${idx === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
         >
-          {/* Background Image - DAZN style full bleed */}
+          {/* Background Image - Full bleed */}
           <div className="absolute inset-0">
             <img src={event.poster_url} alt={event.title} className="w-full h-full object-cover object-top md:object-center" />
             {/* Desktop Gradient: Strong left gradient and bottom gradient */}
@@ -57,11 +60,11 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
           </div>
 
           {/* Content */}
-          <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-12 lg:p-16 w-full mx-auto pb-20 md:pb-32">
-            <div className="w-full md:max-w-2xl lg:max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+          <div className="absolute inset-0 flex flex-col justify-end p-4 md:px-12 lg:px-16 w-full mx-auto pt-24 md:pt-32 pb-[24vh] md:pb-[28vh] lg:pb-[30vh]">
+            <div className="w-full md:max-w-2xl lg:max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 mt-auto">
               
               {/* Event Badge / Logo Area */}
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-3 md:mb-4">
                 {event.is_live ? (
                   <span className="bg-nara-red text-white text-[11px] font-bold px-2 py-0.5 tracking-wider uppercase flex items-center gap-1.5 rounded-sm">
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
@@ -127,14 +130,14 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
                 )}
               </div>
 
-              {/* Desktop Dots */}
+              {/* Dots */}
               {events.length > 1 && (
-                <div className="hidden md:flex items-center gap-2 mt-8">
+                <div className="flex items-center gap-2 mt-6 md:mt-8">
                   {events.map((_, idx) => (
                     <button 
                       key={idx}
                       onClick={() => setCurrentIndex(idx)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/30 hover:bg-white/50'}`}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 md:w-8 bg-white' : 'w-2 bg-white/30 hover:bg-white/50'}`}
                       aria-label={`Go to slide ${idx + 1}`}
                     />
                   ))}
@@ -146,33 +149,22 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
       ))}
 
       {/* category strip overlay at the bottom */}
-      <div className="absolute bottom-0 left-0 w-full z-20 pb-4 px-4 md:px-12 hide-scrollbar overflow-x-auto">
+      <div className="absolute bottom-[2vh] md:bottom-[4vh] left-0 w-full z-20 pb-4 px-4 md:px-12 hide-scrollbar overflow-x-auto">
         <div className="flex items-center gap-2 md:gap-4 min-w-max">
-          {categories.map((cat, i) => (
-             <div key={i} className="bg-nara-black/80 hover:bg-[#2A2B2E] transition-colors border border-nara-border backdrop-blur-sm rounded-sm px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
-               <span className="text-xl">{cat.icon}</span>
-               <span className="text-white text-xs md:text-sm font-bold tracking-tight">{cat.name}</span>
-             </div>
-          ))}
+          {categories.map((cat, i) => {
+            const IconComponent = cat.icon;
+            return (
+              <div key={i} className="bg-nara-black/80 hover:bg-[#2A2B2E] transition-colors border border-nara-border backdrop-blur-sm rounded-[4px] px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
+                <IconComponent className="w-5 h-5 text-white" />
+                <span className="text-white text-xs md:text-sm font-bold tracking-tight">{cat.name}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Mobile Dots */}
-      {events.length > 1 && (
-        <div className="absolute bottom-[4.5rem] md:hidden left-0 right-0 flex justify-center gap-2 z-20">
-          {events.map((_, idx) => (
-            <button 
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-white' : 'w-2 bg-white/30'}`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Desktop Arrows overlay side */}
-      <div className="hidden md:flex absolute right-12 bottom-20 z-20 items-center gap-3">
+      {/* Desktop Arrows overlay side - raise to match layout */}
+      <div className="hidden md:flex absolute right-12 bottom-[24vh] lg:bottom-[28vh] z-20 items-center gap-3">
         <button 
           onClick={prev}
           className="w-10 h-10 flex items-center justify-center bg-nara-black hover:bg-[#2A2B2E] text-white rounded-full transition-colors border border-nara-border"

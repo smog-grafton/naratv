@@ -4,13 +4,34 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
+import AccountDropdown from '@/components/auth/AccountDropdown';
 
 export default function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const isHome = pathname === '/';
+  // Simulated authentication state using localStorage
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // Check local storage for simulated auth
+    const authStatus = localStorage.getItem('nara_auth');
+    if (authStatus === 'true') {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [pathname]);
+
+  const handleSimulatedLogout = () => {
+    localStorage.removeItem('nara_auth');
+    setIsLoggedIn(false);
+    setMobileMenuOpen(false);
+    window.location.href = '/';
+  };
+
+  const isTransparentHeader = ['/', '/events', '/replays'].includes(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,7 +43,7 @@ export default function Header() {
   }, []);
 
   const headerClass = `fixed w-full top-0 z-50 transition-colors duration-300 ${
-    isHome && !scrolled ? 'bg-transparent' : 'bg-nara-surface border-b border-nara-border'
+    isTransparentHeader && !scrolled ? 'bg-transparent' : 'bg-nara-surface border-b border-nara-border'
   }`;
 
   const navLinks = [
@@ -66,27 +87,36 @@ export default function Header() {
             </Link>
             
             <div className="hidden sm:flex items-center gap-3">
-              <Link 
-                href="/login" 
-                className="text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
-              >
-                Log in
-              </Link>
-              <Link 
-                href="/register" 
-                className="text-sm font-bold text-nara-black bg-white hover:bg-gray-200 px-4 py-2 rounded-sm transition-colors"
-              >
-                Get started
-              </Link>
+              {isLoggedIn ? (
+                <AccountDropdown onSignOut={handleSimulatedLogout} />
+              ) : (
+                <>
+                  <Link 
+                    href="/login" 
+                    className="text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
+                  >
+                    Log in
+                  </Link>
+                  <Link 
+                    href="/register" 
+                    className="text-sm font-bold text-nara-black bg-white hover:bg-gray-200 px-4 py-2 rounded-sm transition-colors"
+                  >
+                    Get started
+                  </Link>
+                </>
+              )}
             </div>
 
-            <button 
-              className="p-2 text-white hover:text-nara-text-muted md:hidden"
-              onClick={() => setMobileMenuOpen(true)}
-              aria-label="Menu"
-            >
-              <IconMenu className="w-6 h-6" />
-            </button>
+            <div className="md:hidden flex items-center">
+              {isLoggedIn && <div className="mr-2"><AccountDropdown onSignOut={handleSimulatedLogout} /></div>}
+              <button 
+                className="p-2 text-white hover:text-nara-text-muted"
+                onClick={() => setMobileMenuOpen(true)}
+                aria-label="Menu"
+              >
+                <IconMenu className="w-6 h-6" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -124,20 +154,40 @@ export default function Header() {
 
               {/* Action Buttons */}
               <div className="mt-8 px-6 border-t border-nara-border pt-8 flex flex-col gap-3">
-                <Link 
-                  href="/login" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
-                >
-                  Log in
-                </Link>
-                <Link 
-                  href="/register" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full py-3 text-center rounded-sm font-bold text-nara-black bg-white hover:bg-gray-200 transition-colors"
-                >
-                  Get started
-                </Link>
+                {isLoggedIn ? (
+                  <>
+                    <Link 
+                      href="/my-account" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full py-3 text-center rounded-sm font-bold text-nara-black bg-white hover:bg-gray-200 transition-colors"
+                    >
+                      My Account
+                    </Link>
+                    <button 
+                      onClick={handleSimulatedLogout}
+                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link 
+                      href="/login" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
+                    >
+                      Log in
+                    </Link>
+                    <Link 
+                      href="/register" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full py-3 text-center rounded-sm font-bold text-nara-black bg-white hover:bg-gray-200 transition-colors"
+                    >
+                      Get started
+                    </Link>
+                  </>
+                )}
               </div>
 
               <div className="mt-8 px-6 flex flex-col gap-4 text-sm text-nara-text-muted">

@@ -8,6 +8,23 @@ const isVideo = (item: Video | Event): item is Video => {
   return (item as Video).video_url !== undefined;
 };
 
+// Date formatters for badges
+const formatUpcomingDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  if (d.getDate() === now.getDate() && d.getMonth() === now.getMonth()) {
+    return `TODAY ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+  }
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  return `${days[d.getDay()]} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+};
+
+const formatPastDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  return `${d.getDate()} ${months[d.getMonth()]}`;
+};
+
 export default function VideoCard({ item, layout = 'video' }: { item: Video | Event, layout?: 'banner' | 'poster' | 'video' | 'square' }) {
   const isVid = isVideo(item);
   const title = item.title;
@@ -28,8 +45,14 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>
-        <div className="mt-3">
-          <h3 className="text-white font-bold text-sm md:text-base">{title}</h3>
+        <div className="mt-3 text-center">
+          <h3 className="text-white font-bold text-sm md:text-base uppercase">{title}</h3>
+          {(item as any).category && (
+            <p className="text-xs text-gray-400 mt-0.5 uppercase tracking-wider">{(item as any).category}</p>
+          )}
+          {(item as any).source_label && (
+            <p className="text-xs text-nara-red mt-0.5 font-bold">{(item as any).source_label}</p>
+          )}
         </div>
       </Link>
     );
@@ -71,7 +94,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
           <div className="absolute bottom-0 w-full p-4 text-center">
             <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-wider">{title}</h3>
             {(!isVid && (item as Event).start_time) && (
-              <p className="text-sm text-white font-bold mt-1">
+              <p className="text-sm text-white font-bold mt-1" suppressHydrationWarning>
                 {new Date((item as Event).start_time).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
@@ -102,12 +125,20 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-60 group-hover:opacity-40 transition-opacity" />
 
         {/* Top Badges */}
-        <div className="absolute top-2 left-2 flex gap-1">
-          {item.is_live && (
-            <span className="bg-nara-red text-white text-[10px] font-bold px-1.5 py-0.5 uppercase tracking-wider flex items-center gap-1 rounded-sm">
-              LIVE TV
+        <div className="absolute top-2 left-2 flex gap-1 z-10">
+          {item.is_live ? (
+            <span className="bg-[#ff0000] text-white text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider flex items-center gap-1 rounded-[2px] shadow-sm">
+              LIVE
             </span>
-          )}
+          ) : !isVid && (item as Event).start_time ? (
+            <span className="bg-[#f0c800] text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
+              {formatUpcomingDate((item as Event).start_time)}
+            </span>
+          ) : isVid && (item as Video).published_at ? (
+            <span className="bg-white/90 text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
+              {formatPastDate((item as Video).published_at!)}
+            </span>
+          ) : null}
         </div>
 
         {/* Top Right Badges */}

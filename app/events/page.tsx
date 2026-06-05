@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const revalidate = 3600; // Revalidate every hour
 
-export default async function Home() {
+export default async function EventsPage() {
   const [heroEvents, rails] = await Promise.all([
     getHeroEvents(),
     getHomeRails()
@@ -23,7 +23,7 @@ export default async function Home() {
       <ScrollFadeOverlay />
 
       {/* Content Rails scrolling over the sticky background */}
-      <div className="relative flex flex-col gap-2 mt-[-2vh] md:mt-[-5vh] pt-4 md:pt-8 z-10 bg-[linear-gradient(to_bottom,transparent,rgba(10,10,12,0.9)_2vh,#0a0a0c_8vh)] pb-12">
+      <div className="relative flex flex-col gap-2 mt-[-15vh] md:mt-[-15vh] z-10 bg-gradient-to-b from-transparent via-nara-black/90 to-nara-black pb-12">
         <div className="absolute top-[20%] left-[-10%] w-[50%] max-w-[800px] aspect-square rounded-full bg-nara-red/5 blur-[150px] pointer-events-none" />
         <div className="absolute top-[60%] right-[-10%] w-[60%] max-w-[1000px] aspect-square rounded-full bg-blue-900/5 blur-[150px] pointer-events-none" />
 

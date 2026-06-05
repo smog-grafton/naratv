@@ -22,68 +22,164 @@ const generateDummyVideos = (count: number, prefix: string): Video[] => {
 export async function getHomeRails(): Promise<ContentRail[]> {
   return [
     {
+      id: 'rail-best-boxing',
+      title: 'Best of Boxing',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'v1', title: 'Ramirez vs. Richards: Full Event Replay', slug: 'v1', thumbnail_url: 'https://picsum.photos/seed/bb1/800/450', video_url: 'dummy', is_premium: true, source_label: 'Eye of The Tiger', published_at: new Date(Date.now() - 86400000).toISOString() },
+        { id: 'v2', title: 'Zayas vs. Ennis: Run the Tape', slug: 'v2', thumbnail_url: 'https://picsum.photos/seed/bb2/800/450', video_url: 'dummy', is_premium: false, source_label: 'Matchroom Boxing' },
+        { id: 'v3', title: 'Padley vs. Fiaz: Press Conference', slug: 'v3', thumbnail_url: 'https://picsum.photos/seed/bb3/800/450', video_url: 'dummy', is_premium: true, source_label: 'Matchroom Boxing', published_at: new Date(Date.now() - 186400000).toISOString() },
+        { id: 'v4', title: "Top 10 Boxers in the 2010's", slug: 'v4', thumbnail_url: 'https://picsum.photos/seed/bb4/800/450', video_url: 'dummy', is_premium: false, source_label: "Rummy's Corner" },
+        { id: 'v5', title: 'Christian Mbilli: The Ascent', slug: 'v5', thumbnail_url: 'https://picsum.photos/seed/bb5/800/450', video_url: 'dummy', is_premium: false, source_label: 'Riyadh Season' },
+      ],
+    },
+    {
       id: 'rail-dont-miss',
       title: "Don't Miss",
       type: 'mixed',
       layout: 'banner',
-      items: generateDummyVideos(4, 'Don\'t Miss Event'),
+      items: [
+        { id: 'dm1', title: 'Fury vs Hall', slug: 'fury-hall', thumbnail_url: 'https://picsum.photos/seed/dm1/1200/450', is_premium: true, is_live: false, is_free: false, video_url: 'dummy', category: 'June 13' },
+        { id: 'dm2', title: 'Zayas vs Boots', slug: 'zayas-boots', thumbnail_url: 'https://picsum.photos/seed/dm2/1200/450', is_premium: true, is_live: false, is_free: false, video_url: 'dummy', category: 'June 27' },
+        { id: 'dm3', title: 'Joshua vs Prenga', slug: 'joshua-prenga', thumbnail_url: 'https://picsum.photos/seed/dm3/1200/450', is_premium: true, is_live: false, is_free: false, video_url: 'dummy', category: 'July 25' },
+      ],
     },
     {
       id: 'rail-biggest-fights',
       title: 'The Biggest Fights',
       type: 'events',
       layout: 'poster',
-      items: generateDummyVideos(8, 'Fighter Title Match'),
+      items: [
+        { id: 'bf1', title: 'Padley vs Fiaz', slug: 'padley-fiaz', poster_url: 'https://picsum.photos/seed/bf1/800/1200', start_time: new Date('2026-06-06').toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'Matchroom Boxing' } as Event,
+        { id: 'bf2', title: 'Fury vs Hall', slug: 'fury-hall', poster_url: 'https://picsum.photos/seed/bf2/800/1200', start_time: new Date('2026-06-13').toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'Misfits Boxing' } as Event,
+        { id: 'bf3', title: 'Bam vs Vargas', slug: 'bam-vargas', poster_url: 'https://picsum.photos/seed/bf3/800/1200', start_time: new Date('2026-06-13').toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'Matchroom Boxing' } as Event,
+        { id: 'bf4', title: 'Gonzalez vs Perez', slug: 'gonz-perez', poster_url: 'https://picsum.photos/seed/bf4/800/1200', start_time: new Date('2026-06-14').toISOString(), is_live: false, is_ppv: false, status: 'upcoming', source_label: 'Salita Promotions' } as Event,
+        { id: 'bf5', title: 'H2O vs Diaz', slug: 'h2o-diaz', poster_url: 'https://picsum.photos/seed/bf5/800/1200', start_time: new Date('2026-06-19').toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'MF Pro' } as Event,
+      ]
     },
     {
-      id: 'rail-locker-room',
-      title: 'The Locker Room - Latest Features',
+      id: 'rail-coming-up',
+      title: 'Coming up',
+      type: 'events',
+      layout: 'video',
+      items: [
+        { id: 'cu1', title: 'Padley vs Fiaz', slug: 'cu1', poster_url: 'https://picsum.photos/seed/cu1/800/450', start_time: new Date('2026-06-05T15:00:00Z').toISOString(), is_live: false, is_ppv: true, status: 'upcoming' } as Event,
+        { id: 'cu2', title: 'Homecoming', slug: 'cu2', poster_url: 'https://picsum.photos/seed/cu2/800/450', start_time: new Date('2026-06-05T16:00:00Z').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+        { id: 'cu3', title: 'Padley vs Fiaz: Prelims', slug: 'cu3', poster_url: 'https://picsum.photos/seed/cu3/800/450', start_time: new Date('2026-06-06T19:15:00Z').toISOString(), is_live: false, is_ppv: true, status: 'upcoming' } as Event,
+        { id: 'cu4', title: 'Main Card', slug: 'cu4', poster_url: 'https://picsum.photos/seed/cu4/800/450', start_time: new Date('2026-06-06T21:00:00Z').toISOString(), is_live: false, is_ppv: true, status: 'upcoming' } as Event,
+        { id: 'cu5', title: 'Brown vs Vieira', slug: 'cu5', poster_url: 'https://picsum.photos/seed/cu5/800/450', start_time: new Date('2026-06-08T00:00:00Z').toISOString(), is_live: false, is_ppv: true, status: 'upcoming' } as Event,
+      ]
+    },
+    {
+      id: 'rail-previous-events',
+      title: 'Previous Events',
+      type: 'events',
+      layout: 'poster',
+      items: [
+        { id: 'pe1', title: 'Foster vs Ford', slug: 'pe1', poster_url: 'https://picsum.photos/seed/pe1/800/1200', start_time: new Date('2026-05-30').toISOString(), is_live: false, is_ppv: false, status: 'completed', source_label: 'Matchroom Boxing' } as Event,
+        { id: 'pe2', title: 'Bivol vs Eifert', slug: 'pe2', poster_url: 'https://picsum.photos/seed/pe2/800/1200', start_time: new Date('2026-05-30').toISOString(), is_live: false, is_ppv: false, status: 'completed', source_label: 'RCC / Matchroom Boxing' } as Event,
+        { id: 'pe3', title: 'Terrible vs Delano', slug: 'pe3', poster_url: 'https://picsum.photos/seed/pe3/800/1200', start_time: new Date('2026-05-06').toISOString(), is_live: false, is_ppv: false, status: 'completed', source_label: 'Blood 4 Blood' } as Event,
+        { id: 'pe4', title: 'Brown vs Vasquez', slug: 'pe4', poster_url: 'https://picsum.photos/seed/pe4/800/1200', start_time: new Date('2026-05-29').toISOString(), is_live: false, is_ppv: false, status: 'completed', source_label: 'Red Owl Boxing' } as Event,
+        { id: 'pe5', title: 'Edwards vs Noothole', slug: 'pe5', poster_url: 'https://picsum.photos/seed/pe5/800/1200', start_time: new Date('2026-05-29').toISOString(), is_live: false, is_ppv: false, status: 'completed', source_label: 'MF Pro' } as Event,
+      ]
+    },
+    {
+      id: 'rail-classic-fights',
+      title: 'Classic Fights',
+      titlePrefix: 'LEGENDARY NAMES',
+      description: 'Relive some of the most memorable nights in boxing history with our in-depth archive',
       type: 'videos',
       layout: 'video',
-      items: generateDummyVideos(8, 'Fighter Feature').map(v => ({ ...v, category: 'Day In The Life' })),
+      items: [
+        { id: 'cf1', title: 'Joshua vs. Klitschko (2017)', slug: 'cf1', thumbnail_url: 'https://picsum.photos/seed/cf1/800/450', video_url: 'dummy', is_premium: true, source_label: 'Matchroom Boxing' },
+        { id: 'cf2', title: 'Haye vs. Chisora (2012)', slug: 'cf2', thumbnail_url: 'https://picsum.photos/seed/cf2/800/450', video_url: 'dummy', is_premium: true, source_label: 'Queensberry Promotions' },
+        { id: 'cf3', title: 'Fury vs. Chisora 3 (2022)', slug: 'cf3', thumbnail_url: 'https://picsum.photos/seed/cf3/800/450', video_url: 'dummy', is_premium: true, source_label: 'Queensberry Promotions' },
+        { id: 'cf4', title: 'Canelo vs. GGG 3 (2022)', slug: 'cf4', thumbnail_url: 'https://picsum.photos/seed/cf4/800/450', video_url: 'dummy', is_premium: true, source_label: 'Canelo vs. GGG III' },
+        { id: 'cf5', title: 'Joyce vs. Parker (2022)', slug: 'cf5', thumbnail_url: 'https://picsum.photos/seed/cf5/800/450', video_url: 'dummy', is_premium: true, source_label: 'Queensberry Promotions' },
+      ]
     },
     {
-      id: 'rail-live-tv',
-      title: 'Live TV',
-      type: 'videos',
-      layout: 'video',
-      items: generateDummyVideos(6, 'Live Channel').map(v => ({ ...v, is_live: true, durations_seconds: 3600 })),
-    },
-    {
-      id: 'rail-highlights',
-      title: 'Latest Fight Highlights',
-      type: 'videos',
-      layout: 'video',
-      items: generateDummyVideos(8, 'Fight Highlights'),
-    },
-    {
-      id: 'rail-featured-event',
-      title: 'Undisputed World Championship',
-      type: 'videos',
-      layout: 'featured-event',
-      badge: 'NARA.TV LIVE',
-      description: "The road to undisputed glory. Watch exclusive behind-the-scenes access and the complete chase for boxing's ultimate prize.",
-      backgroundImage: 'https://picsum.photos/seed/naratv-boxing/1920/1080',
-      items: generateDummyVideos(6, 'Championship'),
-    },
-    {
-      id: 'rail-replays',
-      title: 'Full Event Replays & Highlights',
-      type: 'videos',
-      layout: 'video',
-      items: generateDummyVideos(8, 'Full Event Replay'),
-    },
-    {
-      id: 'rail-top-sports',
-      title: 'Top Sports and Competitions',
+      id: 'rail-fighters',
+      title: 'Fighters',
       type: 'mixed',
       layout: 'square',
       items: [
-        { id: 'cat-boxing', title: 'Boxing', slug: 'cat-boxing', thumbnail_url: 'https://picsum.photos/seed/cat-boxing/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'cat-fifa', title: 'FIFA+', slug: 'cat-fifa', thumbnail_url: 'https://picsum.photos/seed/cat-fifa/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'cat-nhl', title: 'NHL.TV', slug: 'cat-nhl', thumbnail_url: 'https://picsum.photos/seed/cat-nhl/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'cat-rally', title: 'Rally TV', slug: 'cat-rally', thumbnail_url: 'https://picsum.photos/seed/cat-rally/500/500', is_premium: false, is_live: false, is_free: true, video_url: '' },
-      ],
+        { id: 'ft1', title: 'Tommy Fury', slug: 'tommy-fury', thumbnail_url: 'https://picsum.photos/seed/ft1/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Cruiserweight', source_label: 'GBR' },
+        { id: 'ft2', title: 'Eddie Hall', slug: 'eddie-hall', thumbnail_url: 'https://picsum.photos/seed/ft2/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Heavyweight', source_label: 'GBR' },
+        { id: 'ft3', title: 'Jesse Rodriguez', slug: 'jesse-rodriguez', thumbnail_url: 'https://picsum.photos/seed/ft3/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Super Flyweight', source_label: 'USA' },
+        { id: 'ft4', title: 'Oscar Collazo', slug: 'oscar-collazo', thumbnail_url: 'https://picsum.photos/seed/ft4/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Mini Flyweight', source_label: 'USA' },
+        { id: 'ft5', title: 'Xander Zayas', slug: 'xander-zayas', thumbnail_url: 'https://picsum.photos/seed/ft5/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Super Welterweight', source_label: 'PUR' },
+        { id: 'ft6', title: 'Jaron Ennis', slug: 'jaron-ennis', thumbnail_url: 'https://picsum.photos/seed/ft6/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Welterweight', source_label: 'USA' },
+      ]
+    },
+    {
+      id: 'rail-inside-the-ring',
+      title: 'Inside The Ring',
+      badge: 'NEW',
+      description: 'All the latest boxing news and views every Monday, hosted by Max Kellerman and Mike Coppinger.',
+      type: 'videos',
+      layout: 'featured-event',
+      backgroundImage: 'https://picsum.photos/seed/insidetheringbg/1920/1080',
+      items: [
+        { id: 'ir1', title: "Rico: 'I Will Show You Something Different'", slug: 'ir1', thumbnail_url: 'https://picsum.photos/seed/ir1/800/450', video_url: 'dummy', is_premium: false, source_label: 'Inside The Ring' },
+        { id: 'ir2', title: "Catterall Exclusive - 'I'll Give Rolly a Boxing Lesson'", slug: 'ir2', thumbnail_url: 'https://picsum.photos/seed/ir2/800/450', video_url: 'dummy', is_premium: false, source_label: 'Inside The Ring' },
+        { id: 'ir3', title: "Inside The Ring - June 1", slug: 'ir3', thumbnail_url: 'https://picsum.photos/seed/ir3/800/450', video_url: 'dummy', is_premium: true, published_at: new Date('2026-06-01').toISOString(), source_label: 'Inside The Ring' },
+        { id: 'ir4', title: "'Let's do it in Germany!' - Kabayel Targets Usyk Showdown", slug: 'ir4', thumbnail_url: 'https://picsum.photos/seed/ir4/800/450', video_url: 'dummy', is_premium: false, source_label: 'Inside The Ring' },
+        { id: 'ir5', title: "Canelo Exclusive: 'I'm Excited to Come Back!'", slug: 'ir5', thumbnail_url: 'https://picsum.photos/seed/ir5/800/450', video_url: 'dummy', is_premium: false, source_label: 'Inside The Ring' },
+      ]
+    },
+    {
+      id: 'rail-promoters',
+      title: 'Promoters',
+      type: 'mixed',
+      layout: 'square',
+      items: [
+        { id: 'pr1', title: 'Ring Magazine', slug: 'pr1', thumbnail_url: 'https://picsum.photos/seed/pr1/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'pr2', title: 'Riyadh Season', slug: 'pr2', thumbnail_url: 'https://picsum.photos/seed/pr2/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'pr3', title: 'Top Rank', slug: 'pr3', thumbnail_url: 'https://picsum.photos/seed/pr3/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'pr4', title: 'Matchroom Boxing', slug: 'pr4', thumbnail_url: 'https://picsum.photos/seed/pr4/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'pr5', title: 'Queensberry Promotions', slug: 'pr5', thumbnail_url: 'https://picsum.photos/seed/pr5/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+      ]
+    },
+    {
+      id: 'rail-replays-years',
+      title: 'Replay The Best Moments Over The Years',
+      type: 'videos',
+      layout: 'poster',
+      items: [
+        { id: 'ry1', title: '2025', slug: '2025-highlights', poster_url: 'https://picsum.photos/seed/ry1/800/1200', start_time: new Date('2025-01-01').toISOString(), is_live: false, is_ppv: false, status: 'completed' } as Event,
+        { id: 'ry2', title: '2024', slug: '2024-highlights', poster_url: 'https://picsum.photos/seed/ry2/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'completed' } as Event,
+        { id: 'ry3', title: '2023', slug: '2023-highlights', poster_url: 'https://picsum.photos/seed/ry3/800/1200', start_time: new Date('2023-01-01').toISOString(), is_live: false, is_ppv: false, status: 'completed' } as Event,
+        { id: 'ry4', title: '2022', slug: '2022-highlights', poster_url: 'https://picsum.photos/seed/ry4/800/1200', start_time: new Date('2022-01-01').toISOString(), is_live: false, is_ppv: false, status: 'completed' } as Event,
+        { id: 'ry5', title: '2021', slug: '2021-highlights', poster_url: 'https://picsum.photos/seed/ry5/800/1200', start_time: new Date('2021-01-01').toISOString(), is_live: false, is_ppv: false, status: 'completed' } as Event,
+      ]
+    },
+    {
+      id: 'rail-trailers',
+      title: 'Official Trailers',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'tr1', title: 'Fatal Fury Fight Night in Times Square: Official Trailer', slug: 'tr1', thumbnail_url: 'https://picsum.photos/seed/tr1/800/450', video_url: 'dummy', is_premium: false, source_label: 'Powered by Fatal Fury: City of the Wolves' },
+        { id: 'tr2', title: 'Eubank Jr. vs. Benn: Official Trailer', slug: 'tr2', thumbnail_url: 'https://picsum.photos/seed/tr2/800/450', video_url: 'dummy', is_premium: false, source_label: 'Powered by Fatal Fury: City of the Wolves' },
+        { id: 'tr3', title: 'Usyk vs. Fury 2: Official Trailer', slug: 'tr3', thumbnail_url: 'https://picsum.photos/seed/tr3/800/450', video_url: 'dummy', is_premium: false, source_label: 'Usyk vs. Fury 2' },
+        { id: 'tr4', title: 'Four Crown Showdown: Official Promo Film', slug: 'tr4', thumbnail_url: 'https://picsum.photos/seed/tr4/800/450', video_url: 'dummy', is_premium: false, source_label: 'Four Crown Showdown' },
+        { id: 'tr5', title: 'Riyadh Season Card - Wembley Edition: Official Trailer', slug: 'tr5', thumbnail_url: 'https://picsum.photos/seed/tr5/800/450', video_url: 'dummy', is_premium: false, source_label: 'Riyadh Season Card - Wembley Edition' },
+      ]
+    },
+    {
+      id: 'rail-shows-docs',
+      title: 'Knockout Boxing Shows and Documentaries',
+      type: 'videos',
+      layout: 'poster',
+      items: [
+        { id: 'sd1', title: 'Fight Night Raw', slug: 'sd1', poster_url: 'https://picsum.photos/seed/sd1/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+        { id: 'sd2', title: 'Unwrapped', slug: 'sd2', poster_url: 'https://picsum.photos/seed/sd2/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+        { id: 'sd3', title: 'Nara Spotlight', slug: 'sd3', poster_url: 'https://picsum.photos/seed/sd3/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+        { id: 'sd4', title: 'On the Ground', slug: 'sd4', poster_url: 'https://picsum.photos/seed/sd4/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+        { id: 'sd5', title: 'Face Off', slug: 'sd5', poster_url: 'https://picsum.photos/seed/sd5/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
+      ]
     }
   ];
 }
