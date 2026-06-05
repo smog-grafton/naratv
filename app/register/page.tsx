@@ -1,162 +1,82 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from "next/link";
-import { ArrowLeft, Check, X, Eye, EyeOff, Loader2 } from "lucide-react";
+import { ArrowLeft, Mail, Chrome, Apple, Facebook } from "lucide-react";
 
-export default function RegisterPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [password, setPassword] = useState('');
-  
-  // Validation states
-  const [hasUpperLower, setHasUpperLower] = useState(false);
-  const [hasNumber, setHasNumber] = useState(false);
-  const [hasLength, setHasLength] = useState(false);
-  
-  // Toggle states
-  const [notifySchedules, setNotifySchedules] = useState(true);
-  const [notifyOffers, setNotifyOffers] = useState(false);
-
-  useEffect(() => {
-    setHasUpperLower(/[a-z]/.test(password) && /[A-Z]/.test(password));
-    setHasNumber(/[0-9]/.test(password));
-    setHasLength(password.length >= 6);
-  }, [password]);
-
-  const isValid = hasUpperLower && hasNumber && hasLength;
+export default function RegisterInitialPage() {
+  const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValid) return;
-    setIsLoading(true);
-    // Simulate registration
-    setTimeout(() => {
-      localStorage.setItem('nara_auth', 'true');
-      window.location.href = '/subscribe';
-    }, 1500);
+    if (email) {
+      window.location.href = `/register/details?email=${encodeURIComponent(email)}`;
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col relative font-sans">
-      {/* Top Bar matching DAZN */}
+      {/* Top Bar */}
       <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-[#0a0a0c]">
-        <Link href="/login" className="text-gray-400 hover:text-white transition-colors">
+        <Link href="/" className="text-gray-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </Link>
-        <span className="text-[14px] md:text-sm font-bold tracking-wide">Finish signing up</span>
+        <span className="text-[14px] md:text-sm font-bold tracking-wide">Sign up</span>
         <Link href="/" className="flex items-center text-lg font-black uppercase tracking-tighter">
           <span className="bg-white text-black py-0.5 px-1.5 leading-none mr-1 rounded-sm">NARA</span>
           <span className="text-white leading-none">TV</span>
         </Link>
       </div>
 
-      <div className="flex-1 flex flex-col items-center px-4 w-full max-w-[480px] mx-auto z-10 pb-12 pt-24 md:pt-[100px]">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 w-full max-w-[400px] mx-auto z-10 pt-20">
         <div className="w-full">
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            
-            <div>
-              <label className="block text-sm font-bold text-white mb-3">Your name</label>
-              <div className="flex flex-col gap-[1px] bg-[#2a2b2e] border border-[#2a2b2e] rounded-[4px] overflow-hidden">
-                <input 
-                  type="text" 
-                  placeholder="First name" 
-                  className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
-                  required
-                />
-                <input 
-                  type="text" 
-                  placeholder="Last name" 
-                  className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
-                  required
-                />
-              </div>
-            </div>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Create an account</h1>
+          <p className="text-gray-400 mb-8 text-sm">Enter your email to get started.</p>
 
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
-              <label className="block text-sm font-bold text-white mb-3">Email address</label>
               <input 
                 type="email" 
                 placeholder="Email address" 
-                defaultValue="smogbiz03@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
-              <p className="text-[#848485] text-[13px] mt-2 tracking-wide">Remember this email! You&apos;ll need it to sign in.</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-white mb-3">Password</label>
-              <div className="relative">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  placeholder="Enter new password" 
-                  className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              
-              <div className="mt-6 flex flex-col gap-3">
-                <h4 className="text-[13px] font-bold text-white mb-1">Your password must contain</h4>
-                <div className={`flex items-center gap-3 text-[13px] ${hasUpperLower ? 'text-[#848485]' : 'text-[#848485]'}`}>
-                  {hasUpperLower ? <Check className="w-4 h-4 text-[#55f599]" /> : <X className="w-4 h-4 text-[#848485]" />} 
-                  Upper and lower case letters
-                </div>
-                <div className={`flex items-center gap-3 text-[13px] ${hasNumber ? 'text-[#848485]' : 'text-[#848485]'}`}>
-                  {hasNumber ? <Check className="w-4 h-4 text-[#55f599]" /> : <X className="w-4 h-4 text-[#848485]" />} 
-                  At least one number
-                </div>
-                <div className={`flex items-center gap-3 text-[13px] ${hasLength ? 'text-[#848485]' : 'text-[#848485]'}`}>
-                  {hasLength ? <Check className="w-4 h-4 text-[#55f599]" /> : <X className="w-4 h-4 text-[#848485]" />} 
-                  At least 6 characters (8 for stronger password)
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-2">
-              <label className="block text-[15px] font-bold text-white mb-4">Get notified</label>
-              <div className="flex flex-col gap-[1px] bg-[#2a2b2e] rounded-[4px] overflow-hidden border border-[#2a2b2e]">
-                <div className="bg-[#0a0a0c] p-4 py-5 flex justify-between items-center gap-4">
-                  <span className="text-[13px] text-[#d1d1d1] pr-4">Keep me updated on all sports schedules, game and news.</span>
-                  <div 
-                    onClick={() => setNotifySchedules(!notifySchedules)}
-                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifySchedules ? 'bg-[#8ceda7]' : 'bg-[#3a3b3e]'}`}
-                  >
-                    <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[2px] transition-all duration-200 ${notifySchedules ? 'right-[2px]' : 'left-[2px]'}`}></div>
-                  </div>
-                </div>
-                <div className="bg-[#0a0a0c] p-4 py-5 flex justify-between items-center gap-4">
-                  <span className="text-[13px] text-[#d1d1d1] pr-4">Keep me updated on exclusive offers and special features.</span>
-                  <div 
-                    onClick={() => setNotifyOffers(!notifyOffers)}
-                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifyOffers ? 'bg-[#8ceda7]' : 'bg-[#3a3b3e]'}`}
-                  >
-                    <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[2px] transition-all duration-200 ${notifyOffers ? 'right-[2px]' : 'left-[2px]'}`}></div>
-                  </div>
-                </div>
-              </div>
-              <p className="text-[11px] text-[#848485] mt-3 mb-6">You can adjust these settings later in My account.</p>
             </div>
             
             <button 
               type="submit" 
-              className={`w-full font-bold py-[15px] rounded-[4px] transition-colors mt-4 flex items-center justify-center gap-2 text-sm ${isValid ? 'bg-[#f0c800] text-black hover:bg-[#e6c000]' : 'bg-[#3a3b3e] text-[#848485] pointer-events-none'}`}
-              disabled={!isValid || isLoading}
+              className={`w-full font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-2 text-sm ${email ? 'bg-[#f0c800] text-black hover:bg-[#e6c000]' : 'bg-[#3a3b3e] text-[#848485] pointer-events-none'}`}
+              disabled={!email}
             >
-              {isLoading && <Loader2 className="w-5 h-5 animate-spin" />} Continue
+              Continue with Email
             </button>
           </form>
 
+          <div className="flex items-center justify-center gap-4 my-8">
+            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+            <span className="text-[11px] text-gray-500 font-bold tracking-wider uppercase">or sign up with</span>
+            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <button className="w-full bg-white text-black font-bold py-3.5 rounded-[4px] hover:bg-gray-200 transition-colors flex items-center justify-center gap-3 text-sm">
+              <Chrome className="w-5 h-5" /> Google
+            </button>
+            <button className="w-full bg-[#1a1b1e] text-white border border-[#2a2b2e] font-bold py-3.5 rounded-[4px] hover:bg-[#2a2b2e] transition-colors flex items-center justify-center gap-3 text-sm">
+              <Apple className="w-5 h-5" /> Apple
+            </button>
+            <button className="w-full bg-[#1877F2] text-white font-bold py-3.5 rounded-[4px] hover:bg-[#166fe5] transition-colors flex items-center justify-center gap-3 text-sm">
+              <Facebook className="w-5 h-5" /> Facebook
+            </button>
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/login" className="text-sm font-bold text-white hover:underline">
+              Already have an account? Sign in
+            </Link>
+          </div>
         </div>
       </div>
     </div>

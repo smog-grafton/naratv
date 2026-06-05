@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { ContentModalProvider } from '@/components/providers/ContentModalProvider';
+import ContentModalRoot from '@/components/modals/ContentModalRoot';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -14,12 +16,15 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
-      <body suppressHydrationWarning className="bg-nara-black text-white min-h-screen flex flex-col font-sans">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+      <body suppressHydrationWarning className="bg-[#0a0a0c] text-white min-h-screen flex flex-col font-sans">
+        <ContentModalProvider>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+          <ContentModalRoot />
+        </ContentModalProvider>
       </body>
     </html>
   );

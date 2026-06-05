@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Video, Event } from '@/services/types';
 import { IconPlay, IconLock } from '@/components/icons';
+import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
 
 // Type guard
 const isVideo = (item: Video | Event): item is Video => {
@@ -29,7 +32,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   const isVid = isVideo(item);
   const title = item.title;
   const image = isVid ? item.thumbnail_url : (item as Event).poster_url;
-  const link = isVid ? `/watch/${item.slug}` : `/events/${item.slug}`;
+  const { openContentModal } = useResponsiveContentModal();
 
   // Aspect ratio based on layout
   let aspectClass = "aspect-[16/9]";
@@ -37,10 +40,15 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   if (layout === 'poster') aspectClass = "aspect-[3/4]";
   if (layout === 'square') aspectClass = "aspect-[1/1]";
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    openContentModal(item);
+  };
+
   if (layout === 'square' && isVid && !item.video_url) {
     // Hack for top sports categories
     return (
-      <Link href="#" className="group flex flex-col w-full h-full outline-none">
+      <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
         <div className={`relative w-full ${aspectClass} rounded-md overflow-hidden bg-[#10141a]`}>
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
@@ -51,16 +59,16 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
             <p className="text-xs text-gray-400 mt-0.5 uppercase tracking-wider">{(item as any).category}</p>
           )}
           {(item as any).source_label && (
-            <p className="text-xs text-nara-red mt-0.5 font-bold">{(item as any).source_label}</p>
+            <p className="text-xs text-[#f0c800] mt-0.5 font-bold">{(item as any).source_label}</p>
           )}
         </div>
-      </Link>
+      </button>
     );
   }
 
   if (layout === 'banner') {
     return (
-      <Link href={link} className="group flex flex-col w-full h-full outline-none rounded-lg overflow-hidden relative">
+      <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none rounded-lg overflow-hidden relative text-left">
         <div className={`relative w-full ${aspectClass} bg-[#10141a] overflow-hidden`}>
           <img src={image} alt={title} className="w-full h-full object-cover" />
           {/* Dark gradient on the left for text readability */}
@@ -80,13 +88,13 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
              )}
           </div>
         </div>
-      </Link>
+      </button>
     );
   }
 
   if (layout === 'poster') {
     return (
-      <Link href={link} className="group flex flex-col w-full h-full outline-none">
+      <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
         <div className={`relative w-full ${aspectClass} bg-[#10141a] rounded-md overflow-hidden mb-3`}>
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           {/* Text inside the bottom of the poster */}
@@ -94,7 +102,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
           <div className="absolute bottom-0 w-full p-4 text-center">
             <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-wider">{title}</h3>
             {(!isVid && (item as Event).start_time) && (
-              <p className="text-sm text-white font-bold mt-1" suppressHydrationWarning>
+              <p className="text-sm text-[#f0c800] font-bold mt-1" suppressHydrationWarning>
                 {new Date((item as Event).start_time).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
@@ -102,16 +110,16 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
         </div>
         <div className="flex flex-col flex-1 px-1">
           {isVid && item.source_label && (
-            <p className="text-sm text-white font-semibold">{item.source_label}</p>
+            <p className="text-sm text-gray-400 font-semibold">{item.source_label}</p>
           )}
         </div>
-      </Link>
+      </button>
     );
   }
 
   // Default 'video' layout
   return (
-    <Link href={link} className="group flex flex-col w-full h-full outline-none">
+    <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
       <div className="relative w-full aspect-[16/9] bg-[#10141a] rounded-md overflow-hidden mb-3 group-hover:ring-2 ring-white/20 transition-all">
         {/* Image */}
         <img 
@@ -131,18 +139,18 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
               LIVE
             </span>
           ) : !isVid && (item as Event).start_time ? (
-            <span className="bg-[#f0c800] text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
+            <span className="bg-white text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
               {formatUpcomingDate((item as Event).start_time)}
             </span>
           ) : isVid && (item as Video).published_at ? (
-            <span className="bg-white/90 text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
+            <span className="bg-white bg-opacity-90 text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
               {formatPastDate((item as Video).published_at!)}
             </span>
           ) : null}
         </div>
 
         {/* Top Right Badges */}
-        <div className="absolute top-2 right-2 flex gap-1">
+        <div className="absolute top-2 right-2 flex gap-1 z-10">
           {(isVid && item.is_premium) && (
             <div className="bg-black/60 backdrop-blur-sm p-1 rounded-sm text-white flex items-center justify-center">
               <IconLock className="w-3.5 h-3.5" />
@@ -159,14 +167,14 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
 
         {/* Bottom Right Duration/Status */}
         {isVid && item.durations_seconds && (
-          <div className="absolute bottom-2 right-2 text-white font-bold text-xs drop-shadow-md">
+          <div className="absolute bottom-2 right-2 text-white font-bold text-xs drop-shadow-md z-10">
             {Math.floor(item.durations_seconds / 60)} min left
           </div>
         )}
 
         {/* Bottom Progress Bar for Live TV */}
         {item.is_live && (
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
             <div className="h-full bg-nara-red w-2/3" />
           </div>
         )}
@@ -181,6 +189,6 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
           <p className="text-sm text-gray-400 mt-1">{item.source_label}</p>
         )}
       </div>
-    </Link>
+    </button>
   );
 }

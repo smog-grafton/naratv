@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Event } from '@/services/types';
 import { IconChevronLeft, IconChevronRight, IconPlay, IconGlobe } from '@/components/icons';
 import { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy } from 'lucide-react';
+import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
 
 const categories = [
   { name: 'Home', icon: Home },
@@ -20,6 +21,7 @@ const categories = [
 export default function HeroCarousel({ events }: { events: Event[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const { openContentModal } = useResponsiveContentModal();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -103,30 +105,21 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 w-full sm:w-auto">
-                {event.status === 'live' || event.status === 'completed' ? (
-                  <Link 
-                    href={`/watch/${event.slug}`}
-                    className="w-full sm:w-auto bg-white hover:bg-gray-200 text-nara-black font-bold py-3 md:py-3.5 px-8 rounded-sm transition-colors text-center text-sm md:text-base flex justify-center items-center gap-2"
-                  >
-                    <IconPlay className="w-5 h-5 fill-current" />
-                    Watch Now
-                  </Link>
-                ) : (
-                  <Link 
-                    href="/register"
-                    className="w-full sm:w-auto bg-white hover:bg-gray-200 text-nara-black font-bold py-3 md:py-3.5 px-10 rounded-sm transition-colors text-center text-sm md:text-base"
-                  >
-                    Sign up
-                  </Link>
-                )}
+                <button 
+                  onClick={() => openContentModal(event)}
+                  className="w-full sm:w-auto bg-white hover:bg-gray-200 text-black font-bold py-3 md:py-3.5 px-8 rounded-[4px] transition-colors text-center text-sm md:text-base flex justify-center items-center gap-2"
+                >
+                  <IconPlay className="w-5 h-5 fill-current" />
+                  {event.status === 'live' || event.status === 'completed' ? 'Watch Now' : 'Watch Options'}
+                </button>
                 
-                {event.is_ppv && (
-                  <Link 
-                    href={`/checkout?event=${event.id}`}
-                    className="w-full sm:w-auto bg-nara-surface hover:bg-[#2A2B2E] text-white font-bold py-3 md:py-3.5 px-8 rounded-sm transition-colors text-center text-sm md:text-base border border-white/10 hidden sm:block"
+                {event.is_ppv && event.status !== 'completed' && (
+                  <button 
+                    onClick={() => openContentModal(event)}
+                    className="w-full sm:w-auto bg-[#1a1b1e] hover:bg-[#2a2b2e] text-white font-bold py-3 md:py-3.5 px-8 rounded-[4px] transition-colors text-center text-sm md:text-base border border-[#2a2b2e] hidden sm:block"
                   >
                     Buy PPV <span className="opacity-70 ml-1 font-normal hidden md:inline">UGX {event.price?.toLocaleString()}</span>
-                  </Link>
+                  </button>
                 )}
               </div>
 
