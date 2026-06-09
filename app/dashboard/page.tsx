@@ -1,8 +1,30 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { IconPlay, IconLock } from '@/components/icons';
+import { getDashboard, getStoredToken } from '@/services/home';
 
 export default function DashboardPage() {
+  const [dashboard, setDashboard] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = getStoredToken();
+
+    if (!token) {
+      window.location.href = '/login';
+      return;
+    }
+
+    getDashboard(token)
+      .then(setDashboard)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const activePlan = dashboard?.active_subscription;
+  const continueWatching = dashboard?.continue_watching || [];
+
   return (
     <div className="min-h-[80vh] bg-nara-black pt-24 pb-24 px-4 md:px-8">
       <div className="max-w-[1920px] mx-auto flex flex-col md:flex-row gap-8 lg:gap-16">
@@ -34,19 +56,35 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <div className="flex-1 max-w-4xl">
+          {loading && (
+            <div className="mb-8 border border-nara-border bg-nara-surface p-6 text-sm text-nara-text-muted">
+              Loading your account...
+            </div>
+          )}
+
+          {dashboard?.user && (
+            <section className="mb-8">
+              <p className="text-sm uppercase tracking-widest text-nara-text-muted">Signed in as</p>
+              <h2 className="mt-1 text-2xl font-bold text-white">{dashboard.user.name}</h2>
+              <p className="text-sm text-nara-text-muted">{dashboard.user.email || dashboard.user.phone}</p>
+            </section>
+          )}
+
           <section className="mb-12">
             <h2 className="text-xl font-medium text-white mb-4 border-b border-nara-border pb-2">Active Plan</h2>
             <div className="bg-nara-surface border border-nara-red rounded-lg p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 shadow-xl shadow-nara-red/5">
               <div>
                 <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-lg font-bold text-white">Monthly Pass</h3>
-                  <span className="bg-nara-red text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm">Active</span>
+                  <h3 className="text-lg font-bold text-white">{activePlan?.plan?.name || 'No active plan'}</h3>
+                  <span className="bg-nara-red text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-sm">{activePlan?.status || 'Inactive'}</span>
                 </div>
-                <p className="text-sm text-nara-text-muted">Renews on July 4, 2026 for UGX 8,500</p>
+                <p className="text-sm text-nara-text-muted">
+                  {activePlan?.expires_at ? `Access until ${new Date(activePlan.expires_at).toLocaleDateString()}` : 'Choose a pass to unlock premium replays and live access.'}
+                </p>
               </div>
-              <button className="bg-nara-black border border-nara-border hover:bg-white/5 text-white font-medium py-2 px-6 rounded-sm transition-colors text-sm">
+              <Link href="/subscriptions" className="bg-nara-black border border-nara-border hover:bg-white/5 text-white font-medium py-2 px-6 rounded-sm transition-colors text-sm">
                 Manage Plan
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -57,23 +95,29 @@ export default function DashboardPage() {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[1, 2].map((i) => (
-                <div key={i} className="flex gap-4 group cursor-pointer">
+              {continueWatching.length ? continueWatching.slice(0, 4).map((item: any) => {
+                const content = item.video || item.event;
+                if (!content) return null;
+
+                return (
+                <Link href={`/watch/${content.slug}`} key={item.id} className="flex gap-4 group cursor-pointer">
                   <div className="relative w-32 aspect-video bg-nara-surface rounded-sm overflow-hidden flex-shrink-0">
-                    <img src={`https://picsum.photos/seed/dash${i}/800/450`} alt="Thumbnail" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <img src={content.thumbnail_url || content.poster_url} alt="Thumbnail" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
                       <IconPlay className="w-8 h-8 text-white fill-current" />
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
-                      <div className="h-full bg-nara-red w-[45%]"></div>
+                      <div className="h-full bg-nara-red" style={{ width: `${item.progress_percent || 0}%` }}></div>
                     </div>
                   </div>
                   <div className="flex flex-col justify-center">
-                    <h4 className="text-sm font-medium text-white line-clamp-2 mb-1 group-hover:text-nara-red transition-colors">Championship Highlights part {i}</h4>
-                    <p className="text-xs text-nara-text-muted">45m left</p>
+                    <h4 className="text-sm font-medium text-white line-clamp-2 mb-1 group-hover:text-nara-red transition-colors">{content.title}</h4>
+                    <p className="text-xs text-nara-text-muted">{item.progress_percent || 0}% watched</p>
                   </div>
-                </div>
-              ))}
+                </Link>
+              )}) : (
+                <p className="text-sm text-nara-text-muted">Start watching a replay or live card and it will appear here.</p>
+              )}
             </div>
           </section>
 
@@ -85,8 +129,8 @@ export default function DashboardPage() {
               <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
                 <IconLock className="w-5 h-5 text-nara-text-muted" />
               </div>
-              <h3 className="text-white font-medium mb-1">No upcoming PPV events</h3>
-              <p className="text-sm text-nara-text-muted mb-6">You haven&apos;t purchased any upcoming events yet.</p>
+              <h3 className="text-white font-medium mb-1">{dashboard?.tickets_count || 0} purchased tickets</h3>
+              <p className="text-sm text-nara-text-muted mb-6">Your tickets and PPV purchases use the shared Nara Promotionz payment system.</p>
               <Link href="/events" className="bg-white hover:bg-white/90 text-nara-black font-medium py-2.5 px-6 rounded-sm transition-colors text-sm">
                 Browse Events
               </Link>

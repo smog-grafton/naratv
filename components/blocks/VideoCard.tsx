@@ -33,6 +33,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   const isVid = isVideo(item);
   const title = item.title;
   const image = isVid ? item.thumbnail_url : (item as Event).poster_url;
+  const eventStartTime = !isVid ? (item as Event).start_time : null;
   const { openContentModal } = useResponsiveContentModal();
   const router = useRouter();
 
@@ -114,9 +115,9 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
           <div className="absolute bottom-0 w-full p-4 text-center">
             <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-wider">{title}</h3>
-            {(!isVid && (item as Event).start_time) && (
+            {eventStartTime && (
               <p className="text-sm text-[#f0c800] font-bold mt-1" suppressHydrationWarning>
-                {new Date((item as Event).start_time).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                {new Date(eventStartTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
           </div>
@@ -151,9 +152,9 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
             <span className="bg-[#ff0000] text-white text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider flex items-center gap-1 rounded-[2px] shadow-sm">
               LIVE
             </span>
-          ) : !isVid && (item as Event).start_time ? (
+          ) : eventStartTime ? (
             <span className="bg-white text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>
-              {formatUpcomingDate((item as Event).start_time)}
+              {formatUpcomingDate(eventStartTime)}
             </span>
           ) : isVid && (item as Video).published_at ? (
             <span className="bg-white bg-opacity-90 text-black text-[11px] font-bold px-1.5 py-0.5 uppercase tracking-wider rounded-[2px] shadow-sm" suppressHydrationWarning>

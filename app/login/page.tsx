@@ -3,18 +3,29 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { login, storeSession } from '@/services/home';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [loginValue, setLoginValue] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
-    // Simulate login
-    setTimeout(() => {
-      localStorage.setItem('nara_auth', 'true');
-      window.location.href = '/';
-    }, 1500);
+
+    try {
+      const session = await login(loginValue, password);
+      storeSession(session);
+      const next = new URLSearchParams(window.location.search).get('next') || '/';
+      window.location.href = next;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not sign in. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -42,8 +53,10 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-6">
             <div className="relative">
               <input 
-                type="email" 
-                placeholder="Email address" 
+                type="text" 
+                placeholder="Email address or phone number" 
+                value={loginValue}
+                onChange={(event) => setLoginValue(event.target.value)}
                 className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
@@ -53,10 +66,18 @@ export default function LoginPage() {
               <input 
                 type="password" 
                 placeholder="Password" 
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
                 className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
             </div>
+
+            {error && (
+              <p className="rounded-[4px] border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+                {error}
+              </p>
+            )}
             
             <button 
               type="submit" 

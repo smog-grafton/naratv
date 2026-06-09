@@ -1,100 +1,87 @@
-import React from 'react';
 import Link from 'next/link';
+import { Check } from 'lucide-react';
+import { getPlans } from '@/services/home';
 
-// Add the missing IconCheck component to icons, but we'll import it or define it locally here if missing
-const InternalCheck = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-nara-red flex-shrink-0">
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
+export const revalidate = 60;
 
-export default function SubscriptionsPage() {
-  const plans = [
-    {
-      id: 'daily',
-      name: 'Daily Pass',
-      price: '1,000',
-      duration: '24 Hours',
-      features: ['Access to all live streams', '7-day catchup replays', 'Standard definition'],
-      popular: false
-    },
-    {
-      id: 'weekly',
-      name: 'Weekly Pass',
-      price: '5,500',
-      duration: '7 Days',
-      features: ['Access to all live streams', 'Full replay library', 'High definition', 'Watch on any device'],
-      popular: true
-    },
-    {
-      id: 'monthly',
-      name: 'Monthly Pass',
-      price: '8,500',
-      duration: '30 Days',
-      features: ['All weekly features', 'Ad-free experience', 'Exclusive interviews', 'Behind the scenes access'],
-      popular: false
-    }
-  ];
+export default async function SubscriptionsPage() {
+  const plans = await getPlans().catch(() => []);
+  const sortedPlans = plans.slice().sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0) || a.price - b.price);
+  const popularIndex = sortedPlans.length > 1 ? 1 : 0;
 
   return (
-    <div className="min-h-screen bg-nara-black pt-12 pb-24 px-4 md:px-6">
-      <div className="max-w-[1920px] mx-auto hidden md:block border-b border-nara-border pb-4 mb-12">
+    <main className="min-h-screen bg-nara-black pt-24 pb-24 px-4 md:px-6">
+      <div className="max-w-[1920px] mx-auto border-b border-nara-border pb-4 mb-12">
         <h1 className="text-2xl font-bold text-white">Choose your plan</h1>
       </div>
 
       <div className="max-w-6xl mx-auto flex flex-col items-center">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Unlimited Boxing.</h1>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Unlimited Boxing.</h2>
           <p className="text-nara-text-muted text-lg max-w-xl mx-auto">
-            Choose the plan that&apos;s right for you. Change or cancel anytime.
+            Plans are managed in the backend and unlock live events, paid videos, and replays based on admin settings.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-          {plans.map((plan) => (
-            <div 
-              key={plan.id}
-              className={`relative flex flex-col p-8 md:p-10 rounded-[2px] border ${
-                plan.popular ? 'border-nara-red bg-[#10141a]' : 'border-[#2A2B2E] bg-nara-black'
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-nara-red text-white text-[11px] font-bold px-4 py-1.5 uppercase tracking-[0.2em] rounded-sm">
-                  Best Value
-                </div>
-              )}
-              
-              <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-wide">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-lg font-bold text-nara-text-muted">UGX</span>
-                <span className="text-5xl font-bold text-white tracking-tighter">{plan.price}</span>
-              </div>
-              
-              <div className="border-t border-[#2A2B2E] pt-8 mb-10 flex-grow">
-                <ul className="flex flex-col gap-5">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-4 text-sm font-medium text-gray-300">
-                      <InternalCheck />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          {sortedPlans.map((plan, index) => {
+            const popular = index === popularIndex;
+            const price = plan.formatted_price || `${plan.currency} ${Number(plan.price).toLocaleString()}`;
 
-              <Link 
-                href={`/checkout?plan=${plan.id}`}
-                className={`w-full py-4 text-center rounded-sm font-bold uppercase tracking-wider text-sm transition-colors ${
-                  plan.popular 
-                    ? 'bg-nara-red text-white hover:bg-nara-red/90' 
-                    : 'bg-white text-nara-black hover:bg-gray-200'
+            return (
+              <div
+                key={plan.id}
+                className={`relative flex flex-col p-8 md:p-10 rounded-[2px] border ${
+                  popular ? 'border-nara-red bg-[#10141a]' : 'border-[#2A2B2E] bg-nara-black'
                 }`}
               >
-                Get Started
-              </Link>
-            </div>
-          ))}
+                {popular && (
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-nara-red text-white text-[11px] font-bold px-4 py-1.5 uppercase tracking-[0.2em] rounded-sm">
+                    Best Value
+                  </div>
+                )}
+
+                <h3 className="text-2xl font-bold text-white mb-2 uppercase tracking-wide">{plan.name}</h3>
+                <div className="mb-2">
+                  <span className="text-5xl font-bold text-white tracking-tighter">{price}</span>
+                </div>
+                <p className="text-gray-400 text-sm mb-8 min-h-12">{plan.description || `${plan.duration_days} days of NaraTV access.`}</p>
+
+                <div className="border-t border-[#2A2B2E] pt-8 mb-10 flex-grow">
+                  <ul className="flex flex-col gap-5">
+                    {(plan.features.length ? plan.features : [
+                      plan.unlocks_live_events ? 'Live event access' : null,
+                      plan.unlocks_replays ? 'Replay archive access' : null,
+                      plan.unlocks_paid_videos ? 'Paid video access' : null,
+                    ].filter(Boolean) as string[]).map((feature) => (
+                      <li key={feature} className="flex items-start gap-4 text-sm font-medium text-gray-300">
+                        <Check className="text-nara-red flex-shrink-0 w-5 h-5" strokeWidth={3} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <Link
+                  href={`/checkout?plan=${plan.slug}`}
+                  className={`w-full py-4 text-center rounded-sm font-bold uppercase tracking-wider text-sm transition-colors ${
+                    popular ? 'bg-nara-red text-white hover:bg-nara-red/90' : 'bg-white text-nara-black hover:bg-gray-200'
+                  }`}
+                >
+                  Get Started
+                </Link>
+              </div>
+            );
+          })}
         </div>
+
+        {sortedPlans.length === 0 && (
+          <div className="w-full max-w-2xl border border-white/10 bg-[#10141a] p-10 text-center">
+            <h3 className="text-xl font-black text-white uppercase">No active plans</h3>
+            <p className="text-gray-400 mt-2">Create subscription plans in the backend admin panel to display them here.</p>
+          </div>
+        )}
       </div>
-    </div>
+    </main>
   );
 }

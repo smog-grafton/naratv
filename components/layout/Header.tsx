@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
 import AccountDropdown from '@/components/auth/AccountDropdown';
-import { Bell, PlayCircle, LogIn } from 'lucide-react';
+import { Bell, PlayCircle } from 'lucide-react';
+import { clearSession, getMe, getNavigation, getStoredToken, getStoredUser, NavigationItem } from '@/services/home';
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,19 +14,35 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [hasPass, setHasPass] = useState(false); // Simulate user access
+  const [navLinks, setNavLinks] = useState<NavigationItem[]>([
+    { id: 'home', key: 'home', label: 'Home', href: '/' },
+    { id: 'live', key: 'live-cards', label: 'Live Cards', href: '/live' },
+    { id: 'replays', key: 'replays', label: 'Replays', href: '/replays' },
+  ]);
   
-  // Simulated Global Live State
   const globalEventLive = true; 
 
   useEffect(() => {
     setMounted(true);
-    setIsLoggedIn(localStorage.getItem('nara_auth') === 'true');
-    setHasPass(localStorage.getItem('nara_has_pass') === 'true');
+    const token = getStoredToken();
+    setIsLoggedIn(Boolean(token && getStoredUser()));
+
+    getNavigation()
+      .then(setNavLinks)
+      .catch(() => null);
+
+    if (token) {
+      getMe(token)
+        .then(() => setIsLoggedIn(true))
+        .catch(() => {
+          clearSession();
+          setIsLoggedIn(false);
+        });
+    }
   }, [pathname]);
 
   const handleSimulatedLogout = () => {
-    localStorage.removeItem('nara_auth');
+    clearSession();
     setIsLoggedIn(false);
     setMobileMenuOpen(false);
     window.location.href = '/';
@@ -45,13 +62,6 @@ export default function Header() {
   const headerClass = `fixed w-full top-0 z-50 transition-colors duration-300 ${
     isTransparentHeader && !scrolled ? 'bg-transparent' : 'bg-nara-surface border-b border-nara-border'
   }`;
-
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Schedule', href: '/schedule' },
-    { name: 'Events', href: '/events' },
-    { name: 'Replays', href: '/replays' },
-  ];
 
   return (
     <>
@@ -77,13 +87,13 @@ export default function Header() {
                 const isActive = pathname === link.href;
                 return (
                   <Link
-                    key={link.name}
+                    key={link.key}
                     href={link.href}
                     className={`transition-colors py-5 ${
                       isActive ? 'text-white font-bold' : 'text-nara-text-muted hover:text-white'
                     }`}
                   >
-                    {link.name}
+                    {link.label}
                   </Link>
                 );
               })}
@@ -108,7 +118,7 @@ export default function Header() {
                </Link>
             )}
 
-            {mounted && globalEventLive && isLoggedIn && !hasPass && (
+            {mounted && globalEventLive && isLoggedIn && (
                <Link href="/events/kato-kasirye-2" className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
                   <PlayCircle className="w-3.5 h-3.5" /> Unlock Stream
                </Link>
@@ -168,14 +178,14 @@ export default function Header() {
               <nav className="flex flex-col px-0 gap-0">
                 {navLinks.map((link) => (
                   <Link
-                    key={link.name}
+                    key={link.key}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`px-6 py-4 border-b border-nara-border text-base font-medium transition-colors ${
                       pathname === link.href ? 'bg-white/5 text-white border-l-4 border-l-nara-red' : 'text-nara-text-muted hover:bg-white/5 hover:text-white border-l-4 border-l-transparent'
                     }`}
                   >
-                    {link.name}
+                    {link.label}
                   </Link>
                 ))}
               </nav>

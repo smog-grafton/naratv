@@ -17,7 +17,7 @@ export default async function PromoterPage({ params }: { params: Promise<{ slug:
       {/* Cinematic Hero */}
       <div className="relative w-full h-[60vh] md:h-[75vh] 2xl:h-[80vh] flex flex-col justify-end">
         <div className="absolute inset-0 z-0">
-          <img src={`https://picsum.photos/seed/${slug}/1920/1080`} alt={displayName} className="w-full h-full object-cover object-top opacity-60 grayscale-[0.3]" />
+          <img src="/assets/images/banner/event_banner.jpg" alt={displayName} className="w-full h-full object-cover object-top opacity-60 grayscale-[0.3]" />
           <div className="absolute inset-0 bg-gradient-to-t from-nara-black via-nara-black/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-nara-black/90 via-nara-black/40 to-transparent" />
         </div>

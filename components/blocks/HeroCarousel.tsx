@@ -6,19 +6,17 @@ import { Event } from '@/services/types';
 import { IconChevronLeft, IconChevronRight, IconPlay, IconGlobe } from '@/components/icons';
 import { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy } from 'lucide-react';
 import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
+import { NavigationItem } from '@/services/home';
 
-const categories = [
-  { name: 'Home', icon: Home },
-  { name: 'Live Cards', icon: Radio },
-  { name: 'Nara Originals', icon: Clapperboard },
-  { name: 'Fight Highlights', icon: Zap },
-  { name: 'Interviews', icon: Mic },
-  { name: 'Archive', icon: Archive },
-  { name: 'Fighter Profiles', icon: User },
-  { name: 'Leaderboards', icon: Trophy },
+const iconMap = { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy };
+const fallbackCategories: NavigationItem[] = [
+  { id: 'home', key: 'home', label: 'Home', href: '/', icon: 'Home' },
+  { id: 'live', key: 'live-cards', label: 'Live Cards', href: '/live', icon: 'Radio' },
+  { id: 'originals', key: 'nara-originals', label: 'Nara Originals', href: '/originals', icon: 'Clapperboard' },
+  { id: 'highlights', key: 'fight-highlights', label: 'Fight Highlights', href: '/highlights', icon: 'Zap' },
 ];
 
-export default function HeroCarousel({ events }: { events: Event[] }) {
+export default function HeroCarousel({ events, navigation = fallbackCategories }: { events: Event[]; navigation?: NavigationItem[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const { openContentModal } = useResponsiveContentModal();
@@ -144,13 +142,13 @@ export default function HeroCarousel({ events }: { events: Event[] }) {
       {/* category strip overlay at the bottom */}
       <div className="absolute bottom-[2vh] md:bottom-[4vh] left-0 w-full z-20 pb-4 px-4 md:px-12 hide-scrollbar overflow-x-auto">
         <div className="flex items-center gap-2 md:gap-4 min-w-max">
-          {categories.map((cat, i) => {
-            const IconComponent = cat.icon;
+          {navigation.map((cat, i) => {
+            const IconComponent = iconMap[(cat.icon || 'Home') as keyof typeof iconMap] || Home;
             return (
-              <div key={i} className="bg-nara-black/80 hover:bg-[#2A2B2E] transition-colors border border-nara-border backdrop-blur-sm rounded-[4px] px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
+              <Link href={cat.href} key={cat.key} className="bg-nara-black/80 hover:bg-[#2A2B2E] transition-colors border border-nara-border backdrop-blur-sm rounded-[4px] px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
                 <IconComponent className="w-5 h-5 text-white" />
-                <span className="text-white text-xs md:text-sm font-bold tracking-tight">{cat.name}</span>
-              </div>
+                <span className="text-white text-xs md:text-sm font-bold tracking-tight">{cat.label}</span>
+              </Link>
             );
           })}
         </div>

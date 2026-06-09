@@ -126,7 +126,7 @@ export default function MyAccountPage() {
             <div className="p-4 border-b border-[#2a2b2e] flex flex-col md:flex-row items-center gap-4 justify-between">
                <div className="flex items-center gap-4 w-full">
                  <div className="w-24 h-14 bg-[#2a2b2e] rounded-sm overflow-hidden flex-shrink-0">
-                    <img src="https://picsum.photos/seed/naraevent/200/100" className="w-full h-full object-cover" />
+                    <img src="/assets/images/banner/event_banner.jpg" className="w-full h-full object-cover" alt="Nara event" />
                  </div>
                  <div className="flex-1">
                    <h4 className="font-bold text-sm text-white">Nara Fight Night: The Showdown</h4>

@@ -3,12 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import { ArrowLeft, Check, X, Eye, EyeOff, Loader2 } from "lucide-react";
+import { register, storeSession } from '@/services/home';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [error, setError] = useState('');
   
   // Validation states
   const [hasUpperLower, setHasUpperLower] = useState(false);
@@ -29,20 +33,31 @@ export default function RegisterPage() {
   useEffect(() => {
     setHasUpperLower(/[a-z]/.test(password) && /[A-Z]/.test(password));
     setHasNumber(/[0-9]/.test(password));
-    setHasLength(password.length >= 6);
+    setHasLength(password.length >= 8);
   }, [password]);
 
   const isValid = hasUpperLower && hasNumber && hasLength;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid) return;
+    setError('');
     setIsLoading(true);
-    // Simulate registration
-    setTimeout(() => {
-      localStorage.setItem('nara_auth', 'true');
+
+    try {
+      const session = await register({
+        name: [firstName, lastName].filter(Boolean).join(' '),
+        email,
+        password,
+        password_confirmation: password,
+      });
+      storeSession(session);
       window.location.href = '/subscribe';
-    }, 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not create your account. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,12 +85,16 @@ export default function RegisterPage() {
                 <input 
                   type="text" 
                   placeholder="First name" 
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
                   className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
                   required
                 />
                 <input 
                   type="text" 
                   placeholder="Last name" 
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
                   className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
                   required
                 />
@@ -127,10 +146,16 @@ export default function RegisterPage() {
                 </div>
                 <div className={`flex items-center gap-3 text-[13px] ${hasLength ? 'text-[#848485]' : 'text-[#848485]'}`}>
                   {hasLength ? <Check className="w-4 h-4 text-[#55f599]" /> : <X className="w-4 h-4 text-[#848485]" />} 
-                  At least 6 characters (8 for stronger password)
+                  At least 8 characters
                 </div>
               </div>
             </div>
+
+            {error && (
+              <p className="rounded-[4px] border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-100">
+                {error}
+              </p>
+            )}
 
             <div className="mt-2">
               <label className="block text-[15px] font-bold text-white mb-4">Get notified</label>

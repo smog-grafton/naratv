@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Video, Event } from '@/services/types';
 
-export type AccessType = 'free' | 'paid' | 'subscription' | 'ticket_holder' | 'ppv';
+export type AccessType = 'free' | 'paid' | 'subscription' | 'ticket_holder' | 'ppv' | 'premium';
 
 export interface WatchOption {
   id: string;
@@ -42,46 +42,44 @@ export interface ContentNormalized {
 // Function to normalize both Video and Event to a common Content structure for the UI
 export function normalizeContent(item: any): ContentNormalized {
   const isEvent = item.poster_url !== undefined;
-  const isVideoWithUrl = item.video_url !== undefined;
-  
-  // Dummy logic for prototype: we assume 'is_premium' -> subscription, 'is_ppv' -> ppv.
-  const isPremium = item.is_premium || item.is_ppv;
-  
-  // We'll randomly create some watch options if they don't exist
+  const accessType = item.access_type || (item.is_ppv ? 'ppv' : (item.is_premium ? 'subscription' : 'free'));
+  const isPremium = Boolean(item.is_premium || item.is_ppv || ['subscription', 'premium', 'ppv', 'ticket_holder', 'paid'].includes(accessType));
+  const hasAccess = typeof item.has_access === 'boolean'
+    ? item.has_access
+    : (typeof item.can_watch === 'boolean' ? item.can_watch : !isPremium);
+
   let watch_options: WatchOption[] = item.watch_options || [];
   
   if (watch_options.length === 0) {
     if (isEvent) {
        watch_options = [
-         { id: '1', label: 'Watch Live', type: 'main', is_locked: isPremium, access_type: item.is_ppv ? 'ppv' : 'subscription', route: `/events/${item.slug}` },
-         { id: '2', label: 'Fight Card Preview', type: 'preview', is_locked: false, access_type: 'free', route: `/events/${item.slug}/preview` },
-         { id: '3', label: 'Weigh-In', type: 'weigh_in', is_locked: false, access_type: 'free', route: `/events/${item.slug}/weigh-in` }
+         { id: '1', label: item.status === 'completed' ? 'Watch Replay' : (item.status === 'live' ? 'Watch Live' : 'Unlock Stream'), type: 'main', is_locked: !hasAccess && isPremium, access_type: accessType, route: `/watch/${item.slug}`, price: item.price, currency: item.currency },
+         { id: '2', label: 'Event Details', type: 'details', is_locked: false, access_type: 'free', route: `/events/${item.slug}` }
        ];
     } else {
        watch_options = [
-         { id: '1', label: 'Full Replay', type: 'full', is_locked: isPremium, access_type: isPremium ? 'subscription' : 'free', route: `/watch/${item.slug}` },
-         { id: '2', label: 'Highlights', type: 'highlight', is_locked: false, access_type: 'free', route: `/watch/${item.slug}?type=highlight` }
+         { id: '1', label: item.content_type === 'replay' ? 'Full Replay' : 'Watch Now', type: item.content_type || 'video', is_locked: !hasAccess && isPremium, access_type: accessType, route: `/watch/${item.slug}`, price: item.price, currency: item.currency },
        ];
     }
   }
 
   return {
     id: item.id,
-    content_type: isEvent ? (item.status === 'live' ? 'live_event' : 'event') : 'replay',
+    content_type: isEvent ? (item.status === 'live' ? 'live_event' : 'event') : (item.content_type || 'replay'),
     title: item.title,
     slug: item.slug,
     thumbnail_url: item.thumbnail_url || item.poster_url,
     poster_url: item.poster_url || item.thumbnail_url,
-    access_type: isPremium ? (item.is_ppv ? 'ppv' : 'subscription') : 'free',
-    is_free: !isPremium,
+    access_type: accessType,
+    is_free: Boolean(item.is_free || accessType === 'free'),
     is_paid: isPremium,
-    requires_subscription: isPremium && !item.is_ppv,
-    has_access: !isPremium, // Dummy access logic: if it's free you have access, otherwise no
+    requires_subscription: Boolean(item.requires_subscription || ['subscription', 'premium'].includes(accessType)),
+    has_access: hasAccess,
     price: item.price,
     currency: item.currency,
     category: item.category,
     date_string: item.start_time || item.published_at,
-    duration: item.durations_seconds ? `${Math.floor(item.durations_seconds / 60)}m` : undefined,
+    duration: item.durations_seconds || item.duration_seconds ? `${Math.floor((item.durations_seconds || item.duration_seconds) / 60)}m` : undefined,
     watch_options
   };
 }
