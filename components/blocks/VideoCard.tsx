@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Video, Event } from '@/services/types';
 import { IconPlay, IconLock } from '@/components/icons';
 import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
@@ -33,6 +34,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   const title = item.title;
   const image = isVid ? item.thumbnail_url : (item as Event).poster_url;
   const { openContentModal } = useResponsiveContentModal();
+  const router = useRouter();
 
   // Aspect ratio based on layout
   let aspectClass = "aspect-[16/9]";
@@ -42,6 +44,17 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    
+    if ((item as any).content_type === 'fighter') {
+       router.push(`/boxers/${item.slug}`);
+       return;
+    }
+    
+    if ((item as any).content_type === 'promoter') {
+       router.push(`/promotions/${item.slug}`);
+       return;
+    }
+    
     openContentModal(item);
   };
 
@@ -166,16 +179,16 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
         </div>
 
         {/* Bottom Right Duration/Status */}
-        {isVid && item.durations_seconds && (
-          <div className="absolute bottom-2 right-2 text-white font-bold text-xs drop-shadow-md z-10">
-            {Math.floor(item.durations_seconds / 60)} min left
+        {isVid && item.durations_seconds && !item.progress && (
+          <div className="absolute bottom-2 right-2 text-white font-bold text-xs drop-shadow-md z-10 bg-black/60 px-1.5 py-0.5 rounded-sm">
+            {Math.floor(item.durations_seconds / 60)} min
           </div>
         )}
 
-        {/* Bottom Progress Bar for Live TV */}
-        {item.is_live && (
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-10">
-            <div className="h-full bg-nara-red w-2/3" />
+        {/* Bottom Progress Bar */}
+        {(item.is_live || item.progress !== undefined) && (
+          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-white/20 z-10">
+            <div className="h-full bg-nara-red transition-all" style={{ width: item.progress ? `${item.progress}%` : '66%' }} />
           </div>
         )}
       </div>
@@ -185,8 +198,11 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
         <h3 className="text-sm md:text-base font-bold text-white line-clamp-2 leading-tight group-hover:underline decoration-2 underline-offset-4">
           {title}
         </h3>
-        {isVid && item.source_label && (
+        {isVid && item.source_label && !item.progress && (
           <p className="text-sm text-gray-400 mt-1">{item.source_label}</p>
+        )}
+        {item.progress !== undefined && (
+           <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">11m remaining</p>
         )}
       </div>
     </button>

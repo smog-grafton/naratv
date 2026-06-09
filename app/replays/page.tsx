@@ -1,12 +1,29 @@
+'use client';
+
 import Link from 'next/link';
 import { Play, Filter, Search, Lock, Unlock, Clock, Trophy, BadgeAlert, ChevronRight } from 'lucide-react';
 import ScrollFadeOverlay from '@/components/blocks/ScrollFadeOverlay';
+import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
 
 export default function ReplaysPage() {
+  const { openContentModal } = useResponsiveContentModal();
   const categories = [
     'Full Events', 'Main Events', 'Undercards', 'Highlights', 
     'Interviews', 'Weigh-ins', 'Press Conferences', 'Behind the Scenes'
   ];
+
+  const handleHeroClick = () => {
+    openContentModal({
+      id: "sweet-science-6",
+      title: "Sweet Science Season 6",
+      slug: "sweet-science-6",
+      category: "Full Event",
+      is_premium: true,
+      has_access: false,
+      thumbnail_url: "https://picsum.photos/seed/sweetscience6hero/800/450",
+      description: "Watch the full event, main card, and post-fight moments including Kabona Meddy vs Ken Da Mexico.",
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-screen relative bg-nara-black">
@@ -26,22 +43,27 @@ export default function ReplaysPage() {
             </p>
             
             {/* Featured Replay Banner in Hero */}
-            <div className="bg-[#10141a]/90 backdrop-blur-md border border-nara-border/50 p-0 rounded-[2px] w-full max-w-3xl mb-6 md:mb-8 flex flex-row items-stretch hover:bg-nara-black transition-colors min-h-[100px] md:h-[160px]">
+            <div 
+              onClick={handleHeroClick}
+              className="cursor-pointer bg-[#10141a]/90 backdrop-blur-md border border-nara-border/50 p-0 rounded-[2px] w-full max-w-3xl mb-6 md:mb-8 flex flex-row items-stretch hover:bg-nara-black transition-colors min-h-[100px] md:min-h-[160px]"
+            >
                <div className="w-[110px] md:w-[240px] relative flex-shrink-0 group cursor-pointer border-r border-[#2a2b2e] flex">
                  <img src="https://picsum.photos/seed/sweetscience6hero/800/450" className="w-full h-full object-cover" alt="Sweet Science 6" />
                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <div className="w-8 h-8 md:w-12 md:h-12 border-[1.5px] border-white flex items-center justify-center rounded-full group-hover:scale-110 transition-transform bg-black/20 backdrop-blur-sm">
+                    <div className="w-8 h-8 md:w-12 h-12 border-[1.5px] border-white flex items-center justify-center rounded-full group-hover:scale-110 transition-transform bg-black/20 backdrop-blur-sm">
                       <Play className="w-3 h-3 md:w-5 md:h-5 text-white fill-white translate-x-[2px]" />
                     </div>
                  </div>
                </div>
-               <div className="flex-1 w-full text-left p-2.5 md:p-6 flex flex-col justify-center">
-                 <div className="inline-flex items-center text-[#f0c800] text-[8px] md:text-[10px] font-bold uppercase tracking-widest mb-1 flex gap-1">
+               <div className="flex-1 w-full text-left p-3 md:p-6 flex flex-col justify-center">
+                 <div className="inline-flex items-center text-[#f0c800] text-[8px] md:text-[10px] font-bold uppercase tracking-widest mb-1 md:mb-2 gap-1">
                    <Trophy className="w-2.5 h-2.5 md:w-3 md:h-3" /> Latest Replay
                  </div>
-                 <h3 className="text-xs md:text-2xl font-bold text-white mb-0.5 md:mb-2 uppercase tracking-tight leading-tight line-clamp-2 md:line-clamp-1">Sweet Science Season 6</h3>
-                 <p className="hidden md:block text-xs text-gray-400 mb-4 line-clamp-2">Watch the full event, main card, and post-fight moments including Kabona Meddy vs Ken Da Mexico.</p>
-                 <button className="hidden md:flex bg-nara-red text-white font-bold px-6 py-2 text-xs uppercase tracking-wider rounded-sm hover:bg-red-700 transition-colors items-center justify-center md:justify-start gap-2 w-full md:w-fit mt-auto md:mt-0">
+                 {/* Removed line-clamp to fix text clipping issue */}
+                 <h3 className="text-sm md:text-2xl font-bold text-white mb-1 md:mb-2 uppercase tracking-tight leading-tight">Sweet Science Season 6</h3>
+                 {/* Re-enabled for mobile as 1 line, or hidden, with better line-height */}
+                 <p className="hidden md:block text-xs md:text-sm text-gray-400 mb-4 leading-normal">Watch the full event, main card, and post-fight moments including Kabona Meddy vs Ken Da Mexico.</p>
+                 <button className="hidden md:flex bg-nara-red text-white font-bold px-6 py-2 text-xs uppercase tracking-wider rounded-sm hover:bg-red-700 transition-colors items-center justify-center md:justify-start gap-2 w-full md:w-fit mt-auto md:mt-2">
                    <Play className="w-3 h-3 fill-current" /> Watch Replay
                  </button>
                </div>
@@ -105,7 +127,13 @@ export default function ReplaysPage() {
               <Clock className="w-5 h-5 text-nara-red" strokeWidth={3} /> Continue Watching
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 w-full">
-               <div className="bg-[#10141a] border border-nara-border flex flex-row rounded-[2px] overflow-hidden group hover:border-[#4A4B4E] transition-colors cursor-pointer w-full">
+               <div 
+                 onClick={() => openContentModal({
+                    id: "cw-1", title: "Sweet Science Season 6", slug: "sweet-science-6", category: "Full Event", 
+                    is_premium: true, has_access: true, thumbnail_url: "https://picsum.photos/seed/cw1/800/450" 
+                 })}
+                 className="bg-[#10141a] border border-nara-border flex flex-row rounded-[2px] overflow-hidden group hover:border-[#4A4B4E] transition-colors cursor-pointer w-full text-left"
+               >
                   <div className="w-32 sm:w-40 md:w-32 lg:w-40 aspect-video relative flex-shrink-0">
                     <img src="https://picsum.photos/seed/cw1/800/450" className="w-full h-full object-cover" alt="Continue" />
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -149,12 +177,25 @@ export default function ReplaysPage() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full">
                {[
-                 { title: 'Sweet Science Season 6', subtitle: 'Kabona Meddy vs Ken Da Mexico', date: 'DEC 14, 2025', duration: '4h 20m', access: 'Premium' },
-                 { title: 'Fight Night: The Showdown', subtitle: 'Mutebi vs Oketcho', date: 'OCT 12, 2025', duration: '3h 50m', access: 'Premium' },
-                 { title: 'Nara Championship 4', subtitle: 'Kasirye vs Kato', date: 'AUG 05, 2025', duration: '5h 10m', access: 'Free' },
-                 { title: 'Rising Stars Tour', subtitle: 'Prelims & Main Card', date: 'JUN 22, 2025', duration: '3h 15m', access: 'Free' },
+                 { id: '1', slug: 'sweet-science-6', title: 'Sweet Science Season 6', subtitle: 'Kabona Meddy vs Ken Da Mexico', date: 'DEC 14, 2025', duration: '4h 20m', access: 'Premium' },
+                 { id: '2', slug: 'fight-night-showdown', title: 'Fight Night: The Showdown', subtitle: 'Mutebi vs Oketcho', date: 'OCT 12, 2025', duration: '3h 50m', access: 'Premium' },
+                 { id: '3', slug: 'nara-championship-4', title: 'Nara Championship 4', subtitle: 'Kasirye vs Kato', date: 'AUG 05, 2025', duration: '5h 10m', access: 'Free' },
+                 { id: '4', slug: 'rising-stars-tour', title: 'Rising Stars Tour', subtitle: 'Prelims & Main Card', date: 'JUN 22, 2025', duration: '3h 15m', access: 'Free' },
                ].map((item, i) => (
-                 <div key={i} className="group cursor-pointer">
+                 <div 
+                   key={i} 
+                   className="group cursor-pointer text-left"
+                   onClick={() => openContentModal({
+                     id: item.id,
+                     title: item.title,
+                     slug: item.slug,
+                     category: "Full Event",
+                     is_premium: item.access === 'Premium',
+                     has_access: item.access === 'Free',
+                     thumbnail_url: `https://picsum.photos/seed/fullreplays${i}/800/450`,
+                     description: item.subtitle,
+                   })}
+                 >
                    <div className="aspect-[16/9] relative overflow-hidden bg-nara-surface border border-nara-border rounded-[2px] mb-3 group-hover:border-nara-red/50 transition-colors">
                      <img src={`https://picsum.photos/seed/fullreplays${i}/800/450`} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" alt={item.title} />
                      
@@ -200,10 +241,23 @@ export default function ReplaysPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                 {[
-                  { event: 'Sweet Science 6', fa: 'Kabona Meddy', fb: 'Ken Da Mexico', res: 'KO R4', time: '36 MIN', locked: false, weight: 'Lightweight Bout' },
-                  { event: 'Fight Night Showdown', fa: 'John Kato', fb: 'Mike Kasirye', res: 'TKO R2', time: '22 MIN', locked: true, weight: 'Heavyweight Bout' }
+                  { id: 'me-1', slug: 'sweet-science-6', event: 'Sweet Science 6', title: 'Kabona Meddy vs Ken Da Mexico', fa: 'Kabona Meddy', fb: 'Ken Da Mexico', res: 'KO R4', time: '36 MIN', locked: false, weight: 'Lightweight Bout' },
+                  { id: 'me-2', slug: 'fight-night-showdown', event: 'Fight Night Showdown', title: 'John Kato vs Mike Kasirye', fa: 'John Kato', fb: 'Mike Kasirye', res: 'TKO R2', time: '22 MIN', locked: true, weight: 'Heavyweight Bout' }
                 ].map((fight, i) => (
-                  <div key={i} className="bg-nara-black border border-nara-border rounded-[2px] p-4 md:p-6 flex flex-col justify-between group hover:border-[#f0c800]/50 transition-colors cursor-pointer relative overflow-hidden shadow-xl">
+                  <div 
+                    key={i} 
+                    onClick={() => openContentModal({
+                      id: fight.id,
+                      title: fight.title,
+                      slug: fight.slug,
+                      category: "Main Event",
+                      is_premium: fight.locked,
+                      has_access: !fight.locked,
+                      thumbnail_url: `https://picsum.photos/seed/fighteranew${i}/800/450`,
+                      description: `${fight.event} - ${fight.weight} - ${fight.res} at ${fight.time}.`
+                    })}
+                    className="bg-nara-black border border-nara-border rounded-[2px] p-4 md:p-6 flex flex-col justify-between group hover:border-[#f0c800]/50 transition-colors cursor-pointer relative overflow-hidden shadow-xl text-left"
+                  >
                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#f0c800]/10 to-transparent rounded-bl-full pointer-events-none" />
                     
                     <div className="flex items-center justify-between mb-8">
@@ -240,7 +294,7 @@ export default function ReplaysPage() {
                          <p className="text-white text-sm font-black uppercase tracking-tight">{fight.event}</p>
                          <p className="text-nara-red text-[10px] font-black uppercase tracking-widest mt-0.5">{fight.res} <span className="text-gray-500 ml-1 font-mono">| {fight.time}</span></p>
                        </div>
-                       <button className="bg-white text-nara-black hover:bg-gray-200 px-4 py-2.5 text-xs uppercase font-black tracking-widest rounded-sm transition-colors flex items-center justify-center shadow-lg group-hover:scale-105 duration-300 border border-transparent">
+                       <button className="bg-white text-nara-black hover:bg-gray-200 px-4 py-2.5 text-xs uppercase font-black tracking-widest rounded-sm transition-colors flex items-center justify-center shadow-lg group-hover:scale-105 duration-300 border border-transparent pointer-events-none">
                           <Play className="w-3.5 h-3.5 fill-black mr-1.5" /> Watch Fight
                        </button>
                     </div>
@@ -269,7 +323,19 @@ export default function ReplaysPage() {
                 "Weigh-in Chaos",
                 "Top 5 Finishes"
               ].map((title, i) => (
-                <div key={i} className="group cursor-pointer flex flex-col">
+                <div 
+                  key={i} 
+                  className="group cursor-pointer flex flex-col text-left"
+                  onClick={() => openContentModal({
+                    id: `hl-${i}`,
+                    title: title,
+                    slug: `highlight-${i}`,
+                    category: "Highlight",
+                    is_premium: false,
+                    has_access: true,
+                    thumbnail_url: `https://picsum.photos/seed/hlnew${i}/600/800`,
+                  })}
+                >
                    <div className="aspect-[4/5] md:aspect-square relative overflow-hidden bg-nara-surface border border-nara-border rounded-[2px] mb-2">
                      <img src={`https://picsum.photos/seed/hlnew${i}/600/800`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={title} />
                      <div className="absolute inset-0 bg-gradient-to-t from-nara-black via-nara-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />

@@ -66,8 +66,9 @@ export default function ContentDetailDrawer({ item, onClose, onAction }: Props) 
         <div className="px-6 pb-6 -mt-12 relative z-10 flex-col flex gap-1">
           {item.date_string && (
             <div className="mb-2">
+              {/* Format smartly? Let's just output raw for now */}
               <span className="bg-white text-black text-[11px] font-bold px-2 py-0.5 rounded-[2px]">
-                {item.date_string} // Format smartly? Let's just output raw for now
+                {item.date_string}
               </span>
             </div>
           )}

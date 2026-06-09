@@ -5,23 +5,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
 import AccountDropdown from '@/components/auth/AccountDropdown';
+import { Bell, PlayCircle, LogIn } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
-  // Simulated authentication state using localStorage
+  const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hasPass, setHasPass] = useState(false); // Simulate user access
+  
+  // Simulated Global Live State
+  const globalEventLive = true; 
 
   useEffect(() => {
-    // Check local storage for simulated auth
-    const authStatus = localStorage.getItem('nara_auth');
-    if (authStatus === 'true') {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    setMounted(true);
+    setIsLoggedIn(localStorage.getItem('nara_auth') === 'true');
+    setHasPass(localStorage.getItem('nara_has_pass') === 'true');
   }, [pathname]);
 
   const handleSimulatedLogout = () => {
@@ -63,7 +63,16 @@ export default function Header() {
               <span className="font-bold text-xl tracking-tight hidden sm:inline-block">NARA<span className="text-nara-red">TV</span></span>
             </Link>
             
-            <nav className="hidden md:flex gap-6 text-sm font-medium">
+            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+              {globalEventLive && mounted && (
+                 <Link href="/watch/kato-kasirye-2" className="flex items-center gap-2 text-nara-red font-black uppercase tracking-widest text-[10px] sm:text-xs mr-2 relative">
+                    <span className="relative flex h-2 w-2">
+                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nara-red opacity-75"></span>
+                       <span className="relative inline-flex rounded-full h-2 w-2 bg-nara-red"></span>
+                    </span>
+                    Live Now
+                 </Link>
+              )}
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -81,19 +90,38 @@ export default function Header() {
             </nav>
           </div>
 
-          <div className="ml-auto flex items-center gap-4">
+          <div className="ml-auto flex items-center gap-1 sm:gap-4">
+            {mounted && isLoggedIn && (
+               <button className="p-2 text-white hover:text-gray-300 relative" aria-label="Notifications">
+                 <Bell className="w-5 h-5" />
+                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-nara-red rounded-full ring-2 ring-[#050b12]" />
+               </button>
+            )}
+            
             <Link href="/search" className="p-2 text-white hover:text-nara-text-muted transition-colors" aria-label="Search">
               <IconSearch className="w-5 h-5" />
             </Link>
             
+            {mounted && globalEventLive && !isLoggedIn && (
+               <Link href="/register" className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+                  <PlayCircle className="w-3.5 h-3.5" /> Watch Live
+               </Link>
+            )}
+
+            {mounted && globalEventLive && isLoggedIn && !hasPass && (
+               <Link href="/events/kato-kasirye-2" className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+                  <PlayCircle className="w-3.5 h-3.5" /> Unlock Stream
+               </Link>
+            )}
+
             <div className="hidden sm:flex items-center gap-3">
-              {isLoggedIn ? (
+              {mounted && isLoggedIn ? (
                 <AccountDropdown onSignOut={handleSimulatedLogout} />
-              ) : (
+              ) : mounted ? (
                 <>
                   <Link 
                     href="/login" 
-                    className="text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
+                    className="text-xs sm:text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
                   >
                     Log in
                   </Link>
@@ -104,7 +132,7 @@ export default function Header() {
                     Get started
                   </Link>
                 </>
-              )}
+              ) : null}
             </div>
 
             <div className="md:hidden flex items-center">

@@ -19,6 +19,8 @@ export interface Video {
   source_label?: string;
   published_at?: string;
   durations_seconds?: number;
+  content_type?: string;
+  progress?: number; // 0-100%
 }
 
 export interface Event {
@@ -36,6 +38,7 @@ export interface Event {
   currency?: string;
   source_label?: string;
   category?: string;
+  progress?: number; // 0-100%
 }
 
 export interface ContentRail {

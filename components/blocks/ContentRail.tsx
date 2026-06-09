@@ -140,13 +140,14 @@ export default function ContentRail({ rail, index = 0 }: { rail: ContentRailType
     >
       <div className="flex items-end justify-between px-4 md:px-8 max-w-[1920px] mx-auto mb-4">
         <div>
-          {rail.titlePrefix && (
-            <div className="text-[#f0c800] text-sm md:text-xs font-bold tracking-wider uppercase mb-1">
-              {rail.titlePrefix}
-            </div>
-          )}
-          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-1">
-            {rail.title}
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-1 flex items-center gap-3">
+            {rail.titlePrefix && (
+              <>
+                <span className="text-[#eaff04]">{rail.titlePrefix}</span>
+                <span className="text-gray-600 font-normal pb-1">|</span>
+              </>
+            )}
+            <span>{rail.title}</span>
           </h2>
           {rail.description && (
             <p className="text-gray-400 text-sm md:text-base max-w-2xl mt-1 line-clamp-2 md:line-clamp-none">

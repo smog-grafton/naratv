@@ -22,6 +22,48 @@ const generateDummyVideos = (count: number, prefix: string): Video[] => {
 export async function getHomeRails(): Promise<ContentRail[]> {
   return [
     {
+      id: 'rail-free-best',
+      title: 'Best of Nara TV',
+      titlePrefix: 'Free to watch',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'fb1', title: 'Greatest Knockouts of 2024', slug: 'fb1', thumbnail_url: 'https://picsum.photos/seed/fb1/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Best of Nara TV' },
+        { id: 'fb2', title: 'Top 10 Rivalries', slug: 'fb2', thumbnail_url: 'https://picsum.photos/seed/fb2/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Nara Classics' },
+        { id: 'fb3', title: 'Day in the Life: Champ Training', slug: 'fb3', thumbnail_url: 'https://picsum.photos/seed/fb3/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Behind The Scenes' },
+        { id: 'fb4', title: 'Ultimate Upsets in Boxing History', slug: 'fb4', thumbnail_url: 'https://picsum.photos/seed/fb4/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Nara Originals' },
+        { id: 'fb5', title: 'Fastest Finishes Collection', slug: 'fb5', thumbnail_url: 'https://picsum.photos/seed/fb5/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Highlights' },
+      ],
+    },
+    {
+      id: 'rail-free-coming-up',
+      title: 'Live and Coming Up',
+      titlePrefix: 'Free to watch',
+      type: 'events',
+      layout: 'video',
+      items: [
+        { id: 'fc1', title: 'Weigh-ins: Mutebi vs Oketcho', slug: 'fc1', poster_url: 'https://picsum.photos/seed/fc1/800/450', start_time: new Date().toISOString(), is_live: true, is_ppv: false, is_free: true, status: 'live' } as Event,
+        { id: 'fc2', title: 'Press Conference', slug: 'fc2', poster_url: 'https://picsum.photos/seed/fc2/800/450', start_time: new Date(Date.now() + 3600000).toISOString(), is_live: false, is_ppv: false, is_free: true, status: 'upcoming' } as Event,
+        { id: 'fc3', title: 'Undercard Prelims', slug: 'fc3', poster_url: 'https://picsum.photos/seed/fc3/800/450', start_time: new Date(Date.now() + 86400000).toISOString(), is_live: false, is_ppv: false, is_free: true, status: 'upcoming' } as Event,
+        { id: 'fc4', title: 'Fighter Open Workouts', slug: 'fc4', poster_url: 'https://picsum.photos/seed/fc4/800/450', start_time: new Date(Date.now() + 172800000).toISOString(), is_live: false, is_ppv: false, is_free: true, status: 'upcoming' } as Event,
+        { id: 'fc5', title: 'Amateur Showcase', slug: 'fc5', poster_url: 'https://picsum.photos/seed/fc5/800/450', start_time: new Date(Date.now() + 259200000).toISOString(), is_live: false, is_ppv: false, is_free: true, status: 'upcoming' } as Event,
+      ]
+    },
+    {
+      id: 'rail-free-highlights',
+      title: 'Highlights',
+      titlePrefix: 'Free to watch',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'fh1', title: 'Kasirye vs Kato: Top Moments', slug: 'fh1', thumbnail_url: 'https://picsum.photos/seed/fh1/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Title Bout Highlights' },
+        { id: 'fh2', title: 'Round of the Year Contenders', slug: 'fh2', thumbnail_url: 'https://picsum.photos/seed/fh2/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Fight of the Night' },
+        { id: 'fh3', title: 'Bantamweight Unification Recap', slug: 'fh3', thumbnail_url: 'https://picsum.photos/seed/fh3/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Division Review' },
+        { id: 'fh4', title: 'Best Angles: Knockout Reel', slug: 'fh4', thumbnail_url: 'https://picsum.photos/seed/fh4/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Slow Motion' },
+        { id: 'fh5', title: 'Main Event Summary', slug: 'fh5', thumbnail_url: 'https://picsum.photos/seed/fh5/800/450', video_url: 'dummy', is_premium: false, is_free: true, source_label: 'Post-Fight' },
+      ],
+    },
+    {
       id: 'rail-best-boxing',
       title: 'Best of Boxing',
       type: 'videos',
@@ -135,11 +177,11 @@ export async function getHomeRails(): Promise<ContentRail[]> {
       type: 'mixed',
       layout: 'square',
       items: [
-        { id: 'pr1', title: 'Ring Magazine', slug: 'pr1', thumbnail_url: 'https://picsum.photos/seed/pr1/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'pr2', title: 'Riyadh Season', slug: 'pr2', thumbnail_url: 'https://picsum.photos/seed/pr2/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'pr3', title: 'Top Rank', slug: 'pr3', thumbnail_url: 'https://picsum.photos/seed/pr3/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'pr4', title: 'Matchroom Boxing', slug: 'pr4', thumbnail_url: 'https://picsum.photos/seed/pr4/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
-        { id: 'pr5', title: 'Queensberry Promotions', slug: 'pr5', thumbnail_url: 'https://picsum.photos/seed/pr5/600/800', is_premium: false, is_live: false, is_free: true, video_url: '' },
+        { id: 'pr1', title: 'Ring Magazine', slug: 'ring-magazine', thumbnail_url: 'https://picsum.photos/seed/pr1/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', content_type: 'promoter' },
+        { id: 'pr2', title: 'Riyadh Season', slug: 'riyadh-season', thumbnail_url: 'https://picsum.photos/seed/pr2/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', content_type: 'promoter' },
+        { id: 'pr3', title: 'Top Rank', slug: 'top-rank', thumbnail_url: 'https://picsum.photos/seed/pr3/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', content_type: 'promoter' },
+        { id: 'pr4', title: 'Matchroom Boxing', slug: 'matchroom-boxing', thumbnail_url: 'https://picsum.photos/seed/pr4/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', content_type: 'promoter' },
+        { id: 'pr5', title: 'Nara Promotionz', slug: 'narapromotionz', thumbnail_url: 'https://picsum.photos/seed/pr5/600/800', is_premium: false, is_live: false, is_free: true, video_url: '', content_type: 'promoter' },
       ]
     },
     {
@@ -180,6 +222,66 @@ export async function getHomeRails(): Promise<ContentRail[]> {
         { id: 'sd4', title: 'On the Ground', slug: 'sd4', poster_url: 'https://picsum.photos/seed/sd4/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
         { id: 'sd5', title: 'Face Off', slug: 'sd5', poster_url: 'https://picsum.photos/seed/sd5/800/1200', start_time: new Date('2024-01-01').toISOString(), is_live: false, is_ppv: false, status: 'upcoming' } as Event,
       ]
+    }
+  ];
+}
+
+export async function getPromotionsRails(): Promise<ContentRail[]> {
+  return [
+    {
+      id: 'promo-coming-up',
+      title: 'Coming Up',
+      type: 'events',
+      layout: 'square',
+      items: [
+        { id: 'pc1', title: 'Fight Night 15', slug: 'fight-night-15', poster_url: 'https://picsum.photos/seed/pc1/800/800', start_time: new Date(Date.now() + 86400000 * 5).toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'Nara Promotionz' } as Event,
+        { id: 'pc2', title: 'Championship Bout', slug: 'championship-bout', poster_url: 'https://picsum.photos/seed/pc2/800/800', start_time: new Date(Date.now() + 86400000 * 12).toISOString(), is_live: false, is_ppv: true, status: 'upcoming', source_label: 'Nara Promotionz' } as Event,
+        { id: 'pc3', title: 'Contender Series', slug: 'contender-series', poster_url: 'https://picsum.photos/seed/pc3/800/800', start_time: new Date(Date.now() + 86400000 * 20).toISOString(), is_live: false, is_ppv: false, status: 'upcoming', source_label: 'Nara Promotionz' } as Event,
+      ]
+    },
+    {
+      id: 'promo-replays',
+      title: 'Full Event Replays & Highlights',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'pr1', title: 'Season 6 Finale', slug: 'season-6-finale', thumbnail_url: 'https://picsum.photos/seed/pr1/800/450', video_url: 'dummy', is_premium: true, source_label: 'Full Event' },
+        { id: 'pr2', title: 'Main Event Extended Cut', slug: 'main-event-extended', thumbnail_url: 'https://picsum.photos/seed/pr2/800/450', video_url: 'dummy', is_premium: true, source_label: 'Highlights' },
+        { id: 'pr3', title: 'Title Fight Knockout', slug: 'title-fight-ko', thumbnail_url: 'https://picsum.photos/seed/pr3/800/450', video_url: 'dummy', is_premium: false, source_label: 'Free Clip' },
+        { id: 'pr4', title: 'Season 5 Championship', slug: 'season-5', thumbnail_url: 'https://picsum.photos/seed/pr4/800/450', video_url: 'dummy', is_premium: true, source_label: 'Classic' },
+      ],
+    },
+    {
+      id: 'promo-fighters',
+      title: 'Featured Fighters',
+      type: 'mixed',
+      layout: 'poster',
+      items: [
+        { id: 'pf1', title: 'John Kato', slug: 'kato', thumbnail_url: 'https://picsum.photos/seed/pf1/800/1200', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Heavyweight', content_type: 'fighter' },
+        { id: 'pf2', title: 'Mike Kasirye', slug: 'kasirye', thumbnail_url: 'https://picsum.photos/seed/pf2/800/1200', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Heavyweight', content_type: 'fighter' },
+        { id: 'pf3', title: 'Kabona Meddy', slug: 'meddy', thumbnail_url: 'https://picsum.photos/seed/pf3/800/1200', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Welterweight', content_type: 'fighter' },
+        { id: 'pf4', title: 'Ken Da Mexico', slug: 'mexico', thumbnail_url: 'https://picsum.photos/seed/pf4/800/1200', is_premium: false, is_live: false, is_free: true, video_url: '', category: 'Welterweight', content_type: 'fighter' },
+      ],
+    },
+    {
+      id: 'promo-locker-room',
+      title: 'The Locker Room',
+      type: 'videos',
+      layout: 'video',
+      items: [
+        { id: 'plr1', title: 'Training Camp: Kato', slug: 'camp-kato', thumbnail_url: 'https://picsum.photos/seed/plr1/800/450', video_url: 'dummy', is_premium: false, source_label: 'Inside Access' },
+        { id: 'plr2', title: 'Coach Interview', slug: 'coach-interview', thumbnail_url: 'https://picsum.photos/seed/plr2/800/450', video_url: 'dummy', is_premium: false, source_label: 'Feature' },
+        { id: 'plr3', title: 'Weigh-in Drama', slug: 'weighin-drama', thumbnail_url: 'https://picsum.photos/seed/plr3/800/450', video_url: 'dummy', is_premium: false, source_label: 'Behind The Scenes' },
+      ],
+    },
+    {
+      id: 'promo-shows',
+      title: 'Shows & Documentaries',
+      type: 'videos',
+      layout: 'banner',
+      items: [
+        { id: 'ps1', title: 'Road to Fight Night', slug: 'road-to-fight-night', thumbnail_url: 'https://picsum.photos/seed/ps1/1200/450', video_url: 'dummy', is_premium: true, source_label: 'Docuseries', category: 'Episode 1' },
+      ],
     }
   ];
 }
