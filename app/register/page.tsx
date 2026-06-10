@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from "next/link";
 import { ArrowLeft, Mail, Chrome, Apple, Facebook } from "lucide-react";
+import { getGoogleRedirect } from '@/services/home';
 
 export default function RegisterInitialPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,11 @@ export default function RegisterInitialPage() {
     if (email) {
       window.location.href = `/register/details?email=${encodeURIComponent(email)}`;
     }
+  };
+
+  const continueWithGoogle = async () => {
+    const url = await getGoogleRedirect('/my-account');
+    window.location.href = url;
   };
 
   return (
@@ -61,14 +67,14 @@ export default function RegisterInitialPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <button className="w-full bg-white text-black font-bold py-3.5 rounded-[4px] hover:bg-gray-200 transition-colors flex items-center justify-center gap-3 text-sm">
+            <button type="button" onClick={continueWithGoogle} className="w-full bg-white text-black font-bold py-3.5 rounded-[4px] hover:bg-gray-200 transition-colors flex items-center justify-center gap-3 text-sm">
               <Chrome className="w-5 h-5" /> Google
             </button>
-            <button className="w-full bg-[#1a1b1e] text-white border border-[#2a2b2e] font-bold py-3.5 rounded-[4px] hover:bg-[#2a2b2e] transition-colors flex items-center justify-center gap-3 text-sm">
-              <Apple className="w-5 h-5" /> Apple
+            <button type="button" disabled className="w-full bg-[#1a1b1e] text-white border border-[#2a2b2e] font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-3 text-sm opacity-40">
+              <Apple className="w-5 h-5" /> Apple coming soon
             </button>
-            <button className="w-full bg-[#1877F2] text-white font-bold py-3.5 rounded-[4px] hover:bg-[#166fe5] transition-colors flex items-center justify-center gap-3 text-sm">
-              <Facebook className="w-5 h-5" /> Facebook
+            <button type="button" disabled className="w-full bg-[#1877F2] text-white font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-3 text-sm opacity-40">
+              <Facebook className="w-5 h-5" /> Facebook coming soon
             </button>
           </div>
 

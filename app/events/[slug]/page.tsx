@@ -1,11 +1,45 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Bell, Calendar, Lock, MapPin, Play, Ticket, Users } from 'lucide-react';
+import type { Metadata } from 'next';
+import { Bell, Calendar, Lock, MapPin, Play, Ticket, Trophy, Users } from 'lucide-react';
 import ContentRail from '@/components/blocks/ContentRail';
 import ScrollFadeOverlay from '@/components/blocks/ScrollFadeOverlay';
 import { getEvent, getHomeRails } from '@/services/home';
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const event = await getEvent(slug).catch(() => null);
+
+  if (!event) {
+    return { title: 'Event | Nara TV' };
+  }
+
+  const title = event.seo?.title || `${event.title} | Nara TV`;
+  const description = event.seo?.description || event.description || `${event.title} fight card, stream access, tickets and replays on Nara TV.`;
+  const image = event.seo?.og_image || event.banner_url || event.poster_url;
+  const url = event.seo?.canonical || `/events/${event.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      images: image ? [{ url: image }] : undefined,
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
 
 function formatDate(value?: string | null) {
   if (!value) return 'Date TBA';
@@ -28,6 +62,8 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
   if (!event) notFound();
 
   const fighters = event.fighters || [event.fighter_a, event.fighter_b].filter(Boolean);
+  const fightCard = (event.fight_card || []).slice().sort((a, b) => (a.bout_order || 0) - (b.bout_order || 0));
+  const mainBout = event.main_bout || fightCard.find((bout) => bout.is_main_event) || fightCard[0];
   const eventCoverage = event.videos?.length
     ? [{
         id: `event-${event.id}-coverage`,
@@ -92,12 +128,48 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Fight Card</h2>
-              <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">Backend managed</span>
+              <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Official Fight Card</h2>
+              <span className="text-xs text-gray-500 uppercase tracking-widest font-bold">{fightCard.length || fighters.length} bouts</span>
             </div>
 
             <div className="space-y-4">
-              {fighters.length > 0 ? fighters.map((fighter, index) => (
+              {fightCard.length > 0 ? fightCard.map((bout, index) => {
+                const red = bout.red_corner;
+                const blue = bout.blue_corner;
+                const winner = bout.winner?.id ? String(bout.winner.id) : null;
+                const label = bout.is_main_event || index === 0 ? 'Main Event' : index === 1 ? 'Co-Main Event' : `Bout ${bout.bout_order || index + 1}`;
+
+                return (
+                  <div
+                    key={bout.id}
+                    className={`border rounded-md p-4 md:p-6 transition-colors ${bout.is_main_event || index === 0 ? 'bg-[#151a20] border-[#eaff04]/40' : 'bg-[#10141a] border-nara-border'}`}
+                  >
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                      <p className="text-[10px] uppercase tracking-[0.25em] text-[#eaff04] font-bold">{label}</p>
+                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                        {bout.title_fight ? <Trophy className="h-3.5 w-3.5 text-[#eaff04]" /> : null}
+                        {bout.belt_title || bout.weight_class || bout.status}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 md:gap-6">
+                      <Link href={`/boxers/${red?.slug || ''}`} className="min-w-0 text-left">
+                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(red?.id) ? 'text-[#eaff04]' : 'text-white'}`}>{red?.name || 'Red Corner'}</h3>
+                        <p className="mt-1 truncate text-xs md:text-sm text-gray-400">{red?.record?.display || red?.weight_class || red?.country || 'Fighter profile'}</p>
+                      </Link>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black text-[11px] font-black uppercase text-gray-300">VS</div>
+                      <Link href={`/boxers/${blue?.slug || ''}`} className="min-w-0 text-right">
+                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(blue?.id) ? 'text-[#eaff04]' : 'text-white'}`}>{blue?.name || 'Blue Corner'}</h3>
+                        <p className="mt-1 truncate text-xs md:text-sm text-gray-400">{blue?.record?.display || blue?.weight_class || blue?.country || 'Fighter profile'}</p>
+                      </Link>
+                    </div>
+                    {(bout.rounds || bout.result?.method || bout.result?.details) && (
+                      <div className="mt-5 border-t border-white/10 pt-4 text-xs font-bold uppercase tracking-wider text-gray-400">
+                        {bout.result?.result && bout.result.result !== 'scheduled' ? `${bout.result.result}${bout.result.method ? ` by ${bout.result.method}` : ''}` : `${bout.rounds || 12} scheduled rounds`}
+                      </div>
+                    )}
+                  </div>
+                );
+              }) : fighters.length > 0 ? fighters.map((fighter, index) => (
                 <Link
                   key={fighter?.id || index}
                   href={`/boxers/${fighter?.slug || ''}`}
@@ -112,10 +184,29 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 </Link>
               )) : (
                 <div className="bg-[#10141a] border border-nara-border rounded-md p-6 text-gray-400">
-                  No fighters have been attached to this event yet.
+                  The fight card will be announced soon.
                 </div>
               )}
             </div>
+
+            {mainBout?.red_corner && mainBout?.blue_corner && (
+              <div className="mt-10 border border-white/10 bg-[#0a0f16] p-6 rounded-md">
+                <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-5">Tale of the Tape</h3>
+                {[
+                  ['Record', mainBout.red_corner.record?.display || '-', mainBout.blue_corner.record?.display || '-'],
+                  ['Weight Class', mainBout.red_corner.weight_class || mainBout.weight_class || '-', mainBout.blue_corner.weight_class || mainBout.weight_class || '-'],
+                  ['Stance', mainBout.red_corner.stance || '-', mainBout.blue_corner.stance || '-'],
+                  ['Height', mainBout.red_corner.height || '-', mainBout.blue_corner.height || '-'],
+                  ['Reach', mainBout.red_corner.reach || '-', mainBout.blue_corner.reach || '-'],
+                ].map(([label, redValue, blueValue]) => (
+                  <div key={label} className="grid grid-cols-[1fr_auto_1fr] gap-4 border-t border-white/5 py-3 text-sm">
+                    <span className="text-white font-bold">{redValue}</span>
+                    <span className="text-gray-500 uppercase tracking-widest text-[10px] font-black">{label}</span>
+                    <span className="text-right text-white font-bold">{blueValue}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <aside className="space-y-6">
@@ -124,7 +215,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
               <div className="p-4 border border-[#eaff04]/50 bg-[#eaff04]/5 rounded-sm">
                 <div className="font-bold text-white">{event.access_type === 'free' ? 'Free Stream' : 'Event Pass'}</div>
                 <div className="text-sm text-gray-400 mt-1 leading-relaxed">
-                  {event.description || 'Watch this event on NaraTV. Access is controlled by your tickets, PPV purchase, or subscription.'}
+                  {event.description || 'Watch this event on NaraTV with an eligible ticket, PPV unlock, or active pass.'}
                 </div>
                 <div className="text-lg font-black text-[#eaff04] mt-3">{price}</div>
               </div>

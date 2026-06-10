@@ -1,9 +1,18 @@
+export interface SeoMeta {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  og_image?: string;
+}
+
 export interface Fighter {
   id: string;
   name: string;
   nickname?: string;
   avatar_url?: string;
   image_url?: string;
+  portrait_url?: string;
+  backdrop_url?: string;
   slug?: string;
   weight_class?: string;
   country?: string;
@@ -26,6 +35,7 @@ export interface Fighter {
   };
   related_events?: Event[];
   videos?: Video[];
+  seo?: SeoMeta;
 }
 
 export interface Video {
@@ -37,6 +47,8 @@ export interface Video {
   video_url?: string | null;
   hls_url?: string | null;
   replay_url?: string | null;
+  playback_url?: string | null;
+  source_type?: string | null;
   is_premium: boolean;
   is_live?: boolean;
   is_free?: boolean;
@@ -60,6 +72,7 @@ export interface Video {
   event?: Event;
   fighters?: Fighter[];
   replay_unavailable?: boolean;
+  seo?: SeoMeta;
 }
 
 export interface Event {
@@ -82,6 +95,8 @@ export interface Event {
   fighter_a?: Fighter;
   fighter_b?: Fighter;
   fighters?: Fighter[];
+  fight_card?: FightBout[];
+  main_bout?: FightBout;
   status: 'upcoming' | 'live' | 'completed';
   price?: number;
   currency?: string;
@@ -102,6 +117,29 @@ export interface Event {
   tickets?: any[];
   videos?: Video[];
   watch_options?: WatchOption[];
+  seo?: SeoMeta;
+}
+
+export interface FightBout {
+  id: number | string;
+  bout_order?: number;
+  status?: string;
+  weight_class?: string | null;
+  rounds?: number | null;
+  is_main_event?: boolean;
+  title_fight?: boolean;
+  belt_title?: string | null;
+  red_corner?: Fighter;
+  blue_corner?: Fighter;
+  winner?: Fighter;
+  notes?: string | null;
+  result?: {
+    result?: string | null;
+    method?: string | null;
+    round?: number | null;
+    time?: string | null;
+    details?: string | null;
+  };
 }
 
 export interface WatchOption {
@@ -135,6 +173,20 @@ export interface SubscriptionPlan {
   sort_order?: number;
 }
 
+export interface PaymentGateway {
+  id: number | string;
+  code: 'iotec' | 'flutterwave' | string;
+  name?: string;
+  display_name?: string;
+  public_label?: string;
+  button_label?: string;
+  instructions?: string | null;
+  is_default?: boolean;
+  supports_mobile_money?: boolean;
+  supports_card?: boolean;
+  supported_currencies?: string[];
+}
+
 export interface AccessResponse {
   has_access: boolean;
   can_watch?: boolean;
@@ -146,6 +198,17 @@ export interface AccessResponse {
   purchase_url?: string | null;
   subscription_url?: string | null;
   playback_url?: string | null;
+  source_type?: string | null;
+}
+
+export interface SearchResult {
+  id: string;
+  type: 'video' | 'event' | 'fighter' | 'live' | 'replay' | 'promoter' | string;
+  title: string;
+  description?: string | null;
+  image_url?: string | null;
+  url: string;
+  label?: string | null;
 }
 
 export interface ContentRail {

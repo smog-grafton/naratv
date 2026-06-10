@@ -2,22 +2,19 @@
 
 import React from 'react';
 import { X, Play, Lock } from 'lucide-react';
+import { WatchOption } from '@/services/types';
 
 interface PlayerContentSwitcherProps {
   onClose: () => void;
+  title?: string;
+  options?: WatchOption[];
 }
 
-// BACKEND INTEGRATION:
-// Replace mock watch options with GET /api/v1/watch/{slug}/options.
-// Expected fields: label, duration, is_locked, source_type, source_url, access_type.
-const watchOptions = [
-  { id: 'full', title: 'Full Event Replay', active: true, locked: false, duration: '02:45:10' },
-  { id: 'highlights', title: 'Action Highlights', active: false, locked: false, duration: '15:20' },
-  { id: 'main', title: 'Main Event Only', active: false, locked: true, duration: '45:00' },
-  { id: 'interviews', title: 'Post-Fight Interviews', active: false, locked: false, duration: '22:15' },
-];
+export default function PlayerContentSwitcher({ onClose, title = 'NaraTV', options = [] }: PlayerContentSwitcherProps) {
+  const watchOptions = options.length
+    ? options
+    : [{ id: 'current', label: 'Current broadcast', type: 'main', is_locked: false, access_type: 'free' as const }];
 
-export default function PlayerContentSwitcher({ onClose }: PlayerContentSwitcherProps) {
   return (
     <div className="bg-[#1c1d21] text-white w-[90%] md:w-[400px] border border-white/10 shadow-2xl rounded shadow-black/80 flex flex-col pointer-events-auto animate-in fade-in slide-in-from-bottom-4 duration-200 border-t-2 border-t-[#eaff04]">
       <div className="flex items-center justify-between p-4 border-b border-white/5">
@@ -29,21 +26,22 @@ export default function PlayerContentSwitcher({ onClose }: PlayerContentSwitcher
       
       <div className="p-2">
         <div className="text-xs text-gray-500 font-bold uppercase tracking-wider px-3 pt-2 pb-1 mb-1">
-          Joshua vs. Prenga - Fight Night
+          {title}
         </div>
         
         <div className="flex flex-col gap-1">
-          {watchOptions.map((opt) => (
+          {watchOptions.map((opt, index) => (
             <button 
               key={opt.id}
               className={`flex items-center justify-between px-3 py-3 rounded text-sm transition-all group ${
-                opt.active 
+                index === 0
                   ? 'bg-white/10 font-bold border-l-4 border-[#eaff04] -ml-1 pl-4' 
                   : 'hover:bg-white/5 text-gray-300 hover:text-white'
               }`}
+              disabled={opt.is_locked}
             >
               <div className="flex items-center gap-3">
-                {opt.active ? (
+                {index === 0 ? (
                    <span className="w-4 flex justify-center text-[#eaff04]">
                      <Play className="w-4 h-4 fill-current" />
                    </span>
@@ -52,12 +50,12 @@ export default function PlayerContentSwitcher({ onClose }: PlayerContentSwitcher
                      <Play className="w-4 h-4" />
                    </span>
                 )}
-                <span>{opt.title}</span>
+                <span>{opt.label}</span>
               </div>
               
               <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500 font-mono">{opt.duration}</span>
-                {opt.locked && (
+                {opt.duration ? <span className="text-xs text-gray-500 font-mono">{opt.duration}</span> : null}
+                {opt.is_locked && (
                   <Lock className="w-3 h-3 text-gray-400" />
                 )}
               </div>
@@ -67,7 +65,7 @@ export default function PlayerContentSwitcher({ onClose }: PlayerContentSwitcher
       </div>
       
       <div className="p-4 border-t border-white/5 bg-black/20 text-xs text-gray-400">
-        Some content may require a premium subscription pass.
+        Some fight-night features may require a ticket, PPV unlock, or active pass.
       </div>
     </div>
   );

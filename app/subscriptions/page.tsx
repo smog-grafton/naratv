@@ -19,7 +19,7 @@ export default async function SubscriptionsPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Unlimited Boxing.</h2>
           <p className="text-nara-text-muted text-lg max-w-xl mx-auto">
-            Plans are managed in the backend and unlock live events, paid videos, and replays based on admin settings.
+            Choose the pass that fits your fight night: live cards, premium replays, originals, and exclusive boxing coverage.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default async function SubscriptionsPage() {
         {sortedPlans.length === 0 && (
           <div className="w-full max-w-2xl border border-white/10 bg-[#10141a] p-10 text-center">
             <h3 className="text-xl font-black text-white uppercase">No active plans</h3>
-            <p className="text-gray-400 mt-2">Create subscription plans in the backend admin panel to display them here.</p>
+            <p className="text-gray-400 mt-2">New NaraTV passes are being prepared. Check back soon for the next fight-night offer.</p>
           </div>
         )}
       </div>

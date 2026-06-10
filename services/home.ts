@@ -1,4 +1,4 @@
-import { AccessResponse, ContentRail, Event, Fighter, SubscriptionPlan, Video } from './types';
+import { AccessResponse, ContentRail, Event, Fighter, PaymentGateway, SearchResult, SubscriptionPlan, Video } from './types';
 
 const API_BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/api/v1').replace(/\/$/, '');
 const TOKEN_KEY = 'nara_auth_token';
@@ -9,7 +9,15 @@ export type AuthUser = {
   name: string;
   email?: string | null;
   phone?: string | null;
+  bio?: string | null;
+  country?: string | null;
+  city?: string | null;
+  timezone?: string | null;
+  schedule_notifications_enabled?: boolean;
+  marketing_opt_in?: boolean;
   avatar_url?: string | null;
+  created_at?: string | null;
+  last_login_at?: string | null;
 };
 
 export type AuthPayload = {
@@ -24,12 +32,44 @@ export type NavigationItem = {
   href: string;
   icon?: string | null;
   requires_auth?: boolean;
+  open_in_new_tab?: boolean;
+  link_type?: string;
+  visibility_rule?: string;
 };
 
 type Envelope<T> = {
   data: T;
   links?: Record<string, unknown>;
   meta?: Record<string, unknown>;
+};
+
+export type UserDevice = {
+  id: number | string;
+  device_name?: string | null;
+  device_type?: string | null;
+  browser?: string | null;
+  platform?: string | null;
+  ip_address?: string | null;
+  first_used_at?: string | null;
+  last_used_at?: string | null;
+  revoked_at?: string | null;
+  is_current?: boolean;
+};
+
+export type AccountDashboard = {
+  user: AuthUser;
+  active_subscription?: {
+    id: number | string;
+    status?: string;
+    expires_at?: string | null;
+    plan?: { id?: number | string; name?: string; slug?: string } | null;
+  } | null;
+  tickets_count?: number;
+  payments_count?: number;
+  devices_count?: number;
+  current_device?: UserDevice | null;
+  continue_watching?: any[];
+  recent_payments?: any[];
 };
 
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -120,6 +160,15 @@ export async function getMe(token?: string | null): Promise<AuthUser> {
   return json.data;
 }
 
+export async function getGoogleRedirect(next = '/') {
+  const frontend = typeof window !== 'undefined'
+    ? window.location.origin
+    : (process.env.NEXT_PUBLIC_NARATV_URL || 'http://localhost:3001');
+  const query = new URLSearchParams({ next, frontend });
+  const json = await api<Envelope<{ url: string }>>(`/auth/google/redirect?${query}`, { cache: 'no-store' });
+  return json.data.url;
+}
+
 export async function getNavigation(): Promise<NavigationItem[]> {
   const json = await api<Envelope<NavigationItem[]>>('/naratv/navigation', { next: { revalidate: 60 } });
   return json.data;
@@ -208,6 +257,11 @@ export async function getPlans(): Promise<SubscriptionPlan[]> {
   return json.data;
 }
 
+export async function getPaymentGateways(): Promise<PaymentGateway[]> {
+  const json = await api<Envelope<PaymentGateway[]>>('/payment-gateways', { next: { revalidate: 60 } });
+  return json.data;
+}
+
 export async function getVideoAccess(slug: string, token?: string | null): Promise<AccessResponse> {
   const json = await api<Envelope<AccessResponse>>(`/naratv/access/video/${encodeURIComponent(slug)}`, {
     headers: authHeaders(token),
@@ -233,7 +287,7 @@ export async function checkoutSubscription(payload: { subscription_plan_id: numb
   return json.data;
 }
 
-export async function purchaseEventAccess(slug: string, payload: { event_ticket_id: number | string; quantity?: number; phone?: string; gateway?: 'iotec' | 'flutterwave' }, token?: string | null) {
+export async function purchaseEventAccess(slug: string, payload: { event_ticket_id: number | string; quantity?: number; phone?: string; gateway?: 'iotec' | 'flutterwave' | string; coupon_code?: string }, token?: string | null) {
   const json = await api<Envelope<any>>(`/naratv/events/${encodeURIComponent(slug)}/purchase`, {
     method: 'POST',
     headers: authHeaders(token),
@@ -242,33 +296,88 @@ export async function purchaseEventAccess(slug: string, payload: { event_ticket_
   return json.data;
 }
 
-export async function searchNaraTv(query: string): Promise<{ videos: Video[]; events: Event[]; fighters: Video[] }> {
-  const json = await api<Envelope<{ videos: Video[]; events: Event[]; fighters: any[] }>>(`/naratv/search?q=${encodeURIComponent(query)}`, {
+export async function searchNaraTv(query: string): Promise<{ results: SearchResult[]; videos: Video[]; events: Event[]; fighters: Fighter[] }> {
+  const json = await api<Envelope<{ results?: SearchResult[]; videos: Video[]; events: Event[]; fighters: Fighter[] }>>(`/naratv/search?q=${encodeURIComponent(query)}`, {
     cache: 'no-store',
   });
 
   return {
+    results: json.data.results || [
+      ...(json.data.videos || []).map((video) => ({
+        id: `video-${video.id}`,
+        type: video.content_type === 'live' ? 'live' : 'video',
+        title: video.title,
+        description: video.description,
+        image_url: video.thumbnail_url,
+        url: `/watch/${video.slug}`,
+        label: video.category || 'Video',
+      })),
+      ...(json.data.events || []).map((event) => ({
+        id: `event-${event.id}`,
+        type: 'event',
+        title: event.title,
+        description: event.description,
+        image_url: event.thumbnail_url || event.poster_url,
+        url: `/events/${event.slug}`,
+        label: event.status,
+      })),
+      ...(json.data.fighters || []).map((fighter) => ({
+        id: `fighter-${fighter.id}`,
+        type: 'fighter',
+        title: fighter.name,
+        description: [fighter.weight_class, fighter.record?.display].filter(Boolean).join(' | '),
+        image_url: fighter.image_url,
+        url: `/boxers/${fighter.slug}`,
+        label: fighter.country || fighter.nationality || 'Fighter',
+      })),
+    ],
     videos: json.data.videos || [],
     events: json.data.events || [],
-    fighters: (json.data.fighters || []).map((fighter) => ({
-      id: `fighter-${fighter.id}`,
-      title: fighter.name,
-      slug: fighter.slug,
-      thumbnail_url: fighter.image_url,
-      video_url: '',
-      is_premium: false,
-      is_free: true,
-      category: fighter.weight_class,
-      source_label: fighter.country,
-      content_type: 'fighter',
-    })),
+    fighters: json.data.fighters || [],
   };
 }
 
-export async function getDashboard(token?: string | null) {
-  const json = await api<Envelope<any>>('/naratv/me/dashboard', {
+export async function getDashboard(token?: string | null): Promise<AccountDashboard> {
+  const json = await api<Envelope<AccountDashboard>>('/naratv/me/dashboard', {
     headers: authHeaders(token),
     cache: 'no-store',
+  });
+
+  return json.data;
+}
+
+export async function getAccount(token?: string | null): Promise<AccountDashboard> {
+  const json = await api<Envelope<AccountDashboard>>('/naratv/me/account', {
+    headers: authHeaders(token),
+    cache: 'no-store',
+  });
+
+  return json.data;
+}
+
+export async function updateProfile(payload: Partial<AuthUser>, token?: string | null): Promise<AuthUser> {
+  const json = await api<Envelope<AuthUser>>('/naratv/me/profile', {
+    method: 'PATCH',
+    headers: authHeaders(token),
+    body: JSON.stringify(payload),
+  });
+
+  return json.data;
+}
+
+export async function getDevices(token?: string | null): Promise<UserDevice[]> {
+  const json = await api<Envelope<UserDevice[]>>('/naratv/me/devices', {
+    headers: authHeaders(token),
+    cache: 'no-store',
+  });
+
+  return json.data;
+}
+
+export async function revokeDevice(deviceId: number | string, token?: string | null) {
+  const json = await api<Envelope<{ revoked: boolean }>>(`/naratv/me/devices/${deviceId}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
   });
 
   return json.data;

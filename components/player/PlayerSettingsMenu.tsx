@@ -14,7 +14,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
   const [activeMenu, setActiveMenu] = useState<'main' | 'quality' | 'speed' | 'captions' | 'help'>('main');
 
   // BACKEND INTEGRATION:
-  // Replace mock quality levels with levels returned by HLS.js/Vidstack or backend stream metadata.
+  // Replace mock quality levels with stream levels returned by the active player.
   const qualities = ['Auto', '1080p', '720p', '480p'];
   const speeds = ['0.5x', '0.75x', '1x', '1.25x', '1.5x', '2x'];
   const captionTracks = ['Off', 'English'];

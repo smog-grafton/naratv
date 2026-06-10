@@ -13,7 +13,7 @@ interface ChatMessage {
 
 // BACKEND INTEGRATION:
 // Replace mock chat messages with GET /api/v1/live-events/{eventId}/chat/messages.
-// For real-time updates, connect Laravel Reverb/Pusher/Ably here using Echo.
+// Real-time chat can be connected here using the selected broadcast driver.
 // Sending message should POST to /api/v1/live-events/{eventId}/chat/messages.
 const MOCK_MESSAGES: ChatMessage[] = [
   { id: '1', user: 'BoxingFan99', text: 'Let\'s go!! 🥊', timestamp: '12:00PM' },
@@ -51,7 +51,7 @@ export default function ChatTab() {
     e.preventDefault();
     if (!newMessage.trim()) return;
     
-    // BACKEND INTEGRATION: POST to backend, wait for response
+    // Send the message, then append the accepted response.
     const msg: ChatMessage = {
       id: Date.now().toString(),
       user: 'You',

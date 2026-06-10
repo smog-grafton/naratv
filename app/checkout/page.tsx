@@ -7,11 +7,12 @@ import { IconLock } from '@/components/icons';
 import {
   checkoutSubscription,
   getEvent,
+  getPaymentGateways,
   getPlans,
   getStoredToken,
   purchaseEventAccess,
 } from '@/services/home';
-import { Event, SubscriptionPlan } from '@/services/types';
+import { Event, PaymentGateway, SubscriptionPlan } from '@/services/types';
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -20,6 +21,9 @@ function CheckoutContent() {
   const eventParam = searchParams.get('event');
 
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [couponCode, setCouponCode] = useState('');
+  const [gateway, setGateway] = useState('iotec');
+  const [gateways, setGateways] = useState<PaymentGateway[]>([]);
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(false);
@@ -33,6 +37,12 @@ function CheckoutContent() {
       setInitializing(true);
       setError('');
       try {
+        const loadedGateways = await getPaymentGateways().catch(() => []);
+        if (active) {
+          setGateways(loadedGateways);
+          setGateway(loadedGateways.find((item) => item.is_default)?.code || loadedGateways[0]?.code || 'iotec');
+        }
+
         if (eventParam) {
           const loadedEvent = await getEvent(eventParam);
           if (active) setEvent(loadedEvent);
@@ -92,8 +102,8 @@ function CheckoutContent() {
 
     try {
       const checkout = eventParam
-        ? await purchaseEventAccess(eventParam, { event_ticket_id: selectedTicket!.id, phone: phoneNumber, gateway: 'iotec' }, token)
-        : await checkoutSubscription({ subscription_plan_id: selectedPlan!.id, phone: phoneNumber, gateway: 'iotec' }, token);
+        ? await purchaseEventAccess(eventParam, { event_ticket_id: selectedTicket!.id, phone: phoneNumber, gateway, coupon_code: couponCode.trim() || undefined }, token)
+        : await checkoutSubscription({ subscription_plan_id: selectedPlan!.id, phone: phoneNumber, gateway: gateway as 'iotec' | 'flutterwave' }, token);
 
       if (checkout.checkout_url) {
         window.location.href = checkout.checkout_url;
@@ -133,6 +143,26 @@ function CheckoutContent() {
           {error && <div className="mb-4 border border-red-500/30 bg-red-950/40 text-red-200 text-sm p-3">{error}</div>}
 
           <div className="mb-6">
+            {gateways.length > 0 && (
+              <div className="mb-5">
+                <label className="block text-sm font-medium text-white mb-2">Payment Method</label>
+                <select
+                  value={gateway}
+                  onChange={(event) => setGateway(event.target.value)}
+                  className="w-full bg-nara-black border border-nara-border rounded-sm py-3 px-4 text-white outline-none focus:border-nara-red transition-colors"
+                >
+                  {gateways.map((item) => (
+                    <option key={item.code} value={item.code}>
+                      {item.public_label || item.display_name || item.name || item.code}
+                    </option>
+                  ))}
+                </select>
+                {gateways.find((item) => item.code === gateway)?.instructions ? (
+                  <p className="text-xs text-nara-text-muted mt-2">{gateways.find((item) => item.code === gateway)?.instructions}</p>
+                ) : null}
+              </div>
+            )}
+
             <label className="block text-sm font-medium text-white mb-2">Mobile Money Number</label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-nara-text-muted select-none">+256</span>
@@ -147,6 +177,19 @@ function CheckoutContent() {
             </div>
             <p className="text-xs text-nara-text-muted mt-2">Enter your MTN or Airtel number to receive the payment prompt.</p>
           </div>
+
+          {eventParam && (
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-white mb-2">Promo Code</label>
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(event) => setCouponCode(event.target.value.toUpperCase())}
+                placeholder="FIGHTNIGHT"
+                className="w-full bg-nara-black border border-nara-border rounded-sm py-3 px-4 text-white outline-none focus:border-nara-red transition-colors"
+              />
+            </div>
+          )}
 
           <button
             type="submit"

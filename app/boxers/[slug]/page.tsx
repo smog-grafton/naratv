@@ -1,11 +1,45 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import { Calendar, Trophy } from 'lucide-react';
 import ContentRail from '@/components/blocks/ContentRail';
 import ScrollFadeOverlay from '@/components/blocks/ScrollFadeOverlay';
 import { getFighter, getHomeRails } from '@/services/home';
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const fighter = await getFighter(slug).catch(() => null);
+
+  if (!fighter) {
+    return { title: 'Fighter Profile | Nara TV' };
+  }
+
+  const title = fighter.seo?.title || `${fighter.name} Boxer Profile | Nara TV`;
+  const description = fighter.seo?.description || `${fighter.name} boxing profile, record, ranking and fight history on Nara TV.`;
+  const image = fighter.seo?.og_image || fighter.backdrop_url || fighter.image_url;
+  const url = fighter.seo?.canonical || `/boxers/${fighter.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      images: image ? [{ url: image }] : undefined,
+      type: 'profile',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
 
 export default async function BoxerProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -33,42 +67,44 @@ export default async function BoxerProfilePage({ params }: { params: Promise<{ s
         items: fighter.videos,
       }]
     : fallbackRails.filter((rail) => /fighter|highlight|interview/i.test(`${rail.id} ${rail.title}`)).slice(0, 2);
+  const backdrop = fighter.backdrop_url || '/assets/images/banner/event_banner.jpg';
+  const portrait = fighter.portrait_url || fighter.image_url || '/assets/images/boxers/boxer-1.jpg';
 
   return (
     <div className="flex flex-col min-h-screen bg-nara-black">
-      <div className="relative w-full min-h-[76vh] md:min-h-[82vh] flex flex-col justify-end bg-[#0a0a0c] overflow-hidden">
-        <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center">
-          <img src={fighter.image_url || '/assets/images/boxers/boxer-1.jpg'} className="w-full h-full object-cover opacity-30 grayscale" alt="" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-nara-black/35 via-nara-black/90 to-nara-black mix-blend-multiply" />
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-nara-black via-nara-black/80 to-transparent" />
+      <div className="relative w-full min-h-[78vh] md:min-h-[84vh] flex flex-col justify-end bg-[#080b10] overflow-hidden">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img src={backdrop} className="w-full h-full object-cover opacity-45" alt="" />
+          <div className="absolute inset-0 bg-gradient-to-r from-nara-black via-nara-black/78 to-nara-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-nara-black via-nara-black/45 to-transparent" />
         </div>
 
-        <div className="absolute bottom-0 right-0 md:right-12 w-full max-w-[500px] md:max-w-[760px] h-full flex items-end justify-end opacity-85 z-10 pointer-events-none">
+        <div className="absolute bottom-0 right-[-14%] sm:right-[-6%] md:right-4 xl:right-20 w-[86vw] max-w-[520px] md:max-w-[680px] h-[82%] flex items-end justify-end opacity-95 z-10 pointer-events-none">
           <img
-            src={fighter.image_url || '/assets/images/boxers/boxer-1.jpg'}
-            className="w-full h-auto object-cover mask-image-b"
-            style={{ WebkitMaskImage: 'linear-gradient(to top, transparent 5%, black 40%)' }}
+            src={portrait}
+            className="max-h-full w-auto object-contain drop-shadow-[0_28px_80px_rgba(0,0,0,0.75)]"
+            style={{ WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 18%)' }}
             alt={fighter.name}
           />
         </div>
 
-        <div className="relative z-20 w-full max-w-[1920px] mx-auto px-4 md:px-12 pb-12 border-b border-white/5">
+        <div className="relative z-20 w-full max-w-[1920px] mx-auto px-4 md:px-12 pb-10 md:pb-14 border-b border-white/5">
           <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="inline-block bg-[#f0c800] text-black font-black uppercase text-xs md:text-sm tracking-widest px-3 py-1 mb-4 rounded-sm">
               {fighter.weight_class || 'Boxer Profile'}
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-8 leading-[0.85]">
+            <h1 className="max-w-[11ch] text-5xl md:text-7xl xl:text-8xl font-black text-white uppercase tracking-tight mb-7 leading-[0.9]">
               {fighter.name}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 md:gap-6 mb-10">
+            <div className="grid grid-cols-4 max-w-xl gap-3 md:gap-5 mb-8">
               {[
                 ['Wins', record.wins, 'text-green-500'],
                 ['KOs', record.knockouts, 'text-[#f0c800]'],
                 ['Draws', record.draws, 'text-blue-500'],
                 ['Losses', record.losses, 'text-nara-red'],
               ].map(([label, value, color]) => (
-                <div key={label}>
+                <div key={label} className="min-w-0">
                   <div className={`text-3xl md:text-4xl font-black ${color}`}>{value}</div>
                   <div className="text-xs uppercase tracking-widest text-gray-400 font-bold border-t border-white/10 pt-1 mt-1">{label}</div>
                 </div>

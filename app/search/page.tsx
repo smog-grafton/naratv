@@ -3,15 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { IconSearch, IconClose } from '@/components/icons';
-import { Video } from '@/services/types';
-import VideoCard from '@/components/blocks/VideoCard';
+import { SearchResult } from '@/services/types';
 import { useRouter } from 'next/navigation';
 import { searchNaraTv } from '@/services/home';
 
 export default function SearchPage() {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Video[]>([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ export default function SearchPage() {
       searchNaraTv(query)
         .then((payload) => {
           if (cancelled) return;
-          setResults([...payload.videos, ...(payload.events as any[]), ...payload.fighters]);
+          setResults(payload.results);
         })
         .catch(() => {
           if (!cancelled) setResults([]);
@@ -114,11 +113,37 @@ export default function SearchPage() {
                 <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-2">Searching...</h3>
               </div>
             ) : results.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
                 {results.map(item => (
-                  <div key={item.id}>
-                    <VideoCard item={item} />
-                  </div>
+                  <Link
+                    key={item.id}
+                    href={item.url}
+                    className="group grid grid-cols-[112px_1fr] md:grid-cols-[148px_1fr] min-h-[116px] overflow-hidden rounded-sm border border-white/10 bg-[#10141a] hover:border-[#eaff04]/60 transition-colors"
+                  >
+                    <div className="relative bg-black">
+                      {item.image_url ? (
+                        <img src={item.image_url} alt={item.title} className="h-full w-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-gray-600">
+                          <IconSearch className="h-8 w-8" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="min-w-0 p-4 flex flex-col justify-center">
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="rounded-sm bg-[#eaff04] px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-black">
+                          {item.type}
+                        </span>
+                        {item.label ? <span className="truncate text-[10px] font-bold uppercase tracking-widest text-gray-500">{item.label}</span> : null}
+                      </div>
+                      <h2 className="line-clamp-2 text-base md:text-lg font-black uppercase tracking-tight text-white group-hover:text-[#eaff04] transition-colors">
+                        {item.title}
+                      </h2>
+                      {item.description ? (
+                        <p className="mt-2 line-clamp-2 text-sm text-gray-400">{item.description}</p>
+                      ) : null}
+                    </div>
+                  </Link>
                 ))}
               </div>
             ) : (

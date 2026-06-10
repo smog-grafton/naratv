@@ -110,7 +110,7 @@ export default async function SchedulePage() {
         {events.length === 0 && (
           <div className="border border-white/10 bg-[#10141a] p-10 text-center">
             <h2 className="text-white text-xl font-black uppercase">No scheduled events yet</h2>
-            <p className="text-gray-400 mt-2">Once events are published in the backend, they will appear here.</p>
+            <p className="text-gray-400 mt-2">The next NaraTV schedule is being prepared. Check back soon for live cards and replay premieres.</p>
           </div>
         )}
       </div>

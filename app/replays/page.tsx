@@ -12,14 +12,6 @@ export default async function ReplaysPage() {
     getHomeRails(),
   ]);
   const featured = replays[0];
-  const replayRail = {
-    id: 'backend-replays',
-    title: 'Full Event Replays',
-    titlePrefix: 'Archive',
-    type: 'videos' as const,
-    layout: 'video' as const,
-    items: replays,
-  };
   const supportingRails = rails.filter((rail) => /highlight|interview|archive|replay/i.test(`${rail.id} ${rail.title}`)).slice(0, 3);
 
   return (
@@ -41,7 +33,7 @@ export default async function ReplaysPage() {
               Watch the fights<br />you missed
             </h1>
             <p className="text-gray-300 text-sm md:text-lg mb-6 md:mb-8 max-w-2xl font-medium">
-              Full event replays, highlights, interviews, weigh-ins, and post-fight coverage from backend-managed NaraTV content.
+              Full event replays, highlights, interviews, weigh-ins, and post-fight coverage from NaraTV fight nights.
             </p>
 
             {featured && (
@@ -105,7 +97,48 @@ export default async function ReplaysPage() {
         </div>
 
         <div className="pt-8 md:pt-12 space-y-12">
-          <ContentRail rail={replayRail} />
+          <section className="max-w-[1920px] mx-auto px-4 md:px-12">
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[#eaff04]">Archive</p>
+                <h2 className="mt-1 text-2xl font-black uppercase tracking-tighter text-white md:text-3xl">Full Event Replays</h2>
+              </div>
+              <span className="hidden text-xs font-bold uppercase tracking-widest text-gray-500 sm:block">{replays.length} available</span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+              {replays.map((replay) => (
+                <Link
+                  key={replay.id}
+                  href={`/watch/${replay.slug}`}
+                  className="group grid min-h-[150px] grid-cols-[132px_1fr] overflow-hidden rounded-sm border border-white/10 bg-[#10141a] transition-colors hover:border-[#eaff04]/60 sm:grid-cols-[220px_1fr]"
+                >
+                  <div className="relative min-h-[150px] bg-black">
+                    <img src={replay.thumbnail_url || '/assets/images/videos/video1.webp'} alt={replay.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#10141a]/30" />
+                    <div className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full bg-white text-black sm:h-11 sm:w-11">
+                      <Play className="h-4 w-4 fill-current sm:h-5 sm:w-5" />
+                    </div>
+                  </div>
+                  <div className="flex min-w-0 flex-col justify-between p-4 sm:p-5">
+                    <div>
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <span className="bg-[#eaff04] px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-black">{replay.category || 'Replay'}</span>
+                        {replay.is_premium ? <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-gray-400"><Lock className="h-3 w-3" /> Premium</span> : null}
+                      </div>
+                      <h3 className="line-clamp-2 text-sm font-black uppercase leading-tight tracking-tight text-white sm:text-lg">{replay.title}</h3>
+                      <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-400 sm:text-sm">{replay.description || replay.source_label || 'Replay available on NaraTV.'}</p>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <span className="truncate text-[10px] font-bold uppercase tracking-widest text-gray-500">{replay.source_label || 'NaraTV'}</span>
+                      <span className="shrink-0 text-[10px] font-black uppercase tracking-widest text-[#eaff04]">Watch</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+
           {supportingRails.map((rail, index) => (
             <ContentRail key={rail.id} rail={rail} index={index + 1} />
           ))}
@@ -113,7 +146,7 @@ export default async function ReplaysPage() {
           {replays.length === 0 && (
             <div className="max-w-4xl mx-auto px-4 text-center border border-white/10 bg-[#10141a] p-10">
               <h2 className="text-white text-xl font-black uppercase">No replays yet</h2>
-              <p className="text-gray-400 mt-2">Completed events and replay videos will appear here once published in the backend.</p>
+              <p className="text-gray-400 mt-2">Completed events and replay videos will appear here as soon as they are ready.</p>
             </div>
           )}
         </div>

@@ -12,7 +12,7 @@ export default async function LivePage() {
   ]);
   const featured = liveEvents[0] || upcomingEvents[0];
   const liveRail = {
-    id: 'backend-live-upcoming',
+    id: 'live-upcoming',
     title: 'Live & Upcoming',
     titlePrefix: 'NaraTV',
     type: 'events' as const,
@@ -38,7 +38,7 @@ export default async function LivePage() {
             <p className="text-gray-300 z-10 mb-8 max-w-lg text-center font-medium px-4">
               {featured
                 ? [featured.venue, featured.city, featured.country].filter(Boolean).join(', ') || featured.source_label
-                : 'Live events will appear here as soon as they are enabled from the backend.'}
+                : 'Live events will appear here as soon as the next broadcast is ready.'}
             </p>
             <Link
               href={featured ? `/watch/${featured.slug}` : '/schedule'}

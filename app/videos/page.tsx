@@ -14,13 +14,13 @@ export default async function VideosPage() {
       <section className="max-w-[1920px] mx-auto px-4 md:px-8 mb-10">
         <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">Videos</h1>
         <p className="text-gray-400 mt-3 max-w-2xl">
-          Highlights, interviews, originals, archives, and replays published from the Nara Promotionz backend.
+          Highlights, interviews, originals, archives, and replays from the NaraTV fight-night library.
         </p>
       </section>
 
       <ContentRail
         rail={{
-          id: 'backend-videos',
+          id: 'latest-videos',
           title: 'Latest Videos',
           titlePrefix: 'NaraTV',
           type: 'videos',

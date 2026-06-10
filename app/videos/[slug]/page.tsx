@@ -1,1 +1,1 @@
-export { default } from '../../watch/[slug]/page';
+export { default, generateMetadata } from '../../watch/[slug]/page';
