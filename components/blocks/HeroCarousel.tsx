@@ -6,15 +6,10 @@ import { Event } from '@/services/types';
 import { IconChevronLeft, IconChevronRight, IconPlay, IconGlobe } from '@/components/icons';
 import { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy } from 'lucide-react';
 import { useResponsiveContentModal } from '@/components/providers/ContentModalProvider';
-import { NavigationItem } from '@/services/home';
+import { NavigationItem, stableHeaderNavigation } from '@/services/home';
 
 const iconMap = { Home, Radio, Clapperboard, Zap, Mic, Archive, User, Trophy };
-const fallbackCategories: NavigationItem[] = [
-  { id: 'home', key: 'home', label: 'Home', href: '/', icon: 'Home' },
-  { id: 'live', key: 'live-cards', label: 'Live Cards', href: '/live', icon: 'Radio' },
-  { id: 'originals', key: 'nara-originals', label: 'Nara Originals', href: '/originals', icon: 'Clapperboard' },
-  { id: 'highlights', key: 'fight-highlights', label: 'Fight Highlights', href: '/highlights', icon: 'Zap' },
-];
+const fallbackCategories: NavigationItem[] = stableHeaderNavigation;
 
 export default function HeroCarousel({ events, navigation = fallbackCategories }: { events: Event[]; navigation?: NavigationItem[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);

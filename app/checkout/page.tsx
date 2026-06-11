@@ -37,10 +37,13 @@ function CheckoutContent() {
       setInitializing(true);
       setError('');
       try {
-        const loadedGateways = await getPaymentGateways().catch(() => []);
+        const loadedGateways = await getPaymentGateways();
+        if (loadedGateways.length === 0) {
+          throw new Error('No active payment gateway is available. Please contact support before trying again.');
+        }
         if (active) {
           setGateways(loadedGateways);
-          setGateway(loadedGateways.find((item) => item.is_default)?.code || loadedGateways[0]?.code || 'iotec');
+          setGateway(loadedGateways.find((item) => item.is_default)?.code || loadedGateways[0].code);
         }
 
         if (eventParam) {

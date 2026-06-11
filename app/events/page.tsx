@@ -1,4 +1,4 @@
-import { getHeroEvents, getHomeRails, getNavigation } from '@/services/home';
+import { getHeroEvents, getHomeRails } from '@/services/home';
 import HeroCarousel from '@/components/blocks/HeroCarousel';
 import ContentRail from '@/components/blocks/ContentRail';
 import ScrollFadeOverlay from '@/components/blocks/ScrollFadeOverlay';
@@ -7,17 +7,16 @@ import Link from 'next/link';
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function EventsPage() {
-  const [heroEvents, rails, navigation] = await Promise.all([
+  const [heroEvents, rails] = await Promise.all([
     getHeroEvents(),
     getHomeRails(),
-    getNavigation(),
   ]);
 
   return (
     <div className="flex flex-col min-h-screen relative overflow-hidden bg-nara-black">
       {/* Sticky Hero Background */}
       <div className="sticky top-0 left-0 w-full z-0 h-screen overflow-hidden">
-        <HeroCarousel events={heroEvents} navigation={navigation} />
+        <HeroCarousel events={heroEvents} />
       </div>
       
       {/* This overlay darkens the HeroCarousel as the page scrolls */}

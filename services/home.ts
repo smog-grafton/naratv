@@ -4,6 +4,33 @@ const API_BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000
 const TOKEN_KEY = 'nara_auth_token';
 const USER_KEY = 'nara_auth_user';
 
+function stripTrailingSlash(value: string) {
+  return value.replace(/\/$/, '');
+}
+
+export function getNarapromoUrl(path = '') {
+  let base = stripTrailingSlash(process.env.NEXT_PUBLIC_NARAPROMO_URL || 'http://localhost:3001');
+
+  if (base === 'http://localhost:3000' || base === 'https://localhost:3000') {
+    base = 'http://localhost:3001';
+  }
+
+  if (typeof window !== 'undefined' && stripTrailingSlash(base) === window.location.origin && window.location.port === '3000') {
+    base = 'http://localhost:3001';
+  }
+
+  const suffix = path ? `/${path.replace(/^\//, '')}` : '';
+  return `${stripTrailingSlash(base)}${suffix}`;
+}
+
+export const stableHeaderNavigation: NavigationItem[] = [
+  { id: 'home', key: 'home', label: 'Home', href: '/', icon: 'Home' },
+  { id: 'live', key: 'live-cards', label: 'Live Cards', href: '/live', icon: 'Radio' },
+  { id: 'videos', key: 'fight-highlights', label: 'Fight Highlights', href: '/videos', icon: 'Zap' },
+  { id: 'replays', key: 'archive', label: 'Archive', href: '/replays', icon: 'Archive' },
+  { id: 'fighters', key: 'fighter-profiles', label: 'Fighter Profiles', href: getNarapromoUrl('/boxers'), icon: 'User', open_in_new_tab: false, link_type: 'external' },
+];
+
 export type AuthUser = {
   id: number | string;
   name: string;
@@ -172,6 +199,36 @@ export async function getGoogleRedirect(next = '/') {
 export async function getNavigation(): Promise<NavigationItem[]> {
   const json = await api<Envelope<NavigationItem[]>>('/naratv/navigation', { next: { revalidate: 60 } });
   return json.data;
+}
+
+export async function getHeaderNavigation(): Promise<NavigationItem[]> {
+  const customItems = await getNavigation()
+    .then((items) => items.filter((item) => item.link_type === 'custom' || item.link_type === 'external'))
+    .catch(() => []);
+
+  const keyed = new Set(stableHeaderNavigation.map((item) => item.key));
+  return [
+    ...stableHeaderNavigation,
+    ...customItems.filter((item) => item.href && !keyed.has(item.key)),
+  ];
+}
+
+function isLiveInsideWindow(event: Event) {
+  if (!event.is_live || !event.streaming?.has_stream) return false;
+
+  const now = Date.now();
+  const startsAt = event.streaming.starts_at ? new Date(event.streaming.starts_at).getTime() : null;
+  const endsAt = event.streaming.ends_at ? new Date(event.streaming.ends_at).getTime() : null;
+
+  if (startsAt && now < startsAt) return false;
+  if (endsAt && now > endsAt) return false;
+
+  return true;
+}
+
+export async function getLiveNow(): Promise<Event | null> {
+  const events = await getEvents({ status: 'live', streamable: 1, per_page: 10 });
+  return events.find(isLiveInsideWindow) || null;
 }
 
 export async function getHomeRails(): Promise<ContentRail[]> {

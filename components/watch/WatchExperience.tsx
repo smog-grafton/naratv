@@ -22,7 +22,11 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
   const item = video || event;
   const title = item?.title || slug.replace(/-/g, ' ');
   const poster = video?.thumbnail_url || event?.poster_url || '/assets/images/banner/videos_banner.jpg';
-  const isPremium = video ? Boolean(video.is_premium) : Boolean(event?.is_ppv || event?.access_type === 'ticket_holder');
+  const accessType = video?.access_type || event?.access_type || 'free';
+  const isEventContent = Boolean(event);
+  const isPremium = video
+    ? Boolean(video.is_premium || ['subscription', 'premium', 'ppv', 'ticket_holder', 'paid'].includes(accessType))
+    : Boolean(event?.is_ppv || ['subscription', 'premium', 'ppv', 'ticket_holder', 'paid'].includes(accessType));
 
   useEffect(() => {
     const token = getStoredToken();
@@ -68,7 +72,10 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
     : (video ? Boolean(video.has_access || video.can_watch || video.is_free) : Boolean(event?.is_free));
   const lockCopy = isPremium
     ? 'Unlock this fight-night feature with an eligible ticket, PPV purchase, or active NaraTV pass.'
-    : 'This broadcast is being prepared. Check the schedule for the next live card or browse recent replays.';
+    : 'This video is listed as free to watch. Playback will open as soon as the media source is available.';
+  const paymentHref = isEventContent && ['ticket_holder', 'ppv', 'paid'].includes(accessType)
+    ? `/checkout?event=${slug}`
+    : '/subscriptions';
 
   return (
     <main className="flex min-h-screen flex-col bg-[#050b12]">
@@ -101,7 +108,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
               <div className="flex w-full max-w-md flex-col justify-center gap-3 sm:flex-row">
                 {isPremium ? (
                   <>
-                    <Link href={`/checkout?${event ? 'event' : 'video'}=${slug}`} className="rounded-sm bg-[#eaff04] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
+                    <Link href={paymentHref} className="rounded-sm bg-[#eaff04] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
                       Unlock Access
                     </Link>
                     <Link href="/subscriptions" className="rounded-sm bg-white/10 px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20">
@@ -109,9 +116,14 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
                     </Link>
                   </>
                 ) : (
-                  <Link href="/schedule" className="rounded-sm bg-white px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors">
-                    View Schedule
-                  </Link>
+                  <>
+                    <Link href="/videos" className="rounded-sm bg-white px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors">
+                      Browse Videos
+                    </Link>
+                    <Link href="/replays" className="rounded-sm bg-white/10 px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20">
+                      View Replays
+                    </Link>
+                  </>
                 )}
               </div>
             </div>

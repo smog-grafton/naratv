@@ -139,7 +139,7 @@ export function AccountOverviewPage() {
 
   if (!token || (!account && !error)) return <LoadingAccount />;
   const user = account?.user;
-  const plan = account?.active_subscription?.plan?.name || 'Free Pass';
+  const plan = account?.active_subscription?.plan?.name || 'No active pass';
 
   return (
     <AccountChrome active="overview" user={user}>

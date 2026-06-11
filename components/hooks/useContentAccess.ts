@@ -52,8 +52,11 @@ export function normalizeContent(item: any): ContentNormalized {
   
   if (watch_options.length === 0) {
     if (isEvent) {
+       const primaryLabel = item.status === 'completed'
+         ? 'Watch Replay'
+         : (item.status === 'live' ? 'Watch Live' : (isPremium ? 'Buy Event Pass' : 'Event Details'));
        watch_options = [
-         { id: '1', label: item.status === 'completed' ? 'Watch Replay' : (item.status === 'live' ? 'Watch Live' : 'Unlock Stream'), type: 'main', is_locked: !hasAccess && isPremium, access_type: accessType, route: `/watch/${item.slug}`, price: item.price, currency: item.currency },
+         { id: '1', label: primaryLabel, type: 'main', is_locked: !hasAccess && isPremium, access_type: accessType, route: `/watch/${item.slug}`, price: item.price, currency: item.currency },
          { id: '2', label: 'Event Details', type: 'details', is_locked: false, access_type: 'free', route: `/events/${item.slug}` }
        ];
     } else {
@@ -61,6 +64,14 @@ export function normalizeContent(item: any): ContentNormalized {
          { id: '1', label: item.content_type === 'replay' ? 'Full Replay' : 'Watch Now', type: item.content_type || 'video', is_locked: !hasAccess && isPremium, access_type: accessType, route: `/watch/${item.slug}`, price: item.price, currency: item.currency },
        ];
     }
+  } else {
+    watch_options = watch_options.map((option) => ({
+      ...option,
+      is_locked: !hasAccess && Boolean(option.is_locked || isPremium),
+      label: option.label.toLowerCase().includes('unlock') && option.label.toLowerCase().includes('stream')
+        ? (isEvent && item.status === 'live' ? 'Watch Live' : 'Buy Event Pass')
+        : option.label,
+    }));
   }
 
   return {

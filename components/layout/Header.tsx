@@ -6,7 +6,8 @@ import { usePathname } from 'next/navigation';
 import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
 import AccountDropdown from '@/components/auth/AccountDropdown';
 import { Bell, PlayCircle } from 'lucide-react';
-import { clearSession, getMe, getNavigation, getStoredToken, getStoredUser, NavigationItem } from '@/services/home';
+import { clearSession, getHeaderNavigation, getLiveNow, getMe, getStoredToken, getStoredUser, NavigationItem } from '@/services/home';
+import { Event } from '@/services/types';
 
 export default function Header() {
   const pathname = usePathname();
@@ -14,22 +15,24 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [liveEvent, setLiveEvent] = useState<Event | null>(null);
   const [navLinks, setNavLinks] = useState<NavigationItem[]>([
     { id: 'home', key: 'home', label: 'Home', href: '/' },
     { id: 'live', key: 'live-cards', label: 'Live Cards', href: '/live' },
     { id: 'replays', key: 'replays', label: 'Replays', href: '/replays' },
   ]);
-  
-  const globalEventLive = true; 
-
   useEffect(() => {
     setMounted(true);
     const token = getStoredToken();
     setIsLoggedIn(Boolean(token && getStoredUser()));
 
-    getNavigation()
+    getHeaderNavigation()
       .then(setNavLinks)
       .catch(() => null);
+
+    getLiveNow()
+      .then(setLiveEvent)
+      .catch(() => setLiveEvent(null));
 
     if (token) {
       getMe(token)
@@ -63,6 +66,33 @@ export default function Header() {
     isTransparentHeader && !scrolled ? 'bg-transparent' : 'bg-nara-surface border-b border-nara-border'
   }`;
 
+  const renderNavLink = (link: NavigationItem, className: string, onClick?: () => void) => {
+    const isExternal = /^https?:\/\//.test(link.href);
+    const isActive = !isExternal && pathname === link.href;
+    const linkClass = `${className} ${isActive ? 'text-white font-bold' : 'text-nara-text-muted hover:text-white'}`;
+
+    if (isExternal) {
+      return (
+        <a
+          key={link.key}
+          href={link.href}
+          target={link.open_in_new_tab ? '_blank' : undefined}
+          rel={link.open_in_new_tab ? 'noopener noreferrer' : undefined}
+          className={linkClass}
+          onClick={onClick}
+        >
+          {link.label}
+        </a>
+      );
+    }
+
+    return (
+      <Link key={link.key} href={link.href} className={linkClass} onClick={onClick}>
+        {link.label}
+      </Link>
+    );
+  };
+
   return (
     <>
       <header className={headerClass}>
@@ -74,8 +104,8 @@ export default function Header() {
             </Link>
             
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-              {globalEventLive && mounted && (
-                 <Link href="/watch/kato-kasirye-2" className="flex items-center gap-2 text-nara-red font-black uppercase tracking-widest text-[10px] sm:text-xs mr-2 relative">
+              {liveEvent && mounted && (
+                 <Link href={`/watch/${liveEvent.slug}`} className="flex items-center gap-2 text-nara-red font-black uppercase tracking-widest text-[10px] sm:text-xs mr-2 relative">
                     <span className="relative flex h-2 w-2">
                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-nara-red opacity-75"></span>
                        <span className="relative inline-flex rounded-full h-2 w-2 bg-nara-red"></span>
@@ -84,18 +114,7 @@ export default function Header() {
                  </Link>
               )}
               {navLinks.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.key}
-                    href={link.href}
-                    className={`transition-colors py-5 ${
-                      isActive ? 'text-white font-bold' : 'text-nara-text-muted hover:text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
+                return renderNavLink(link, 'transition-colors py-5');
               })}
             </nav>
           </div>
@@ -112,15 +131,15 @@ export default function Header() {
               <IconSearch className="w-5 h-5" />
             </Link>
             
-            {mounted && globalEventLive && !isLoggedIn && (
-               <Link href="/register" className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+            {mounted && liveEvent && !isLoggedIn && (
+               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
                   <PlayCircle className="w-3.5 h-3.5" /> Watch Live
                </Link>
             )}
 
-            {mounted && globalEventLive && isLoggedIn && (
-               <Link href="/events/kato-kasirye-2" className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
-                  <PlayCircle className="w-3.5 h-3.5" /> Unlock Stream
+            {mounted && liveEvent && isLoggedIn && (
+               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+                  <PlayCircle className="w-3.5 h-3.5" /> Watch Live
                </Link>
             )}
 
@@ -176,18 +195,23 @@ export default function Header() {
             
             <div className="flex-1 overflow-y-auto py-4">
               <nav className="flex flex-col px-0 gap-0">
-                {navLinks.map((link) => (
+                {liveEvent && (
                   <Link
-                    key={link.key}
-                    href={link.href}
+                    href={`/watch/${liveEvent.slug}`}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`px-6 py-4 border-b border-nara-border text-base font-medium transition-colors ${
-                      pathname === link.href ? 'bg-white/5 text-white border-l-4 border-l-nara-red' : 'text-nara-text-muted hover:bg-white/5 hover:text-white border-l-4 border-l-transparent'
-                    }`}
+                    className="px-6 py-4 border-b border-nara-border text-base font-black uppercase tracking-widest text-nara-red transition-colors hover:bg-white/5"
                   >
-                    {link.label}
+                    Live Now
                   </Link>
-                ))}
+                )}
+                {navLinks.map((link) => {
+                  const isExternal = /^https?:\/\//.test(link.href);
+                  const isActive = !isExternal && pathname === link.href;
+                  const mobileClass = `px-6 py-4 border-b border-nara-border text-base font-medium transition-colors ${
+                    isActive ? 'bg-white/5 text-white border-l-4 border-l-nara-red' : 'text-nara-text-muted hover:bg-white/5 hover:text-white border-l-4 border-l-transparent'
+                  }`;
+                  return renderNavLink(link, mobileClass, () => setMobileMenuOpen(false));
+                })}
               </nav>
 
               {/* Action Buttons */}

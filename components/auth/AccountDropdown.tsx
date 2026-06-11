@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { User, CreditCard, LogOut, Settings } from 'lucide-react';
+import { getStoredUser, AuthUser } from '@/services/home';
 
 interface AccountDropdownProps {
   onSignOut?: () => void;
@@ -10,9 +11,12 @@ interface AccountDropdownProps {
 
 export default function AccountDropdown({ onSignOut }: AccountDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setUser(getStoredUser());
+
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -21,6 +25,8 @@ export default function AccountDropdown({ onSignOut }: AccountDropdownProps) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const initial = (user?.name || user?.email || 'NaraTV').trim().charAt(0).toUpperCase();
 
   const handleSignOut = () => {
     setIsOpen(false);
@@ -34,21 +40,18 @@ export default function AccountDropdown({ onSignOut }: AccountDropdownProps) {
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none"
+        aria-label="Open account menu"
       >
-        <div className="hidden md:flex flex-col items-end mr-1">
-           <span className="text-white text-xs font-bold leading-none tracking-wide">SMOG BIZ</span>
-           <span className="text-[#f0c800] text-[9px] font-bold uppercase tracking-widest mt-1">Free Pass</span>
-        </div>
         <div className="w-8 h-8 md:w-9 md:h-9 bg-nara-red text-white flex items-center justify-center rounded-full font-bold text-sm border-2 border-nara-black">
-          S
+          {initial}
         </div>
       </button>
 
       {isOpen && (
         <div className="absolute right-0 mt-3 w-56 bg-[#1a1b1e] border border-[#2a2b2e] rounded-md shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
-          <div className="px-4 py-3 border-b border-[#2a2b2e] mb-2 md:hidden">
-            <span className="block text-white text-sm font-bold truncate">smog biz</span>
-            <span className="block text-[#f0c800] text-[10px] font-bold uppercase tracking-widest mt-1">Free Pass</span>
+          <div className="px-4 py-3 border-b border-[#2a2b2e] mb-2">
+            <span className="block text-white text-sm font-bold truncate">{user?.name || 'NaraTV Account'}</span>
+            {user?.email ? <span className="block text-gray-400 text-xs mt-1 truncate">{user.email}</span> : null}
           </div>
           
           <Link 

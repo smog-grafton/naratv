@@ -109,7 +109,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Link href={`/watch/${event.slug}`} className="bg-[#eaff04] text-black font-bold uppercase tracking-wider py-4 px-10 rounded-sm text-sm hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#eaff04]/20">
-                <Play className="w-4 h-4 fill-black text-black" /> {event.is_live ? 'Watch Live' : event.status === 'completed' ? 'Watch Replay' : 'Unlock Stream'}
+                <Play className="w-4 h-4 fill-black text-black" /> {event.is_live ? 'Watch Live' : event.status === 'completed' ? 'Watch Replay' : event.is_free ? 'Event Details' : 'Buy Event Pass'}
               </Link>
               <Link href={`/checkout?event=${event.slug}`} className="bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold uppercase tracking-wider py-4 px-10 rounded-sm text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
                 <Ticket className="w-4 h-4" /> {price}

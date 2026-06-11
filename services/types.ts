@@ -111,6 +111,8 @@ export interface Event {
   streaming?: {
     has_stream?: boolean;
     stream_status?: string | null;
+    starts_at?: string | null;
+    ends_at?: string | null;
     watch_url?: string;
     replay_available?: boolean;
   };

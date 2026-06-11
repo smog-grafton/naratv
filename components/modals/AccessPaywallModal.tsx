@@ -22,8 +22,12 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
   }, [onClose]);
 
   const handleCTA = () => {
-    // In real flow, redirect to auth or payment flow passing the item.id
-    router.push('/subscribe');
+    const isEventAccess = item.content_type === 'event' || item.content_type === 'live_event';
+    const checkoutPath = isEventAccess && ['ticket_holder', 'ppv', 'paid'].includes(item.access_type)
+      ? `/checkout?event=${encodeURIComponent(item.slug)}`
+      : '/subscriptions';
+
+    router.push(checkoutPath);
     onClose();
   };
 
@@ -31,12 +35,13 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
     ? 'Buy Fight Pass' 
     : item.access_type === 'ppv' 
       ? 'Unlock this fight' 
-      : 'Subscribe';
+      : 'View Passes';
       
-  // Text for message
   const messageText = item.access_type === 'ppv'
-    ? 'Get in on the action and don’t miss the best moments. Purchase the PPV to unlock the full replay.'
-    : 'Get in on the action and don’t miss the best moments. Subscribe for the full experience.';
+    ? 'Purchase event access to watch the stream or replay as soon as it is available.'
+    : item.access_type === 'ticket_holder'
+      ? 'Choose an eligible event pass to watch this fight night on NaraTV.'
+      : 'Choose a NaraTV pass to unlock eligible live cards, replays, and premium video features.';
 
   return (
     <>
@@ -75,7 +80,7 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
               )}
              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h2>
              <p className="text-[#f0c800] text-xs font-bold uppercase tracking-wider mb-6">
-                {item.category || 'Nara Promotionz'}
+                {item.category || 'NaraTV'}
              </p>
 
              <div className="w-full max-w-[80%] mx-auto h-[1px] bg-[#2a2b2e] mb-6" />
