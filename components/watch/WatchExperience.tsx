@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Lock, MessageSquare, Play, ShieldCheck } from 'lucide-react';
+import { Lock, MessageSquare, Play, ShieldCheck, Ticket } from 'lucide-react';
 import ContentRail from '@/components/blocks/ContentRail';
 import NaraVideoPlayer from '@/components/player/NaraVideoPlayer';
 import { ContentRail as ContentRailType, Event, Video, AccessResponse } from '@/services/types';
@@ -18,7 +18,9 @@ type Props = {
 export default function WatchExperience({ slug, initialVideo, initialEvent, relatedRail }: Props) {
   const [video, setVideo] = useState<Video | null>(initialVideo);
   const [access, setAccess] = useState<AccessResponse | null>(null);
-  const event = initialEvent;
+  const [showInstantPay, setShowInstantPay] = useState(false);
+  const hasOpenedAccessModal = useRef(false);
+  const event = initialVideo ? null : initialEvent;
   const item = video || event;
   const title = item?.title || slug.replace(/-/g, ' ');
   const poster = video?.thumbnail_url || event?.poster_url || '/assets/images/banner/videos_banner.jpg';
@@ -73,9 +75,29 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
   const lockCopy = isPremium
     ? 'Unlock this fight-night feature with an eligible ticket, PPV purchase, or active NaraTV pass.'
     : 'This video is listed as free to watch. Playback will open as soon as the media source is available.';
-  const paymentHref = isEventContent && ['ticket_holder', 'ppv', 'paid'].includes(accessType)
+  const isPaidEventAccess = isEventContent && ['ticket_holder', 'ppv', 'paid'].includes(accessType);
+  const isSubscriptionAccess = ['subscription', 'premium'].includes(accessType);
+  const isLiveEvent = Boolean(event?.is_live);
+  const paymentHref = isPaidEventAccess
     ? `/checkout?event=${slug}`
     : '/subscriptions';
+  const isLocked = isPremium && !hasAccess;
+
+  useEffect(() => {
+    if (!isLocked || playbackUrl || hasOpenedAccessModal.current) return;
+    hasOpenedAccessModal.current = true;
+    const timer = window.setTimeout(() => setShowInstantPay(true), 450);
+    return () => window.clearTimeout(timer);
+  }, [isLocked, playbackUrl]);
+
+  const openInstantPay = () => {
+    const token = getStoredToken();
+    if (!token) {
+      window.location.href = `/login?next=${encodeURIComponent(`/watch/${slug}`)}`;
+      return;
+    }
+    setShowInstantPay(true);
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-[#050b12]">
@@ -85,7 +107,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
             src={playbackUrl}
             poster={poster}
             title={title}
-            isLive={Boolean(video?.is_live || event?.is_live)}
+            isLive={isLiveEvent || Boolean(video?.is_live)}
             sourceType={access?.source_type || video?.source_type}
             watchOptions={video?.watch_options || event?.watch_options || []}
           />
@@ -106,11 +128,11 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
               </p>
 
               <div className="flex w-full max-w-md flex-col justify-center gap-3 sm:flex-row">
-                {isPremium ? (
+                {isLocked ? (
                   <>
-                    <Link href={paymentHref} className="rounded-sm bg-[#45E3FF] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
+                    <button onClick={openInstantPay} className="rounded-sm bg-[#45E3FF] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
                       Unlock Access
-                    </Link>
+                    </button>
                     <Link href="/subscriptions" className="rounded-sm bg-white/10 px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20">
                       View Passes
                     </Link>
@@ -147,19 +169,64 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
         </div>
 
         <aside className="h-fit rounded-sm border border-white/5 bg-[#07111F] p-5">
-          <div className="mb-4 flex items-center gap-3 border-b border-white/5 pb-4">
-            <MessageSquare className="h-5 w-5 text-gray-400" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white">Live Interaction</h2>
-          </div>
-          <p className="text-sm leading-relaxed text-gray-400">
-            Fight chat, reactions, and post-fight conversation will open here when this event is live.
-          </p>
+          {isLiveEvent ? (
+            <>
+              <div className="mb-4 flex items-center gap-3 border-b border-white/5 pb-4">
+                <MessageSquare className="h-5 w-5 text-gray-400" />
+                <h2 className="text-sm font-bold uppercase tracking-wider text-white">Live Interaction</h2>
+              </div>
+              <p className="text-sm leading-relaxed text-gray-400">
+                Fight chat, reactions, and post-fight conversation will open here while this event is live.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="mb-4 flex items-center gap-3 border-b border-white/5 pb-4">
+                <Play className="h-5 w-5 text-gray-400" />
+                <h2 className="text-sm font-bold uppercase tracking-wider text-white">{isEventContent ? 'Event Access' : 'Video Details'}</h2>
+              </div>
+              <p className="text-sm leading-relaxed text-gray-400">
+                {isEventContent ? 'Event passes and replay access are checked before playback opens.' : 'This video plays as an on-demand feature. Live chat is reserved for active live events.'}
+              </p>
+            </>
+          )}
           <div className="mt-5 flex items-center gap-2 text-xs text-gray-500">
             <ShieldCheck className="h-4 w-4 text-[#45E3FF]" />
-            Your pass is checked securely before playback opens.
+            Your access is checked securely before playback opens.
           </div>
         </aside>
       </section>
+
+      {showInstantPay && isPremium && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" onClick={() => setShowInstantPay(false)}>
+          <div className="w-full max-w-md border border-white/10 bg-[#07111F] p-6 shadow-2xl" onClick={(modalEvent) => modalEvent.stopPropagation()}>
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-[#45E3FF]">Instant Access</p>
+                <h2 className="mt-2 text-2xl font-black text-white">{title}</h2>
+              </div>
+              <button className="text-sm font-bold uppercase text-gray-400 hover:text-white" onClick={() => setShowInstantPay(false)}>Close</button>
+            </div>
+            <p className="mb-6 text-sm leading-6 text-gray-300">
+              {isPaidEventAccess ? 'Buy an eligible event pass to unlock this stream or replay.' : 'Choose a NaraTV pass to unlock this premium video.'}
+            </p>
+            <div className="flex flex-col gap-3">
+              {getStoredToken() ? (
+                <Link href={paymentHref} className="flex items-center justify-center gap-2 rounded-sm bg-[#45E3FF] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-black hover:bg-white">
+                  <Ticket className="h-4 w-4" /> Continue to Checkout
+                </Link>
+              ) : (
+                <Link href={`/login?next=${encodeURIComponent(`/watch/${slug}`)}`} className="flex items-center justify-center gap-2 rounded-sm bg-[#45E3FF] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-black hover:bg-white">
+                  Sign In To Continue
+                </Link>
+              )}
+              {isSubscriptionAccess || !isPaidEventAccess ? (
+                <Link href="/subscriptions" className="rounded-sm bg-white/10 px-6 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-white hover:bg-white/20">View Passes</Link>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      )}
 
       {relatedRail && (
         <div className="w-full bg-[#050b12] pb-20 pt-4">

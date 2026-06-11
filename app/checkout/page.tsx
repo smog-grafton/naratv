@@ -4,6 +4,7 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { IconLock } from '@/components/icons';
+import { BadgeCheck, CreditCard, Smartphone } from 'lucide-react';
 import {
   checkoutSubscription,
   getEvent,
@@ -13,6 +14,12 @@ import {
   purchaseEventAccess,
 } from '@/services/home';
 import { Event, PaymentGateway, SubscriptionPlan } from '@/services/types';
+
+function gatewayLabel(item?: PaymentGateway | null) {
+  if (!item) return 'Payment gateway';
+  const fallback = item.code.replace(/[_-]/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  return item.display_name || item.name || item.public_label || fallback;
+}
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
@@ -80,6 +87,7 @@ function CheckoutContent() {
     ? selectedTicket?.formatted_price || `${event?.currency || 'UGX'} ${Number(selectedTicket?.price || event?.price || 0).toLocaleString()}`
     : selectedPlan?.formatted_price || `${selectedPlan?.currency || 'UGX'} ${Number(selectedPlan?.price || 0).toLocaleString()}`;
   const title = eventParam ? `Event Pass: ${event?.title || eventParam}` : selectedPlan?.name || 'NaraTV Pass';
+  const selectedGateway = gateways.find((item) => item.code === gateway) || gateways[0] || null;
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,19 +157,34 @@ function CheckoutContent() {
             {gateways.length > 0 && (
               <div className="mb-5">
                 <label className="block text-sm font-medium text-white mb-2">Payment Method</label>
-                <select
-                  value={gateway}
-                  onChange={(event) => setGateway(event.target.value)}
-                  className="w-full bg-nara-black border border-nara-border rounded-sm py-3 px-4 text-white outline-none focus:border-nara-red transition-colors"
-                >
-                  {gateways.map((item) => (
-                    <option key={item.code} value={item.code}>
-                      {item.public_label || item.display_name || item.name || item.code}
-                    </option>
-                  ))}
-                </select>
-                {gateways.find((item) => item.code === gateway)?.instructions ? (
-                  <p className="text-xs text-nara-text-muted mt-2">{gateways.find((item) => item.code === gateway)?.instructions}</p>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {gateways.map((item) => {
+                    const checked = gateway === item.code;
+                    const Icon = item.supports_card ? CreditCard : Smartphone;
+
+                    return (
+                      <button
+                        key={item.code}
+                        type="button"
+                        onClick={() => setGateway(item.code)}
+                        className={`relative min-h-28 border p-4 text-left transition ${checked ? 'border-[#45E3FF] bg-[#45E3FF]/10' : 'border-nara-border bg-nara-black hover:border-white/30'}`}
+                      >
+                        {item.is_default ? (
+                          <span className="absolute right-3 top-3 grid h-7 w-7 place-items-center rounded-full border border-[#45E3FF]/50 text-[#45E3FF]" title="Recommended gateway" aria-label="Recommended gateway">
+                            <BadgeCheck className="h-4 w-4" />
+                          </span>
+                        ) : null}
+                        <span className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5 text-[#45E3FF]">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <strong className="mt-4 block text-sm uppercase tracking-wide text-white">{gatewayLabel(item)}</strong>
+                        <span className="mt-1 line-clamp-2 block text-xs leading-5 text-nara-text-muted">{item.instructions || 'Secure payment gateway'}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {selectedGateway?.instructions ? (
+                  <p className="text-xs text-nara-text-muted mt-2">{selectedGateway.instructions}</p>
                 ) : null}
               </div>
             )}

@@ -41,7 +41,10 @@ export interface ContentNormalized {
 
 // Function to normalize both Video and Event to a common Content structure for the UI
 export function normalizeContent(item: any): ContentNormalized {
-  const isEvent = item.poster_url !== undefined;
+  const explicitType = String(item.content_type || item.type || '').toLowerCase();
+  const hasVideoSource = Boolean(item.video_url || item.playback_url || item.hls_url || item.replay_url);
+  const isEvent = ['event', 'live_event'].includes(explicitType)
+    || (!hasVideoSource && Boolean(item.poster_url) && ['upcoming', 'live', 'completed'].includes(String(item.status || '').toLowerCase()));
   const accessType = item.access_type || (item.is_ppv ? 'ppv' : (item.is_premium ? 'subscription' : 'free'));
   const isPremium = Boolean(item.is_premium || item.is_ppv || ['subscription', 'premium', 'ppv', 'ticket_holder', 'paid'].includes(accessType));
   const hasAccess = typeof item.has_access === 'boolean'
@@ -76,7 +79,7 @@ export function normalizeContent(item: any): ContentNormalized {
 
   return {
     id: item.id,
-    content_type: isEvent ? (item.status === 'live' ? 'live_event' : 'event') : (item.content_type || 'replay'),
+    content_type: isEvent ? (item.status === 'live' ? 'live_event' : 'event') : (item.content_type || item.video_type || 'video'),
     title: item.title,
     slug: item.slug,
     thumbnail_url: item.thumbnail_url || item.poster_url,

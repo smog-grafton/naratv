@@ -309,7 +309,7 @@ export default function NaraVideoPlayer({ src, poster, title, isLive = false, so
           toggleMute={toggleMute}
           isFullscreen={isFullscreen}
           toggleFullscreen={toggleFullscreen}
-          isLive={isLive || isFrameSource}
+          isLive={isLive}
           skipForward={skipForward}
           skipBackward={skipBackward}
           onToggleContentSwitcher={() => {
@@ -326,7 +326,7 @@ export default function NaraVideoPlayer({ src, poster, title, isLive = false, so
           <div className="absolute bottom-[80px] right-4 z-30 md:right-6">
             <PlayerSettingsMenu
               onClose={() => setShowSettingsMenu(false)}
-              isLive={isLive || isFrameSource}
+              isLive={isLive}
               currentSpeed={playbackRate}
               onSpeedChange={setPlaybackRate}
             />
