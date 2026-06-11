@@ -109,7 +109,7 @@ export default function HeroCarousel({ events, navigation = fallbackCategories }
                 {event.is_ppv && event.status !== 'completed' && (
                   <button 
                     onClick={() => openContentModal(event)}
-                    className="w-full sm:w-auto bg-[#1a1b1e] hover:bg-[#2a2b2e] text-white font-bold py-3 md:py-3.5 px-8 rounded-[4px] transition-colors text-center text-sm md:text-base border border-[#2a2b2e] hidden sm:block"
+                    className="w-full sm:w-auto bg-[#111D2E] hover:bg-[#172338] text-white font-bold py-3 md:py-3.5 px-8 rounded-[4px] transition-colors text-center text-sm md:text-base border border-[#172338] hidden sm:block"
                   >
                     Buy PPV <span className="opacity-70 ml-1 font-normal hidden md:inline">UGX {event.price?.toLocaleString()}</span>
                   </button>
@@ -140,7 +140,7 @@ export default function HeroCarousel({ events, navigation = fallbackCategories }
           {navigation.map((cat, i) => {
             const IconComponent = iconMap[(cat.icon || 'Home') as keyof typeof iconMap] || Home;
             return (
-              <Link href={cat.href} key={cat.key} className="bg-nara-black/80 hover:bg-[#2A2B2E] transition-colors border border-nara-border backdrop-blur-sm rounded-[4px] px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
+              <Link href={cat.href} key={cat.key} className="bg-nara-black/80 hover:bg-[#172338] transition-colors border border-nara-border backdrop-blur-sm rounded-[4px] px-4 md:px-6 py-2 md:py-3 flex items-center justify-center gap-3 cursor-pointer min-w-[120px] md:min-w-[160px]">
                 <IconComponent className="w-5 h-5 text-white" />
                 <span className="text-white text-xs md:text-sm font-bold tracking-tight">{cat.label}</span>
               </Link>
@@ -153,13 +153,13 @@ export default function HeroCarousel({ events, navigation = fallbackCategories }
       <div className="hidden md:flex absolute right-12 bottom-[24vh] lg:bottom-[28vh] z-20 items-center gap-3">
         <button 
           onClick={prev}
-          className="w-10 h-10 flex items-center justify-center bg-nara-black hover:bg-[#2A2B2E] text-white rounded-full transition-colors border border-nara-border"
+          className="w-10 h-10 flex items-center justify-center bg-nara-black hover:bg-[#172338] text-white rounded-full transition-colors border border-nara-border"
         >
           <IconChevronLeft className="w-5 h-5" />
         </button>
         <button 
           onClick={next}
-          className="w-10 h-10 flex items-center justify-center bg-nara-black hover:bg-[#2A2B2E] text-white rounded-full transition-colors border border-nara-border"
+          className="w-10 h-10 flex items-center justify-center bg-nara-black hover:bg-[#172338] text-white rounded-full transition-colors border border-nara-border"
         >
           <IconChevronRight className="w-5 h-5" />
         </button>

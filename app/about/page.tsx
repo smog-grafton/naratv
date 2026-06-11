@@ -28,7 +28,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#050b12] pt-24 text-white">
       <section className="mx-auto max-w-6xl px-4 pb-16 md:px-8">
-        <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#eaff04]">About</p>
+        <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#45E3FF]">About</p>
         <h1 className="max-w-4xl text-4xl font-black tracking-tight md:text-6xl">NaraTV is built for fight night.</h1>
         <p className="mt-6 max-w-3xl text-lg leading-relaxed text-zinc-300">
           NaraTV brings live boxing, premium event streams, replays, highlights, interviews, and fighter-driven stories into one focused viewing experience.
@@ -36,13 +36,13 @@ export default function AboutPage() {
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {pillars.map(({ Icon, title, body }) => (
             <article key={title} className="border border-white/10 bg-white/[0.03] p-6">
-              <Icon className="mb-5 h-6 w-6 text-[#eaff04]" />
+              <Icon className="mb-5 h-6 w-6 text-[#45E3FF]" />
               <h2 className="mb-3 text-lg font-black">{title}</h2>
               <p className="text-sm leading-relaxed text-zinc-300">{body}</p>
             </article>
           ))}
         </div>
-        <Link href="/events" className="mt-10 inline-flex rounded-sm bg-white px-6 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#eaff04]">
+        <Link href="/events" className="mt-10 inline-flex rounded-sm bg-white px-6 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#45E3FF]">
           Explore Events
         </Link>
       </section>

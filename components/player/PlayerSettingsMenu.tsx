@@ -35,7 +35,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
           <li>Switch quality to Auto.</li>
           <li>Try another browser or device.</li>
         </ul>
-        <button className="mt-4 bg-[#eaff04] text-black w-full py-2 rounded-sm font-bold uppercase text-xs">
+        <button className="mt-4 bg-[#45E3FF] text-black w-full py-2 rounded-sm font-bold uppercase text-xs">
           Contact Support
         </button>
       </div>
@@ -58,7 +58,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
               if (onSelect) onSelect(item);
               setActiveMenu('main');
             }}
-            className={`text-left px-3 py-2 text-sm rounded transition-colors ${item === current ? 'bg-white/10 text-white font-bold border-l-2 border-[#eaff04]' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`}
+            className={`text-left px-3 py-2 text-sm rounded transition-colors ${item === current ? 'bg-white/10 text-white font-bold border-l-2 border-[#45E3FF]' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`}
           >
             {item}
           </button>
@@ -82,7 +82,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
       <div className="p-2 flex flex-col gap-1">
         <button onClick={() => setActiveMenu('quality')} className="flex items-center justify-between px-3 py-2.5 text-sm rounded text-gray-300 hover:bg-white/5 hover:text-white transition-colors group">
           <div className="flex items-center gap-3">
-            <Gauge className="w-4 h-4 text-gray-400 group-hover:text-[#eaff04] transition-colors" />
+            <Gauge className="w-4 h-4 text-gray-400 group-hover:text-[#45E3FF] transition-colors" />
             <span>Quality</span>
           </div>
           <span className="text-gray-500 text-xs">Auto</span>
@@ -91,7 +91,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
         {!isLive && (
           <button onClick={() => setActiveMenu('speed')} className="flex items-center justify-between px-3 py-2.5 text-sm rounded text-gray-300 hover:bg-white/5 hover:text-white transition-colors group">
             <div className="flex items-center gap-3">
-              <span className="w-4 flex justify-center text-xs font-mono text-gray-400 group-hover:text-[#eaff04] transition-colors">{currentSpeed}x</span>
+              <span className="w-4 flex justify-center text-xs font-mono text-gray-400 group-hover:text-[#45E3FF] transition-colors">{currentSpeed}x</span>
               <span>Playback Speed</span>
             </div>
             <span className="text-gray-500 text-xs">{currentSpeed === 1 ? 'Normal' : `${currentSpeed}x`}</span>
@@ -100,7 +100,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
 
         <button onClick={() => setActiveMenu('captions')} className="flex items-center justify-between px-3 py-2.5 text-sm rounded text-gray-300 hover:bg-white/5 hover:text-white transition-colors group">
           <div className="flex items-center gap-3">
-            <KeySquare className="w-4 h-4 text-gray-400 group-hover:text-[#eaff04] transition-colors" />
+            <KeySquare className="w-4 h-4 text-gray-400 group-hover:text-[#45E3FF] transition-colors" />
             <span>Captions</span>
           </div>
           <span className="text-gray-500 text-xs">Off</span>
@@ -110,7 +110,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
 
         <button onClick={() => setActiveMenu('help')} className="flex items-center justify-between px-3 py-2.5 text-sm rounded text-gray-300 hover:bg-white/5 hover:text-white transition-colors group">
           <div className="flex items-center gap-3">
-            <HelpCircle className="w-4 h-4 text-gray-400 group-hover:text-[#eaff04] transition-colors" />
+            <HelpCircle className="w-4 h-4 text-gray-400 group-hover:text-[#45E3FF] transition-colors" />
             <span>Help & Troubleshooting</span>
           </div>
         </button>
@@ -120,7 +120,7 @@ export default function PlayerSettingsMenu({ onClose, isLive, currentSpeed, onSp
   );
 
   return (
-    <div className="bg-[#1c1d21]/95 backdrop-blur-md text-white w-[280px] border border-white/10 shadow-2xl rounded shadow-black/80 flex flex-col pointer-events-auto animate-in fade-in zoom-in-95 duration-200">
+    <div className="bg-[#111D2E]/95 backdrop-blur-md text-white w-[280px] border border-white/10 shadow-2xl rounded shadow-black/80 flex flex-col pointer-events-auto animate-in fade-in zoom-in-95 duration-200">
       {activeMenu === 'main' && renderMain()}
       {activeMenu === 'quality' && renderSubMenu('Quality', qualities, 'Auto')}
       {activeMenu === 'speed' && renderSubMenu('Playback Speed', speeds, `${currentSpeed}x`, (item) => {

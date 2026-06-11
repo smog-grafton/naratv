@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { IconLogo, IconSearch, IconMenu, IconClose } from '@/components/icons';
+import logoImage from '@/app/logo.png';
+import { IconSearch, IconMenu, IconClose } from '@/components/icons';
 import AccountDropdown from '@/components/auth/AccountDropdown';
 import { Bell, PlayCircle } from 'lucide-react';
 import { clearSession, getHeaderNavigation, getLiveNow, getMe, getStoredToken, getStoredUser, NavigationItem } from '@/services/home';
@@ -98,9 +100,8 @@ export default function Header() {
       <header className={headerClass}>
         <div className="flex h-16 items-center px-4 md:px-6 w-full mx-auto">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2 mr-6 md:mr-10 text-white hover:text-white/80 transition-colors">
-              <IconLogo className="w-8 h-8" />
-              <span className="font-bold text-xl tracking-tight hidden sm:inline-block">NARA<span className="text-nara-red">TV</span></span>
+            <Link href="/" className="relative mr-5 block h-10 w-[136px] shrink-0 overflow-hidden md:mr-9 md:h-11 md:w-[152px]" aria-label="NaraTV home">
+              <Image src={logoImage} alt="NaraTV" fill priority sizes="152px" className="object-contain object-left" />
             </Link>
             
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -132,13 +133,13 @@ export default function Header() {
             </Link>
             
             {mounted && liveEvent && !isLoggedIn && (
-               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-nara-cyan hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
                   <PlayCircle className="w-3.5 h-3.5" /> Watch Live
                </Link>
             )}
 
             {mounted && liveEvent && isLoggedIn && (
-               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-[#eaff04] hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
+               <Link href={`/watch/${liveEvent.slug}`} className="hidden lg:flex items-center gap-1.5 bg-nara-cyan hover:bg-white text-black px-4 py-1.5 font-black uppercase tracking-widest text-[10px] sm:text-xs rounded-sm transition-colors">
                   <PlayCircle className="w-3.5 h-3.5" /> Watch Live
                </Link>
             )}
@@ -150,7 +151,7 @@ export default function Header() {
                 <>
                   <Link 
                     href="/login" 
-                    className="text-xs sm:text-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-2 rounded-sm transition-colors"
+                    className="text-xs sm:text-sm font-bold text-white bg-[#172338] hover:bg-[#22314B] px-4 py-2 rounded-sm transition-colors"
                   >
                     Log in
                   </Link>
@@ -184,9 +185,8 @@ export default function Header() {
           <div className="fixed inset-0 bg-nara-black/80 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
           <div className="relative flex flex-col w-[80%] max-w-sm h-full bg-nara-surface border-r border-nara-border shadow-2xl animate-in slide-in-from-left">
             <div className="flex h-16 items-center px-4 border-b border-nara-border justify-between">
-              <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                <IconLogo className="w-8 h-8 text-white" />
-                <span className="font-bold text-xl tracking-tight text-white">NARA<span className="text-nara-red">TV</span></span>
+              <Link href="/" className="relative block h-10 w-[140px] shrink-0 overflow-hidden" onClick={() => setMobileMenuOpen(false)} aria-label="NaraTV home">
+                <Image src={logoImage} alt="NaraTV" fill priority sizes="140px" className="object-contain object-left" />
               </Link>
               <button className="p-2 text-nara-text-muted hover:text-white" onClick={() => setMobileMenuOpen(false)}>
                 <IconClose className="w-6 h-6" />
@@ -227,7 +227,7 @@ export default function Header() {
                     </Link>
                     <button 
                       onClick={handleSimulatedLogout}
-                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
+                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#172338] hover:bg-[#22314B] transition-colors"
                     >
                       Sign Out
                     </button>
@@ -237,7 +237,7 @@ export default function Header() {
                     <Link 
                       href="/login" 
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#2A2B2E] hover:bg-[#3A3B3E] transition-colors"
+                      className="w-full py-3 text-center rounded-sm font-bold text-white bg-[#172338] hover:bg-[#22314B] transition-colors"
                     >
                       Log in
                     </Link>

@@ -38,10 +38,10 @@ export default function AuthCallbackPage() {
   }, [router]);
 
   return (
-    <main className="min-h-screen bg-[#0a0a0c] px-4 py-28 text-white">
-      <div className="mx-auto max-w-xl border border-white/10 bg-[#10141a] p-8 text-center">
-        {state === 'loading' ? <Loader2 className="mx-auto animate-spin text-[#f0c800]" size={34} /> : null}
-        {state === 'ready' ? <CheckCircle2 className="mx-auto text-[#f0c800]" size={34} /> : null}
+    <main className="min-h-screen bg-[#050B12] px-4 py-28 text-white">
+      <div className="mx-auto max-w-xl border border-white/10 bg-[#0B1626] p-8 text-center">
+        {state === 'loading' ? <Loader2 className="mx-auto animate-spin text-[#6F88FC]" size={34} /> : null}
+        {state === 'ready' ? <CheckCircle2 className="mx-auto text-[#6F88FC]" size={34} /> : null}
         <h1 className="mt-5 text-3xl font-black uppercase text-white">
           {state === 'failed' ? 'Sign-in needs another try' : 'Finishing your sign in'}
         </h1>

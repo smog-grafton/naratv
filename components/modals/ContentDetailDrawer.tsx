@@ -42,7 +42,7 @@ export default function ContentDetailDrawer({ item, onClose, onAction }: Props) 
       
       {/* Drawer */}
       <div 
-        className="fixed right-0 top-0 bottom-0 w-full md:w-[420px] lg:w-[480px] bg-[#0a0a0c] z-[101] flex flex-col shadow-2xl transition-transform duration-300 transform translate-x-0 overflow-y-auto"
+        className="fixed right-0 top-0 bottom-0 w-full md:w-[420px] lg:w-[480px] bg-[#050B12] z-[101] flex flex-col shadow-2xl transition-transform duration-300 transform translate-x-0 overflow-y-auto"
       >
         {/* Close Button */}
         <button 
@@ -53,13 +53,13 @@ export default function ContentDetailDrawer({ item, onClose, onAction }: Props) 
         </button>
 
         {/* Header Image */}
-        <div className="relative w-full aspect-[16/9] bg-[#1a1b1e]">
+        <div className="relative w-full aspect-[16/9] bg-[#111D2E]">
           <img 
             src={item.poster_url || item.thumbnail_url} 
             alt={item.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050B12] via-[#050B12]/20 to-transparent" />
         </div>
 
         {/* Content Details */}
@@ -73,7 +73,7 @@ export default function ContentDetailDrawer({ item, onClose, onAction }: Props) 
             </div>
           )}
           <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight mb-1">{item.title}</h2>
-          <p className="text-sm font-bold text-[#f0c800] uppercase tracking-wider mb-6">
+          <p className="text-sm font-bold text-[#6F88FC] uppercase tracking-wider mb-6">
             {item.category || (item.content_type === 'live_event' ? 'LIVE EVENT' : 'NARA TV')}
           </p>
           
@@ -86,7 +86,7 @@ export default function ContentDetailDrawer({ item, onClose, onAction }: Props) 
                 <button
                   key={option.id || idx}
                   onClick={() => handleOptionClick(option)}
-                  className="w-full flex items-center justify-between p-4 rounded-[4px] bg-[#1a1b1e] hover:bg-[#2a2b2e] border border-[#2a2b2e] transition-colors text-left group"
+                  className="w-full flex items-center justify-between p-4 rounded-[4px] bg-[#111D2E] hover:bg-[#172338] border border-[#172338] transition-colors text-left group"
                 >
                   <div className="flex items-center gap-4">
                     <Play className="w-5 h-5 text-white group-hover:scale-110 transition-transform" fill="currentColor" />

@@ -10,10 +10,10 @@ export default async function NotFound() {
   const recommendations = [...events, ...replays].slice(0, 4);
 
   return (
-    <main className="min-h-screen bg-[#0a0a0c] px-4 py-28 text-white">
+    <main className="min-h-screen bg-[#050B12] px-4 py-28 text-white">
       <section className="mx-auto max-w-[1200px]">
         <div className="max-w-2xl">
-          <p className="text-[11px] font-black uppercase tracking-[0.35em] text-[#eaff04]">404</p>
+          <p className="text-[11px] font-black uppercase tracking-[0.35em] text-[#45E3FF]">404</p>
           <h1 className="mt-4 text-4xl font-black uppercase tracking-tighter text-white md:text-6xl">This page left the ring</h1>
           <p className="mt-4 max-w-xl text-sm leading-7 text-gray-400 md:text-base">
             The link may have changed, but the fight-night library is still open. Jump back to NaraTV or pick a live card, event, or replay below.
@@ -34,11 +34,11 @@ export default async function NotFound() {
         {recommendations.length > 0 && (
           <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             {recommendations.map((item: any) => (
-              <Link key={`${item.id}-${item.slug}`} href={item.poster_url ? `/events/${item.slug}` : `/watch/${item.slug}`} className="group overflow-hidden border border-white/10 bg-[#10141a] transition-colors hover:border-[#eaff04]/60">
+              <Link key={`${item.id}-${item.slug}`} href={item.poster_url ? `/events/${item.slug}` : `/watch/${item.slug}`} className="group overflow-hidden border border-white/10 bg-[#0B1626] transition-colors hover:border-[#45E3FF]/60">
                 <div className="relative aspect-video bg-black">
                   <img src={item.poster_url || item.thumbnail_url || '/assets/images/videos/video1.webp'} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
-                  <span className="absolute bottom-3 left-3 text-[10px] font-black uppercase tracking-widest text-[#eaff04]">{item.status || item.category || 'NaraTV'}</span>
+                  <span className="absolute bottom-3 left-3 text-[10px] font-black uppercase tracking-widest text-[#45E3FF]">{item.status || item.category || 'NaraTV'}</span>
                 </div>
                 <div className="p-4">
                   <h2 className="line-clamp-2 text-sm font-black uppercase leading-tight text-white">{item.title}</h2>

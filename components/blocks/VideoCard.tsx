@@ -63,7 +63,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
     // Hack for top sports categories
     return (
       <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
-        <div className={`relative w-full ${aspectClass} rounded-md overflow-hidden bg-[#10141a]`}>
+        <div className={`relative w-full ${aspectClass} rounded-md overflow-hidden bg-[#0B1626]`}>
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
         </div>
@@ -73,7 +73,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
             <p className="text-xs text-gray-400 mt-0.5 uppercase tracking-wider">{(item as any).category}</p>
           )}
           {(item as any).source_label && (
-            <p className="text-xs text-[#f0c800] mt-0.5 font-bold">{(item as any).source_label}</p>
+            <p className="text-xs text-[#6F88FC] mt-0.5 font-bold">{(item as any).source_label}</p>
           )}
         </div>
       </button>
@@ -83,7 +83,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   if (layout === 'banner') {
     return (
       <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none rounded-lg overflow-hidden relative text-left">
-        <div className={`relative w-full ${aspectClass} bg-[#10141a] overflow-hidden`}>
+        <div className={`relative w-full ${aspectClass} bg-[#0B1626] overflow-hidden`}>
           <img src={image} alt={title} className="w-full h-full object-cover" />
           {/* Dark gradient on the left for text readability */}
           <div className="absolute inset-y-0 left-0 w-2/3 bg-gradient-to-r from-black via-black/80 to-transparent" />
@@ -109,14 +109,14 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   if (layout === 'poster') {
     return (
       <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
-        <div className={`relative w-full ${aspectClass} bg-[#10141a] rounded-md overflow-hidden mb-3`}>
+        <div className={`relative w-full ${aspectClass} bg-[#0B1626] rounded-md overflow-hidden mb-3`}>
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
           {/* Text inside the bottom of the poster */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
           <div className="absolute bottom-0 w-full p-4 text-center">
             <h3 className="text-lg md:text-xl font-black text-white uppercase tracking-wider">{title}</h3>
             {eventStartTime && (
-              <p className="text-sm text-[#f0c800] font-bold mt-1" suppressHydrationWarning>
+              <p className="text-sm text-[#6F88FC] font-bold mt-1" suppressHydrationWarning>
                 {new Date(eventStartTime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
@@ -134,7 +134,7 @@ export default function VideoCard({ item, layout = 'video' }: { item: Video | Ev
   // Default 'video' layout
   return (
     <button onClick={handleClick} className="group flex flex-col w-full h-full outline-none text-left">
-      <div className="relative w-full aspect-[16/9] bg-[#10141a] rounded-md overflow-hidden mb-3 group-hover:ring-2 ring-white/20 transition-all">
+      <div className="relative w-full aspect-[16/9] bg-[#0B1626] rounded-md overflow-hidden mb-3 group-hover:ring-2 ring-white/20 transition-all">
         {/* Image */}
         <img 
           src={image} 

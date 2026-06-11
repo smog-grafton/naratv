@@ -67,8 +67,8 @@ export default function ChatTab() {
   const isLoggedIn = true; // BACKEND INTEGRATION: check true auth state
 
   return (
-    <div className="flex flex-col h-[500px] bg-[#0a1017] border border-white/5 rounded-sm">
-      <div className="p-4 border-b border-white/5 bg-[#121922] flex justify-between items-center">
+    <div className="flex flex-col h-[500px] bg-[#07111F] border border-white/5 rounded-sm">
+      <div className="p-4 border-b border-white/5 bg-[#0F1B2D] flex justify-between items-center">
         <h3 className="font-bold text-white uppercase tracking-wider text-sm">Live Chat</h3>
         <span className="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase">
           <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
@@ -82,12 +82,12 @@ export default function ChatTab() {
       >
         {messages.map(msg => (
           <div key={msg.id} className="flex items-start gap-3 text-sm">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${msg.isAdmin ? 'bg-[#eaff04] text-black' : 'bg-white/10 text-white'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${msg.isAdmin ? 'bg-[#45E3FF] text-black' : 'bg-white/10 text-white'}`}>
               <User className="w-3 h-3" />
             </div>
             <div className="flex-1 leading-snug">
               <div className="flex items-baseline gap-2 mb-0.5">
-                <span className={`font-bold ${msg.isAdmin ? 'text-[#eaff04]' : 'text-gray-300'}`}>
+                <span className={`font-bold ${msg.isAdmin ? 'text-[#45E3FF]' : 'text-gray-300'}`}>
                   {msg.user}
                 </span>
                 <span className="text-[10px] text-gray-600 font-mono">{msg.timestamp}</span>
@@ -108,7 +108,7 @@ export default function ChatTab() {
         </button>
       )}
 
-      <div className="p-3 border-t border-white/5 bg-[#121922]">
+      <div className="p-3 border-t border-white/5 bg-[#0F1B2D]">
         {isLoggedIn ? (
           <form onSubmit={handleSend} className="flex gap-2">
             <input 
@@ -116,12 +116,12 @@ export default function ChatTab() {
               placeholder="Chat publicly..." 
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              className="flex-1 bg-black/40 border border-white/10 rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#eaff04] transition-colors"
+              className="flex-1 bg-black/40 border border-white/10 rounded-sm px-3 py-2 text-sm text-white focus:outline-none focus:border-[#45E3FF] transition-colors"
             />
             <button 
               type="submit"
               disabled={!newMessage.trim()}
-              className="bg-[#eaff04] disabled:bg-white/10 disabled:text-gray-500 text-black px-4 py-2 rounded-sm flex items-center justify-center transition-colors"
+              className="bg-[#45E3FF] disabled:bg-white/10 disabled:text-gray-500 text-black px-4 py-2 rounded-sm flex items-center justify-center transition-colors"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -129,7 +129,7 @@ export default function ChatTab() {
         ) : (
           <div className="text-center py-2">
             <span className="text-xs text-gray-400">Please </span>
-            <button className="text-[#eaff04] hover:underline text-xs font-bold uppercase transition">log in</button>
+            <button className="text-[#45E3FF] hover:underline text-xs font-bold uppercase transition">log in</button>
             <span className="text-xs text-gray-400"> to connect.</span>
           </div>
         )}

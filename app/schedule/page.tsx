@@ -72,7 +72,7 @@ export default async function SchedulePage() {
                   <Link
                     key={event.id}
                     href={`/events/${event.slug}`}
-                    className="group bg-[#10141a] border border-white/10 hover:border-[#eaff04]/50 rounded-sm overflow-hidden transition-colors"
+                    className="group bg-[#0B1626] border border-white/10 hover:border-[#45E3FF]/50 rounded-sm overflow-hidden transition-colors"
                   >
                     <div className="relative aspect-video bg-black">
                       <img
@@ -96,7 +96,7 @@ export default async function SchedulePage() {
                       </div>
                     </div>
                     <div className="p-4">
-                      <p className="text-[10px] uppercase tracking-[0.25em] text-[#eaff04] font-black mb-2">{event.status}</p>
+                      <p className="text-[10px] uppercase tracking-[0.25em] text-[#45E3FF] font-black mb-2">{event.status}</p>
                       <h2 className="text-white font-black uppercase tracking-tight line-clamp-2">{event.title}</h2>
                       <p className="text-gray-400 text-sm mt-2 line-clamp-1">{[event.venue, event.city, event.country].filter(Boolean).join(', ')}</p>
                     </div>
@@ -108,7 +108,7 @@ export default async function SchedulePage() {
         })}
 
         {events.length === 0 && (
-          <div className="border border-white/10 bg-[#10141a] p-10 text-center">
+          <div className="border border-white/10 bg-[#0B1626] p-10 text-center">
             <h2 className="text-white text-xl font-black uppercase">No scheduled events yet</h2>
             <p className="text-gray-400 mt-2">The next NaraTV schedule is being prepared. Check back soon for live cards and replay premieres.</p>
           </div>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
-      <body suppressHydrationWarning className="bg-[#0a0a0c] text-white min-h-screen flex flex-col font-sans">
+      <body suppressHydrationWarning className="bg-[#050B12] text-white min-h-screen flex flex-col font-sans">
         <ContentModalProvider>
           <Header />
           <main className="flex-grow">

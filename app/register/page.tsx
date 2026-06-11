@@ -21,9 +21,9 @@ export default function RegisterInitialPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col relative font-sans">
+    <div className="min-h-screen bg-[#050B12] text-white flex flex-col relative font-sans">
       {/* Top Bar */}
-      <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-[#0a0a0c]">
+      <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-[#050B12]">
         <Link href="/" className="text-gray-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </Link>
@@ -46,14 +46,14 @@ export default function RegisterInitialPage() {
                 placeholder="Email address" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
+                className="w-full bg-transparent border border-[#172338] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
             </div>
             
             <button 
               type="submit" 
-              className={`w-full font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-2 text-sm ${email ? 'bg-[#f0c800] text-black hover:bg-[#e6c000]' : 'bg-[#3a3b3e] text-[#848485] pointer-events-none'}`}
+              className={`w-full font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-2 text-sm ${email ? 'bg-[#6F88FC] text-black hover:bg-[#45E3FF]' : 'bg-[#22314B] text-[#848485] pointer-events-none'}`}
               disabled={!email}
             >
               Continue with Email
@@ -61,16 +61,16 @@ export default function RegisterInitialPage() {
           </form>
 
           <div className="flex items-center justify-center gap-4 my-8">
-            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+            <div className="h-[1px] bg-[#172338] flex-1"></div>
             <span className="text-[11px] text-gray-500 font-bold tracking-wider uppercase">or sign up with</span>
-            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+            <div className="h-[1px] bg-[#172338] flex-1"></div>
           </div>
 
           <div className="flex flex-col gap-3">
             <button type="button" onClick={continueWithGoogle} className="w-full bg-white text-black font-bold py-3.5 rounded-[4px] hover:bg-gray-200 transition-colors flex items-center justify-center gap-3 text-sm">
               <Chrome className="w-5 h-5" /> Google
             </button>
-            <button type="button" disabled className="w-full bg-[#1a1b1e] text-white border border-[#2a2b2e] font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-3 text-sm opacity-40">
+            <button type="button" disabled className="w-full bg-[#111D2E] text-white border border-[#172338] font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-3 text-sm opacity-40">
               <Apple className="w-5 h-5" /> Apple coming soon
             </button>
             <button type="button" disabled className="w-full bg-[#1877F2] text-white font-bold py-3.5 rounded-[4px] transition-colors flex items-center justify-center gap-3 text-sm opacity-40">

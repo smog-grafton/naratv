@@ -87,7 +87,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
 
         <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 md:px-12 pb-16 pt-32 md:pt-44 flex flex-col md:flex-row gap-12 md:items-end justify-between">
           <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700 mt-20 md:mt-0">
-            <div className="bg-[#eaff04] text-black font-black uppercase text-xs md:text-sm tracking-widest px-3 py-1 mb-4 rounded-sm inline-block">
+            <div className="bg-[#45E3FF] text-black font-black uppercase text-xs md:text-sm tracking-widest px-3 py-1 mb-4 rounded-sm inline-block">
               {event.is_live ? 'Live Now' : event.status}
             </div>
             <p className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-3">Presented by {event.source_label || 'Nara Promotionz'}</p>
@@ -108,7 +108,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <Link href={`/watch/${event.slug}`} className="bg-[#eaff04] text-black font-bold uppercase tracking-wider py-4 px-10 rounded-sm text-sm hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#eaff04]/20">
+              <Link href={`/watch/${event.slug}`} className="bg-[#45E3FF] text-black font-bold uppercase tracking-wider py-4 px-10 rounded-sm text-sm hover:bg-white transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#45E3FF]/20">
                 <Play className="w-4 h-4 fill-black text-black" /> {event.is_live ? 'Watch Live' : event.status === 'completed' ? 'Watch Replay' : event.is_free ? 'Event Details' : 'Buy Event Pass'}
               </Link>
               <Link href={`/checkout?event=${event.slug}`} className="bg-white/10 backdrop-blur-md text-white border border-white/20 font-bold uppercase tracking-wider py-4 px-10 rounded-sm text-sm hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
@@ -142,23 +142,23 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 return (
                   <div
                     key={bout.id}
-                    className={`border rounded-md p-4 md:p-6 transition-colors ${bout.is_main_event || index === 0 ? 'bg-[#151a20] border-[#eaff04]/40' : 'bg-[#10141a] border-nara-border'}`}
+                    className={`border rounded-md p-4 md:p-6 transition-colors ${bout.is_main_event || index === 0 ? 'bg-[#151a20] border-[#45E3FF]/40' : 'bg-[#0B1626] border-nara-border'}`}
                   >
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                      <p className="text-[10px] uppercase tracking-[0.25em] text-[#eaff04] font-bold">{label}</p>
+                      <p className="text-[10px] uppercase tracking-[0.25em] text-[#45E3FF] font-bold">{label}</p>
                       <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                        {bout.title_fight ? <Trophy className="h-3.5 w-3.5 text-[#eaff04]" /> : null}
+                        {bout.title_fight ? <Trophy className="h-3.5 w-3.5 text-[#45E3FF]" /> : null}
                         {bout.belt_title || bout.weight_class || bout.status}
                       </div>
                     </div>
                     <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 md:gap-6">
                       <Link href={`/boxers/${red?.slug || ''}`} className="min-w-0 text-left">
-                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(red?.id) ? 'text-[#eaff04]' : 'text-white'}`}>{red?.name || 'Red Corner'}</h3>
+                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(red?.id) ? 'text-[#45E3FF]' : 'text-white'}`}>{red?.name || 'Red Corner'}</h3>
                         <p className="mt-1 truncate text-xs md:text-sm text-gray-400">{red?.record?.display || red?.weight_class || red?.country || 'Fighter profile'}</p>
                       </Link>
                       <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-black text-[11px] font-black uppercase text-gray-300">VS</div>
                       <Link href={`/boxers/${blue?.slug || ''}`} className="min-w-0 text-right">
-                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(blue?.id) ? 'text-[#eaff04]' : 'text-white'}`}>{blue?.name || 'Blue Corner'}</h3>
+                        <h3 className={`truncate text-lg md:text-2xl font-black uppercase tracking-tight ${winner && winner === String(blue?.id) ? 'text-[#45E3FF]' : 'text-white'}`}>{blue?.name || 'Blue Corner'}</h3>
                         <p className="mt-1 truncate text-xs md:text-sm text-gray-400">{blue?.record?.display || blue?.weight_class || blue?.country || 'Fighter profile'}</p>
                       </Link>
                     </div>
@@ -173,7 +173,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                 <Link
                   key={fighter?.id || index}
                   href={`/boxers/${fighter?.slug || ''}`}
-                  className="bg-[#10141a] border border-nara-border rounded-md p-4 md:p-6 flex items-center justify-between gap-4 hover:border-white/20 transition-colors"
+                  className="bg-[#0B1626] border border-nara-border rounded-md p-4 md:p-6 flex items-center justify-between gap-4 hover:border-white/20 transition-colors"
                 >
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.25em] text-gray-500 font-bold">{index === 0 ? 'Main Event' : 'Featured Boxer'}</p>
@@ -183,7 +183,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
                   <Users className="w-5 h-5 text-gray-500" />
                 </Link>
               )) : (
-                <div className="bg-[#10141a] border border-nara-border rounded-md p-6 text-gray-400">
+                <div className="bg-[#0B1626] border border-nara-border rounded-md p-6 text-gray-400">
                   The fight card will be announced soon.
                 </div>
               )}
@@ -212,12 +212,12 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
           <aside className="space-y-6">
             <div className="bg-[#0a0f16] border border-nara-border p-6 rounded-md">
               <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-4">Watch Access</h3>
-              <div className="p-4 border border-[#eaff04]/50 bg-[#eaff04]/5 rounded-sm">
+              <div className="p-4 border border-[#45E3FF]/50 bg-[#45E3FF]/5 rounded-sm">
                 <div className="font-bold text-white">{event.access_type === 'free' ? 'Free Stream' : 'Event Pass'}</div>
                 <div className="text-sm text-gray-400 mt-1 leading-relaxed">
                   {event.description || 'Watch this event on NaraTV with an eligible ticket, PPV unlock, or active pass.'}
                 </div>
-                <div className="text-lg font-black text-[#eaff04] mt-3">{price}</div>
+                <div className="text-lg font-black text-[#45E3FF] mt-3">{price}</div>
               </div>
               <Link href={`/checkout?event=${event.slug}`} className="w-full mt-6 bg-white text-black hover:bg-gray-200 py-4 font-black uppercase tracking-widest text-sm rounded-sm transition-colors flex justify-center">
                 Checkout

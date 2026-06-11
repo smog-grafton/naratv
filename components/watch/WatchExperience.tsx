@@ -108,7 +108,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
               <div className="flex w-full max-w-md flex-col justify-center gap-3 sm:flex-row">
                 {isPremium ? (
                   <>
-                    <Link href={paymentHref} className="rounded-sm bg-[#eaff04] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
+                    <Link href={paymentHref} className="rounded-sm bg-[#45E3FF] px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-white">
                       Unlock Access
                     </Link>
                     <Link href="/subscriptions" className="rounded-sm bg-white/10 px-8 py-3.5 text-center text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/20">
@@ -137,7 +137,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
             <span className="rounded-sm border border-white/10 bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white md:text-xs">
               {video?.category || event?.status || 'NaraTV'}
             </span>
-            {isPremium && <span className="rounded-sm bg-[#eaff04] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black md:text-xs">Premium</span>}
+            {isPremium && <span className="rounded-sm bg-[#45E3FF] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black md:text-xs">Premium</span>}
             {event?.source_label || video?.source_label ? <span className="text-xs font-bold uppercase tracking-wide text-gray-400">{event?.source_label || video?.source_label}</span> : null}
           </div>
           <h1 className="mb-4 text-2xl font-black capitalize leading-tight tracking-tight text-white md:text-4xl">{title}</h1>
@@ -146,7 +146,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
           </p>
         </div>
 
-        <aside className="h-fit rounded-sm border border-white/5 bg-[#0a1017] p-5">
+        <aside className="h-fit rounded-sm border border-white/5 bg-[#07111F] p-5">
           <div className="mb-4 flex items-center gap-3 border-b border-white/5 pb-4">
             <MessageSquare className="h-5 w-5 text-gray-400" />
             <h2 className="text-sm font-bold uppercase tracking-wider text-white">Live Interaction</h2>
@@ -155,7 +155,7 @@ export default function WatchExperience({ slug, initialVideo, initialEvent, rela
             Fight chat, reactions, and post-fight conversation will open here when this event is live.
           </p>
           <div className="mt-5 flex items-center gap-2 text-xs text-gray-500">
-            <ShieldCheck className="h-4 w-4 text-[#eaff04]" />
+            <ShieldCheck className="h-4 w-4 text-[#45E3FF]" />
             Your pass is checked securely before playback opens.
           </div>
         </aside>

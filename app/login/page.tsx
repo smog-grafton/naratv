@@ -43,7 +43,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col relative font-sans">
+    <div className="min-h-screen bg-[#050B12] text-white flex flex-col relative font-sans">
       {/* Top Bar matching DAZN */}
       <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10">
         <Link href="/" className="text-gray-400 hover:text-white transition-colors">
@@ -71,7 +71,7 @@ export default function LoginPage() {
                 placeholder="Email address or phone number" 
                 value={loginValue}
                 onChange={(event) => setLoginValue(event.target.value)}
-                className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
+                className="w-full bg-transparent border border-[#172338] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
             </div>
@@ -82,7 +82,7 @@ export default function LoginPage() {
                 placeholder="Password" 
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
+                className="w-full bg-transparent border border-[#172338] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
             </div>
@@ -96,7 +96,7 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-[#f0c800] text-black font-bold py-3.5 rounded-[4px] hover:bg-[#e6c000] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-[#6F88FC] text-black font-bold py-3.5 rounded-[4px] hover:bg-[#45E3FF] transition-colors mt-2 disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {isLoading && <Loader2 className="w-5 h-5 animate-spin text-black" />} Continue
             </button>
@@ -109,21 +109,21 @@ export default function LoginPage() {
           </div>
 
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+            <div className="h-[1px] bg-[#172338] flex-1"></div>
             <span className="text-[11px] text-gray-500 font-medium tracking-wider">or</span>
-            <div className="h-[1px] bg-[#2a2b2e] flex-1"></div>
+            <div className="h-[1px] bg-[#172338] flex-1"></div>
           </div>
 
           <div className="flex flex-col gap-3">
-            <button type="button" onClick={continueWithGoogle} disabled={isLoading} className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#2a2b2e] py-3.5 rounded-[4px] hover:bg-[#1a1b1e] transition-colors font-medium text-sm disabled:opacity-60">
+            <button type="button" onClick={continueWithGoogle} disabled={isLoading} className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#172338] py-3.5 rounded-[4px] hover:bg-[#111D2E] transition-colors font-medium text-sm disabled:opacity-60">
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 flex-shrink-0" />
               <span>Continue with Google</span>
             </button>
-            <button type="button" disabled className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#2a2b2e] py-3.5 rounded-[4px] transition-colors font-medium text-sm opacity-40">
+            <button type="button" disabled className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#172338] py-3.5 rounded-[4px] transition-colors font-medium text-sm opacity-40">
               <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" className="w-5 h-5 flex-shrink-0" />
               <span>Facebook coming soon</span>
             </button>
-            <button type="button" disabled className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#2a2b2e] py-3.5 rounded-[4px] transition-colors font-medium text-sm opacity-40">
+            <button type="button" disabled className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#172338] py-3.5 rounded-[4px] transition-colors font-medium text-sm opacity-40">
               <svg viewBox="0 0 24 24" className="w-5 h-5 flex-shrink-0 fill-current text-white"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/></svg>
               <span>Apple coming soon</span>
             </button>

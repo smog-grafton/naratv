@@ -90,7 +90,7 @@ export default async function BoxerProfilePage({ params }: { params: Promise<{ s
 
         <div className="relative z-20 w-full max-w-[1920px] mx-auto px-4 md:px-12 pb-10 md:pb-14 border-b border-white/5">
           <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="inline-block bg-[#f0c800] text-black font-black uppercase text-xs md:text-sm tracking-widest px-3 py-1 mb-4 rounded-sm">
+            <div className="inline-block bg-[#6F88FC] text-black font-black uppercase text-xs md:text-sm tracking-widest px-3 py-1 mb-4 rounded-sm">
               {fighter.weight_class || 'Boxer Profile'}
             </div>
             <h1 className="max-w-[11ch] text-5xl md:text-7xl xl:text-8xl font-black text-white uppercase tracking-tight mb-7 leading-[0.9]">
@@ -100,7 +100,7 @@ export default async function BoxerProfilePage({ params }: { params: Promise<{ s
             <div className="grid grid-cols-4 max-w-xl gap-3 md:gap-5 mb-8">
               {[
                 ['Wins', record.wins, 'text-green-500'],
-                ['KOs', record.knockouts, 'text-[#f0c800]'],
+                ['KOs', record.knockouts, 'text-[#6F88FC]'],
                 ['Draws', record.draws, 'text-blue-500'],
                 ['Losses', record.losses, 'text-nara-red'],
               ].map(([label, value, color]) => (
@@ -130,7 +130,7 @@ export default async function BoxerProfilePage({ params }: { params: Promise<{ s
               <Link href="/leaderboards" className="bg-white text-black font-black uppercase tracking-widest px-8 py-3 rounded-sm text-sm hover:bg-gray-200 transition-colors flex items-center gap-2">
                 <Trophy className="w-4 h-4" /> View Rankings
               </Link>
-              <Link href="/schedule" className="bg-[#2A2B2E]/80 backdrop-blur-md text-white border border-[#3A3B3E] font-bold uppercase tracking-wider py-3 px-8 rounded-sm text-sm hover:bg-[#3A3B3E] transition-colors flex items-center gap-2">
+              <Link href="/schedule" className="bg-[#172338]/80 backdrop-blur-md text-white border border-[#22314B] font-bold uppercase tracking-wider py-3 px-8 rounded-sm text-sm hover:bg-[#22314B] transition-colors flex items-center gap-2">
                 <Calendar className="w-4 h-4" /> Events
               </Link>
             </div>
@@ -153,7 +153,7 @@ export default async function BoxerProfilePage({ params }: { params: Promise<{ s
             <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-4">Event History</h2>
             <div className="grid gap-3">
               {fighter.related_events.map((event: any) => (
-                <Link key={event.id} href={`/events/${event.slug}`} className="border border-white/10 bg-[#10141a] p-4 hover:border-[#eaff04]/50 transition-colors">
+                <Link key={event.id} href={`/events/${event.slug}`} className="border border-white/10 bg-[#0B1626] p-4 hover:border-[#45E3FF]/50 transition-colors">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                     <div>
                       <h3 className="text-white font-black uppercase">{event.name || event.title}</h3>

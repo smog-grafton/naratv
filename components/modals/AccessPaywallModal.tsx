@@ -50,7 +50,7 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
         onClick={onClose}
       >
         <div 
-          className="relative bg-[#0a0a0c] w-full max-w-[480px] rounded-[8px] overflow-hidden shadow-2xl flex flex-col scale-100 transition-transform duration-200"
+          className="relative bg-[#050B12] w-full max-w-[480px] rounded-[8px] overflow-hidden shadow-2xl flex flex-col scale-100 transition-transform duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           <button 
@@ -60,14 +60,14 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
             <X className="w-4 h-4" />
           </button>
 
-          <div className="relative w-full aspect-[4/3] bg-[#1a1b1e]">
+          <div className="relative w-full aspect-[4/3] bg-[#111D2E]">
              <img 
               src={item.poster_url || item.thumbnail_url} 
               alt={item.title}
               className="w-full h-full object-cover"
             />
             {/* Very strong bottom gradient to blend perfectly into the bg */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0a0a0c] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#050B12] to-transparent" />
           </div>
 
           <div className="px-6 pb-8 -mt-6 relative z-10 flex flex-col items-center text-center">
@@ -79,11 +79,11 @@ export default function AccessPaywallModal({ item, onClose }: Props) {
                 </div>
               )}
              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">{item.title}</h2>
-             <p className="text-[#f0c800] text-xs font-bold uppercase tracking-wider mb-6">
+             <p className="text-[#6F88FC] text-xs font-bold uppercase tracking-wider mb-6">
                 {item.category || 'NaraTV'}
              </p>
 
-             <div className="w-full max-w-[80%] mx-auto h-[1px] bg-[#2a2b2e] mb-6" />
+             <div className="w-full max-w-[80%] mx-auto h-[1px] bg-[#172338] mb-6" />
 
              <p className="text-[13px] text-gray-300 leading-relaxed mb-6">
                {messageText}

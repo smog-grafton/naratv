@@ -92,16 +92,16 @@ export default function SearchPage() {
               <button className="px-4 py-1.5 rounded-sm bg-white text-black font-black uppercase tracking-widest text-[10px] whitespace-nowrap">
                 All ({loading ? '...' : results.length})
               </button>
-              <button className="px-4 py-1.5 rounded-sm bg-[#10141a] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
+              <button className="px-4 py-1.5 rounded-sm bg-[#0B1626] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
                 Fighters
               </button>
-              <button className="px-4 py-1.5 rounded-sm bg-[#10141a] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
+              <button className="px-4 py-1.5 rounded-sm bg-[#0B1626] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
                 Events
               </button>
-              <button className="px-4 py-1.5 rounded-sm bg-[#10141a] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
+              <button className="px-4 py-1.5 rounded-sm bg-[#0B1626] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
                 Replays
               </button>
-              <button className="px-4 py-1.5 rounded-sm bg-[#10141a] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
+              <button className="px-4 py-1.5 rounded-sm bg-[#0B1626] border border-white/10 text-gray-400 font-bold uppercase tracking-widest text-[10px] whitespace-nowrap hover:bg-white/10 hover:text-white transition-colors">
                 News
               </button>
             </div>
@@ -118,7 +118,7 @@ export default function SearchPage() {
                   <Link
                     key={item.id}
                     href={item.url}
-                    className="group grid grid-cols-[112px_1fr] md:grid-cols-[148px_1fr] min-h-[116px] overflow-hidden rounded-sm border border-white/10 bg-[#10141a] hover:border-[#eaff04]/60 transition-colors"
+                    className="group grid grid-cols-[112px_1fr] md:grid-cols-[148px_1fr] min-h-[116px] overflow-hidden rounded-sm border border-white/10 bg-[#0B1626] hover:border-[#45E3FF]/60 transition-colors"
                   >
                     <div className="relative bg-black">
                       {item.image_url ? (
@@ -131,12 +131,12 @@ export default function SearchPage() {
                     </div>
                     <div className="min-w-0 p-4 flex flex-col justify-center">
                       <div className="mb-2 flex items-center gap-2">
-                        <span className="rounded-sm bg-[#eaff04] px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-black">
+                        <span className="rounded-sm bg-[#45E3FF] px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-black">
                           {item.type}
                         </span>
                         {item.label ? <span className="truncate text-[10px] font-bold uppercase tracking-widest text-gray-500">{item.label}</span> : null}
                       </div>
-                      <h2 className="line-clamp-2 text-base md:text-lg font-black uppercase tracking-tight text-white group-hover:text-[#eaff04] transition-colors">
+                      <h2 className="line-clamp-2 text-base md:text-lg font-black uppercase tracking-tight text-white group-hover:text-[#45E3FF] transition-colors">
                         {item.title}
                       </h2>
                       {item.description ? (

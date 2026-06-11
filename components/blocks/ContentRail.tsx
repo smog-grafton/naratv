@@ -77,7 +77,7 @@ export default function ContentRail({ rail, index = 0 }: { rail: ContentRailType
           <div className="flex justify-between items-end mb-8 md:mb-12">
             <div className="max-w-2xl">
               {rail.badge && (
-                <div className="bg-[#f0c800] text-black text-xs md:text-sm font-bold px-2 py-0.5 rounded-sm inline-block mb-4 uppercase tracking-wider">
+                <div className="bg-[#6F88FC] text-black text-xs md:text-sm font-bold px-2 py-0.5 rounded-sm inline-block mb-4 uppercase tracking-wider">
                   {rail.badge}
                 </div>
               )}
@@ -143,7 +143,7 @@ export default function ContentRail({ rail, index = 0 }: { rail: ContentRailType
           <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white mb-1 flex items-center gap-3">
             {rail.titlePrefix && (
               <>
-                <span className="text-[#eaff04]">{rail.titlePrefix}</span>
+                <span className="text-[#45E3FF]">{rail.titlePrefix}</span>
                 <span className="text-gray-600 font-normal pb-1">|</span>
               </>
             )}
@@ -159,7 +159,7 @@ export default function ContentRail({ rail, index = 0 }: { rail: ContentRailType
         {/* Desktop Controls */}
         <div className="hidden md:flex items-center gap-2">
           {rail.items.length > 4 && (
-            <button className="text-sm font-bold text-white uppercase bg-[#2A2B2E] hover:bg-[#3A3B3E] px-4 py-1.5 rounded-[2px] transition-colors mr-2">
+            <button className="text-sm font-bold text-white uppercase bg-[#172338] hover:bg-[#22314B] px-4 py-1.5 rounded-[2px] transition-colors mr-2">
               Show All
             </button>
           )}

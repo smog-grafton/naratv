@@ -30,7 +30,7 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[#050b12] pt-24 text-white">
       <section className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 pb-16 md:grid-cols-[0.8fr_1.2fr] md:px-8">
         <div>
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#eaff04]">Contact</p>
+          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#45E3FF]">Contact</p>
           <h1 className="text-4xl font-black tracking-tight md:text-6xl">Talk to NaraTV</h1>
           <p className="mt-5 text-base leading-relaxed text-zinc-300">
             Send a support request for streams, replays, ticket access, subscriptions, or account issues.
@@ -38,41 +38,41 @@ export default function ContactPage() {
 
           <div className="mt-10 space-y-5 text-sm text-zinc-200">
             <div className="flex gap-3">
-              <Mail className="h-5 w-5 text-[#eaff04]" />
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-[#eaff04]">{SUPPORT_EMAIL}</a>
+              <Mail className="h-5 w-5 text-[#45E3FF]" />
+              <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-[#45E3FF]">{SUPPORT_EMAIL}</a>
             </div>
             <div className="flex gap-3">
-              <MapPin className="h-5 w-5 text-[#eaff04]" />
+              <MapPin className="h-5 w-5 text-[#45E3FF]" />
               <span>Kampala, Uganda</span>
             </div>
             <div className="flex gap-3">
-              <MessageSquare className="h-5 w-5 text-[#eaff04]" />
+              <MessageSquare className="h-5 w-5 text-[#45E3FF]" />
               <span>Replies are handled by the NaraTV support team.</span>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="border border-white/10 bg-white/[0.03] p-6 md:p-8">
-          {status ? <div className="mb-5 border border-[#eaff04]/30 bg-[#eaff04]/10 p-3 text-sm text-zinc-100">{status}</div> : null}
+          {status ? <div className="mb-5 border border-[#45E3FF]/30 bg-[#45E3FF]/10 p-3 text-sm text-zinc-100">{status}</div> : null}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <label className="text-sm font-bold text-zinc-200">
               Name
-              <input name="name" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#eaff04]" />
+              <input name="name" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#45E3FF]" />
             </label>
             <label className="text-sm font-bold text-zinc-200">
               Email
-              <input name="email" type="email" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#eaff04]" />
+              <input name="email" type="email" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#45E3FF]" />
             </label>
           </div>
           <label className="mt-4 block text-sm font-bold text-zinc-200">
             Subject
-            <input name="subject" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#eaff04]" />
+            <input name="subject" className="mt-2 w-full border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#45E3FF]" />
           </label>
           <label className="mt-4 block text-sm font-bold text-zinc-200">
             Message
-            <textarea name="message" rows={7} className="mt-2 w-full resize-none border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#eaff04]" />
+            <textarea name="message" rows={7} className="mt-2 w-full resize-none border border-white/10 bg-[#050b12] px-4 py-3 text-white outline-none focus:border-[#45E3FF]" />
           </label>
-          <button className="mt-6 inline-flex items-center gap-2 rounded-sm bg-white px-6 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#eaff04]">
+          <button className="mt-6 inline-flex items-center gap-2 rounded-sm bg-white px-6 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#45E3FF]">
             <Send className="h-4 w-4" /> Send Message
           </button>
         </form>

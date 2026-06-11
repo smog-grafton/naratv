@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#050b12] pt-24 text-white">
       <section className="mx-auto max-w-4xl px-4 pb-16 md:px-8">
-        <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#eaff04]">Privacy</p>
+        <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#45E3FF]">Privacy</p>
         <h1 className="text-4xl font-black tracking-tight md:text-6xl">Privacy Policy</h1>
         <div className="mt-8 space-y-7 text-sm leading-relaxed text-zinc-300 md:text-base">
           <p>NaraTV uses account details, payment records, device information, and viewing activity to provide secure access to streams, subscriptions, tickets, and replays.</p>

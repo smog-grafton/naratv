@@ -61,9 +61,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white flex flex-col relative font-sans">
+    <div className="min-h-screen bg-[#050B12] text-white flex flex-col relative font-sans">
       {/* Top Bar matching DAZN */}
-      <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-[#0a0a0c]">
+      <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-[#050B12]">
         <Link href="/register" className="text-gray-400 hover:text-white transition-colors">
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </Link>
@@ -81,13 +81,13 @@ export default function RegisterPage() {
             
             <div>
               <label className="block text-sm font-bold text-white mb-3">Your name</label>
-              <div className="flex flex-col gap-[1px] bg-[#2a2b2e] border border-[#2a2b2e] rounded-[4px] overflow-hidden">
+              <div className="flex flex-col gap-[1px] bg-[#172338] border border-[#172338] rounded-[4px] overflow-hidden">
                 <input 
                   type="text" 
                   placeholder="First name" 
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
-                  className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
+                  className="w-full bg-[#050B12] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#111D2E] transition-all text-sm"
                   required
                 />
                 <input 
@@ -95,7 +95,7 @@ export default function RegisterPage() {
                   placeholder="Last name" 
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
-                  className="w-full bg-[#0a0a0c] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#1a1b1e] transition-all text-sm"
+                  className="w-full bg-[#050B12] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:bg-[#111D2E] transition-all text-sm"
                   required
                 />
               </div>
@@ -108,7 +108,7 @@ export default function RegisterPage() {
                 placeholder="Email address" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
+                className="w-full bg-transparent border border-[#172338] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                 required
               />
               <p className="text-[#848485] text-[13px] mt-2 tracking-wide">Remember this email! You&apos;ll need it to sign in.</p>
@@ -120,7 +120,7 @@ export default function RegisterPage() {
                 <input 
                   type={showPassword ? "text" : "password"} 
                   placeholder="Enter new password" 
-                  className="w-full bg-transparent border border-[#2a2b2e] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
+                  className="w-full bg-transparent border border-[#172338] rounded-[4px] px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all text-sm"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -159,21 +159,21 @@ export default function RegisterPage() {
 
             <div className="mt-2">
               <label className="block text-[15px] font-bold text-white mb-4">Get notified</label>
-              <div className="flex flex-col gap-[1px] bg-[#2a2b2e] rounded-[4px] overflow-hidden border border-[#2a2b2e]">
-                <div className="bg-[#0a0a0c] p-4 py-5 flex justify-between items-center gap-4">
+              <div className="flex flex-col gap-[1px] bg-[#172338] rounded-[4px] overflow-hidden border border-[#172338]">
+                <div className="bg-[#050B12] p-4 py-5 flex justify-between items-center gap-4">
                   <span className="text-[13px] text-[#d1d1d1] pr-4">Keep me updated on all sports schedules, game and news.</span>
                   <div 
                     onClick={() => setNotifySchedules(!notifySchedules)}
-                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifySchedules ? 'bg-[#8ceda7]' : 'bg-[#3a3b3e]'}`}
+                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifySchedules ? 'bg-[#8ceda7]' : 'bg-[#22314B]'}`}
                   >
                     <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[2px] transition-all duration-200 ${notifySchedules ? 'right-[2px]' : 'left-[2px]'}`}></div>
                   </div>
                 </div>
-                <div className="bg-[#0a0a0c] p-4 py-5 flex justify-between items-center gap-4">
+                <div className="bg-[#050B12] p-4 py-5 flex justify-between items-center gap-4">
                   <span className="text-[13px] text-[#d1d1d1] pr-4">Keep me updated on exclusive offers and special features.</span>
                   <div 
                     onClick={() => setNotifyOffers(!notifyOffers)}
-                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifyOffers ? 'bg-[#8ceda7]' : 'bg-[#3a3b3e]'}`}
+                    className={`w-11 h-[22px] rounded-full relative flex-shrink-0 cursor-pointer transition-colors duration-200 ${notifyOffers ? 'bg-[#8ceda7]' : 'bg-[#22314B]'}`}
                   >
                     <div className={`w-[18px] h-[18px] bg-white rounded-full absolute top-[2px] transition-all duration-200 ${notifyOffers ? 'right-[2px]' : 'left-[2px]'}`}></div>
                   </div>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
             
             <button 
               type="submit" 
-              className={`w-full font-bold py-[15px] rounded-[4px] transition-colors mt-4 flex items-center justify-center gap-2 text-sm ${isValid ? 'bg-[#f0c800] text-black hover:bg-[#e6c000]' : 'bg-[#3a3b3e] text-[#848485] pointer-events-none'}`}
+              className={`w-full font-bold py-[15px] rounded-[4px] transition-colors mt-4 flex items-center justify-center gap-2 text-sm ${isValid ? 'bg-[#6F88FC] text-black hover:bg-[#45E3FF]' : 'bg-[#22314B] text-[#848485] pointer-events-none'}`}
               disabled={!isValid || isLoading}
             >
               {isLoading && <Loader2 className="w-5 h-5 animate-spin" />} Continue

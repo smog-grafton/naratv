@@ -61,7 +61,7 @@ export default function CommentsTab() {
               placeholder="Add a comment..." 
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              className="w-full bg-transparent border-b border-white/20 focus:border-[#eaff04] transition-colors resize-none py-2 text-sm text-white placeholder-gray-500 focus:outline-none min-h-[40px]"
+              className="w-full bg-transparent border-b border-white/20 focus:border-[#45E3FF] transition-colors resize-none py-2 text-sm text-white placeholder-gray-500 focus:outline-none min-h-[40px]"
               rows={2}
             />
             {newComment.trim() && (
@@ -69,7 +69,7 @@ export default function CommentsTab() {
                 <button type="button" onClick={() => setNewComment('')} className="text-gray-400 hover:text-white text-xs font-bold uppercase px-4 py-2 transition-colors">
                   Cancel
                 </button>
-                <button type="submit" className="bg-[#eaff04] text-black text-xs font-bold uppercase px-6 py-2 rounded-sm transition-colors hover:bg-white">
+                <button type="submit" className="bg-[#45E3FF] text-black text-xs font-bold uppercase px-6 py-2 rounded-sm transition-colors hover:bg-white">
                   Comment
                 </button>
               </div>
@@ -78,7 +78,7 @@ export default function CommentsTab() {
         ) : (
           <div className="flex-1 flex items-center bg-white/5 px-4 py-3 border border-white/5 rounded-sm">
             <span className="text-sm text-gray-400">Log in to leave a comment. </span>
-            <button className="ml-2 text-[#eaff04] hover:underline text-sm font-bold transition">Sign In</button>
+            <button className="ml-2 text-[#45E3FF] hover:underline text-sm font-bold transition">Sign In</button>
           </div>
         )}
       </div>

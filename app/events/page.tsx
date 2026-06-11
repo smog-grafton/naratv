@@ -35,7 +35,7 @@ export default async function EventsPage() {
 
         {/* Subscription Plans Promo Section */}
         <section className="max-w-[1920px] mx-auto px-4 md:px-8 mt-16 md:mt-24 w-full z-20 relative">
-          <div className="bg-[#10141a]/80 backdrop-blur-md rounded-none p-6 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 border-l-4 border-l-nara-red shadow-2xl">
+          <div className="bg-[#0B1626]/80 backdrop-blur-md rounded-none p-6 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 border-l-4 border-l-nara-red shadow-2xl">
             <div>
               <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">Never miss a fight.</h2>
               <p className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed">
@@ -51,7 +51,7 @@ export default async function EventsPage() {
               </Link>
               <Link 
                 href="/register"
-                className="bg-[#2A2B2E] hover:bg-[#3A3B3E] text-white font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-[2px] text-center transition-colors text-sm border border-transparent"
+                className="bg-[#172338] hover:bg-[#22314B] text-white font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-[2px] text-center transition-colors text-sm border border-transparent"
               >
                 Explore Plans
               </Link>

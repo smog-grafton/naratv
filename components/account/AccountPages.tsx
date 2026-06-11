@@ -63,13 +63,13 @@ function AccountChrome({ active, user, children }: { active: ActivePage; user?: 
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0c] text-white font-sans">
-      <header className="border-b border-[#2a2b2e] bg-[#0a0a0c]">
+    <div className="min-h-screen bg-[#050B12] text-white font-sans">
+      <header className="border-b border-[#172338] bg-[#050B12]">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8">
           <Link href="/" className="flex items-center text-lg font-black uppercase tracking-tighter">
             <span className="mr-1 rounded-sm bg-nara-red px-1.5 py-0.5 leading-none text-white">NARA</span>
             <span className="leading-none text-white">TV</span>
-            <span className="ml-2 border-l border-[#2a2b2e] pl-2 text-sm font-normal capitalize text-gray-400">My Account</span>
+            <span className="ml-2 border-l border-[#172338] pl-2 text-sm font-normal capitalize text-gray-400">My Account</span>
           </Link>
           <div className="flex items-center gap-3">
             <button onClick={signOut} className="hidden items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 transition-colors hover:text-white sm:flex">
@@ -83,8 +83,8 @@ function AccountChrome({ active, user, children }: { active: ActivePage; user?: 
       </header>
 
       <div className="mx-auto flex max-w-7xl flex-col gap-8 px-0 py-0 md:flex-row md:px-8 md:py-8">
-        <aside className="hidden w-full flex-shrink-0 border-[#2a2b2e] bg-[#0a0a0c] md:block md:w-64 md:border-r md:bg-transparent">
-          <div className="mb-4 border-b border-[#2a2b2e] p-4 md:mb-0 md:border-b-0 md:p-0">
+        <aside className="hidden w-full flex-shrink-0 border-[#172338] bg-[#050B12] md:block md:w-64 md:border-r md:bg-transparent">
+          <div className="mb-4 border-b border-[#172338] p-4 md:mb-0 md:border-b-0 md:p-0">
             <Link href="/" className="mb-8 flex items-center gap-3 px-4 text-sm font-bold text-gray-400 transition-colors hover:text-white">
               <ArrowLeft className="h-4 w-4" /> Back to NARA TV
             </Link>
@@ -94,7 +94,7 @@ function AccountChrome({ active, user, children }: { active: ActivePage; user?: 
               <Link
                 key={key}
                 href={href}
-                className={`rounded-[4px] px-4 py-3 text-sm transition-colors ${active === key ? 'border-l-4 border-white bg-[#1a1b1e] font-bold text-white' : 'font-medium text-gray-400 hover:bg-[#1a1b1e] hover:text-white'}`}
+                className={`rounded-[4px] px-4 py-3 text-sm transition-colors ${active === key ? 'border-l-4 border-white bg-[#111D2E] font-bold text-white' : 'font-medium text-gray-400 hover:bg-[#111D2E] hover:text-white'}`}
               >
                 {label}
               </Link>
@@ -102,8 +102,8 @@ function AccountChrome({ active, user, children }: { active: ActivePage; user?: 
           </nav>
         </aside>
 
-        <div className="mb-4 flex gap-4 overflow-x-auto whitespace-nowrap border-b border-[#2a2b2e] bg-[#0a0a0c] p-4 md:hidden">
-          <Link href="/" className="border-r border-[#2a2b2e] pr-4 text-sm font-bold text-gray-400">Back</Link>
+        <div className="mb-4 flex gap-4 overflow-x-auto whitespace-nowrap border-b border-[#172338] bg-[#050B12] p-4 md:hidden">
+          <Link href="/" className="border-r border-[#172338] pr-4 text-sm font-bold text-gray-400">Back</Link>
           {nav.map(([key, href, label]) => (
             <Link key={key} href={href} className={`pb-1 text-sm ${active === key ? 'border-b-2 border-white font-bold text-white' : 'font-medium text-gray-400'}`}>
               {label.split(' ')[0]}
@@ -121,8 +121,8 @@ function AccountChrome({ active, user, children }: { active: ActivePage; user?: 
 
 function LoadingAccount() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center bg-[#0a0a0c] text-white">
-      <Loader2 className="h-7 w-7 animate-spin text-[#f0c800]" />
+    <div className="flex min-h-[60vh] items-center justify-center bg-[#050B12] text-white">
+      <Loader2 className="h-7 w-7 animate-spin text-[#6F88FC]" />
     </div>
   );
 }
@@ -145,12 +145,12 @@ export function AccountOverviewPage() {
     <AccountChrome active="overview" user={user}>
       {error ? <div className="mb-6 border border-red-500/30 bg-red-950/40 p-4 text-sm text-red-100">{error}</div> : null}
 
-      <Link href="/my-account/profile" className="relative mb-8 flex items-center justify-between overflow-hidden rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e] p-4 transition-colors hover:border-gray-500 md:p-6">
-        <div className="absolute left-0 top-0 bg-[#f0c800] px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
+      <Link href="/my-account/profile" className="relative mb-8 flex items-center justify-between overflow-hidden rounded-[4px] border border-[#172338] bg-[#111D2E] p-4 transition-colors hover:border-gray-500 md:p-6">
+        <div className="absolute left-0 top-0 bg-[#6F88FC] px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
           Member since {user?.created_at ? new Date(user.created_at).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : 'recently'}
         </div>
         <div className="mt-4 flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#2a2b2e] bg-[#0a0a0c] text-lg font-bold text-white">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#172338] bg-[#050B12] text-lg font-bold text-white">
             {initialFor(user)}
           </div>
           <div>
@@ -162,8 +162,8 @@ export function AccountOverviewPage() {
       </Link>
 
       <h3 className="mb-4 text-lg font-bold text-white">My Subscriptions</h3>
-      <div className="mb-8 overflow-hidden rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e]">
-        <div className="flex items-center justify-between border-b border-[#2a2b2e] p-4">
+      <div className="mb-8 overflow-hidden rounded-[4px] border border-[#172338] bg-[#111D2E]">
+        <div className="flex items-center justify-between border-b border-[#172338] p-4">
           <h4 className="text-lg font-bold text-white">{plan}</h4>
           {account?.active_subscription?.expires_at ? <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Renews {formatDate(account.active_subscription.expires_at)}</span> : null}
         </div>
@@ -171,29 +171,29 @@ export function AccountOverviewPage() {
           <div className="text-sm text-white">
             <span className="font-bold">Upgrade anytime</span> for live fights, premium replays, and Nara Originals.
           </div>
-          <Link href="/subscriptions" className="whitespace-nowrap rounded-[4px] bg-[#f0c800] px-6 py-2 text-sm font-bold text-black transition-colors hover:bg-[#e0bb00]">
+          <Link href="/subscriptions" className="whitespace-nowrap rounded-[4px] bg-[#6F88FC] px-6 py-2 text-sm font-bold text-black transition-colors hover:bg-[#45E3FF]">
             View passes
           </Link>
         </div>
       </div>
 
       <h3 className="mb-4 text-lg font-bold text-white">Quick Links</h3>
-      <div className="mb-8 flex flex-col overflow-hidden rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e]">
-        <Link href="/my-account/devices" className="flex items-center justify-between border-b border-[#2a2b2e] p-4 transition-colors hover:bg-[#2a2b2e]">
+      <div className="mb-8 flex flex-col overflow-hidden rounded-[4px] border border-[#172338] bg-[#111D2E]">
+        <Link href="/my-account/devices" className="flex items-center justify-between border-b border-[#172338] p-4 transition-colors hover:bg-[#172338]">
           <div className="flex items-center gap-3">
             <MonitorSmartphone className="h-5 w-5 text-gray-400" />
             <span className="text-sm font-bold text-white">Manage devices</span>
           </div>
           <span className="flex items-center gap-2 text-sm text-gray-400">{account?.devices_count || 0}<ChevronRight className="h-5 w-5 text-gray-500" /></span>
         </Link>
-        <Link href="/my-account/profile" className="flex items-center justify-between border-b border-[#2a2b2e] p-4 transition-colors hover:bg-[#2a2b2e]">
+        <Link href="/my-account/profile" className="flex items-center justify-between border-b border-[#172338] p-4 transition-colors hover:bg-[#172338]">
           <div className="flex items-center gap-3">
             <Settings className="h-5 w-5 text-gray-400" />
             <span className="text-sm font-bold text-white">Profile and preferences</span>
           </div>
           <ChevronRight className="h-5 w-5 text-gray-500" />
         </Link>
-        <Link href="/subscriptions" className="flex items-center justify-between p-4 transition-colors hover:bg-[#2a2b2e]">
+        <Link href="/subscriptions" className="flex items-center justify-between p-4 transition-colors hover:bg-[#172338]">
           <div className="flex items-center gap-3">
             <CreditCard className="h-5 w-5 text-gray-400" />
             <span className="border-b border-dashed border-gray-500 pb-0.5 text-sm font-bold text-white">Explore subscriptions</span>
@@ -209,7 +209,7 @@ export function AccountOverviewPage() {
           ['Payments', account?.payments_count || 0],
           ['Devices', account?.devices_count || 0],
         ].map(([label, value]) => (
-          <div key={label} className="rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e] p-5">
+          <div key={label} className="rounded-[4px] border border-[#172338] bg-[#111D2E] p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-gray-500">{label}</p>
             <p className="mt-2 text-3xl font-black text-white">{value}</p>
           </div>
@@ -268,53 +268,53 @@ export function AccountProfilePage() {
   return (
     <AccountChrome active="profile" user={user}>
       <h1 className="mb-6 text-2xl font-bold text-white">Profile & Settings</h1>
-      <form onSubmit={onSubmit} className="mb-8 overflow-hidden rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e]">
-        <div className="border-b border-[#2a2b2e] p-6">
+      <form onSubmit={onSubmit} className="mb-8 overflow-hidden rounded-[4px] border border-[#172338] bg-[#111D2E]">
+        <div className="border-b border-[#172338] p-6">
           <h3 className="mb-4 text-base font-bold text-white">Personal Details</h3>
           <div className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 sm:col-span-2">
               Name
-              <input name="name" defaultValue={formUser.name || ''} required className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <input name="name" defaultValue={formUser.name || ''} required className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
               Email
-              <input name="email" type="email" defaultValue={formUser.email || ''} required className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <input name="email" type="email" defaultValue={formUser.email || ''} required className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
               Phone
-              <input name="phone" defaultValue={formUser.phone || ''} className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <input name="phone" defaultValue={formUser.phone || ''} className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
               City
-              <input name="city" defaultValue={formUser.city || ''} className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <input name="city" defaultValue={formUser.city || ''} className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
               Country
-              <input name="country" defaultValue={formUser.country || ''} className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <input name="country" defaultValue={formUser.country || ''} className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
             <label className="grid gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 sm:col-span-2">
               Bio
-              <textarea name="bio" defaultValue={formUser.bio || ''} rows={4} className="rounded-md border border-[#2a2b2e] bg-[#0a0a0c] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
+              <textarea name="bio" defaultValue={formUser.bio || ''} rows={4} className="rounded-md border border-[#172338] bg-[#050B12] px-3 py-3 text-sm normal-case tracking-normal text-white outline-none focus:border-white" />
             </label>
           </div>
         </div>
 
-        <div className="border-b border-[#2a2b2e] p-6">
+        <div className="border-b border-[#172338] p-6">
           <h3 className="mb-4 text-base font-bold text-white">Preferences</h3>
           <div className="grid gap-4">
-            <label className="flex items-center justify-between gap-4 border-b border-[#2a2b2e] py-2">
+            <label className="flex items-center justify-between gap-4 border-b border-[#172338] py-2">
               <span>
                 <span className="block text-sm font-bold text-white">Schedule updates</span>
                 <span className="block text-xs text-gray-500">Receive fight schedule and replay alerts.</span>
               </span>
-              <input name="schedule_notifications_enabled" type="checkbox" defaultChecked={Boolean(formUser.schedule_notifications_enabled)} className="h-5 w-5 accent-[#f0c800]" />
+              <input name="schedule_notifications_enabled" type="checkbox" defaultChecked={Boolean(formUser.schedule_notifications_enabled)} className="h-5 w-5 accent-[#6F88FC]" />
             </label>
             <label className="flex items-center justify-between gap-4 py-2">
               <span>
                 <span className="block text-sm font-bold text-white">Offers and special features</span>
                 <span className="block text-xs text-gray-500">Hear about passes, PPV offers, and new originals.</span>
               </span>
-              <input name="marketing_opt_in" type="checkbox" defaultChecked={Boolean(formUser.marketing_opt_in)} className="h-5 w-5 accent-[#f0c800]" />
+              <input name="marketing_opt_in" type="checkbox" defaultChecked={Boolean(formUser.marketing_opt_in)} className="h-5 w-5 accent-[#6F88FC]" />
             </label>
           </div>
         </div>
@@ -322,7 +322,7 @@ export function AccountProfilePage() {
         <div className="flex flex-col gap-3 p-6">
           {message ? <p className="border border-green-500/30 bg-green-950/30 p-3 text-sm text-green-100">{message}</p> : null}
           {error ? <p className="border border-red-500/30 bg-red-950/40 p-3 text-sm text-red-100">{error}</p> : null}
-          <button disabled={saving} className="w-full rounded-[4px] bg-[#f0c800] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-black disabled:opacity-60 sm:w-fit">
+          <button disabled={saving} className="w-full rounded-[4px] bg-[#6F88FC] px-6 py-3.5 text-sm font-black uppercase tracking-wider text-black disabled:opacity-60 sm:w-fit">
             {saving ? 'Saving...' : 'Save changes'}
           </button>
         </div>
@@ -365,15 +365,15 @@ export function AccountDevicesPage() {
   return (
     <AccountChrome active="devices" user={undefined}>
       <h1 className="mb-6 text-2xl font-bold text-white">Manage Devices</h1>
-      <div className="mb-8 overflow-hidden rounded-[4px] border border-[#2a2b2e] bg-[#1a1b1e]">
-        <div className="border-b border-[#2a2b2e] p-6">
+      <div className="mb-8 overflow-hidden rounded-[4px] border border-[#172338] bg-[#111D2E]">
+        <div className="border-b border-[#172338] p-6">
           <h3 className="mb-2 text-lg font-bold text-white">My Registered Devices</h3>
           <p className="mb-6 text-sm text-gray-400">Review recent devices and remove access you no longer recognize.</p>
           {error ? <p className="mb-4 border border-red-500/30 bg-red-950/40 p-3 text-sm text-red-100">{error}</p> : null}
 
           <div className="flex flex-col gap-4">
             {devices.map((device) => (
-              <div key={device.id} className="flex items-center justify-between gap-4 rounded-[4px] border border-[#2a2b2e] bg-[#0a0a0c] p-4">
+              <div key={device.id} className="flex items-center justify-between gap-4 rounded-[4px] border border-[#172338] bg-[#050B12] p-4">
                 <div className="flex items-center gap-4">
                   <MonitorSmartphone className="h-8 w-8 text-gray-500" />
                   <div>
@@ -386,16 +386,16 @@ export function AccountDevicesPage() {
                 <button
                   onClick={() => removeDevice(device.id)}
                   disabled={device.is_current}
-                  className="rounded-[4px] border border-[#2a2b2e] px-4 py-1.5 text-sm font-bold text-gray-300 transition-colors hover:bg-[#2a2b2e] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-[4px] border border-[#172338] px-4 py-1.5 text-sm font-bold text-gray-300 transition-colors hover:bg-[#172338] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Remove
                 </button>
               </div>
             ))}
-            {devices.length === 0 ? <p className="rounded-[4px] border border-[#2a2b2e] bg-[#0a0a0c] p-4 text-sm text-gray-400">No devices have been recorded yet.</p> : null}
+            {devices.length === 0 ? <p className="rounded-[4px] border border-[#172338] bg-[#050B12] p-4 text-sm text-gray-400">No devices have been recorded yet.</p> : null}
           </div>
         </div>
-        <div className="flex items-center justify-between gap-4 bg-[#1a1b1e] p-6">
+        <div className="flex items-center justify-between gap-4 bg-[#111D2E] p-6">
           <span className="text-sm font-medium text-gray-400">{currentUser ? `This session is active on ${currentUser.platform || 'this device'}.` : 'Device limits will be available for future passes.'}</span>
           <Link href="/support" className="text-sm font-bold text-blue-400 hover:underline">Need help?</Link>
         </div>

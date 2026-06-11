@@ -26,7 +26,7 @@ export default async function LivePage() {
         <h1 className="text-3xl font-bold text-white mb-8 border-b border-nara-border pb-4">Live TV</h1>
 
         <div className="mb-12">
-          <div className="w-full aspect-video bg-[#10141a] border border-nara-border/40 rounded-sm flex items-center justify-center flex-col shadow-2xl relative overflow-hidden">
+          <div className="w-full aspect-video bg-[#0B1626] border border-nara-border/40 rounded-sm flex items-center justify-center flex-col shadow-2xl relative overflow-hidden">
             {featured?.poster_url && (
               <img src={featured.poster_url} alt={featured.title} className="absolute inset-0 w-full h-full object-cover opacity-35" />
             )}

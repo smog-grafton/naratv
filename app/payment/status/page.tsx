@@ -11,16 +11,16 @@ export default async function PaymentStatusPage({ searchParams }: { searchParams
 
   return (
     <div className="min-h-screen bg-[#050b12] flex items-center justify-center p-4">
-       <div className="max-w-md w-full bg-[#10141a] border border-white/10 rounded-sm p-8 text-center shadow-2xl relative overflow-hidden">
+       <div className="max-w-md w-full bg-[#0B1626] border border-white/10 rounded-sm p-8 text-center shadow-2xl relative overflow-hidden">
           
           {/* subtle background glow */}
           {isSuccess && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-green-500/20 blur-[100px] pointer-events-none" />}
           {isFailed && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-red-500/20 blur-[100px] pointer-events-none" />}
-          {isPending && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-[#eaff04]/20 blur-[100px] pointer-events-none" />}
+          {isPending && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-[#45E3FF]/20 blur-[100px] pointer-events-none" />}
 
           {isPending && (
              <div className="flex flex-col items-center animate-in fade-in zoom-in duration-500">
-                <Loader2 className="w-16 h-16 text-[#eaff04] animate-spin mb-6" strokeWidth={1.5} />
+                <Loader2 className="w-16 h-16 text-[#45E3FF] animate-spin mb-6" strokeWidth={1.5} />
                 <h1 className="text-2xl font-black text-white uppercase tracking-tighter mb-3">Checking Payment</h1>
                 <p className="text-gray-400 font-bold mb-8">Confirm the payment prompt on your phone.</p>
                 <div className="text-xs text-gray-500 uppercase tracking-widest font-bold border-t border-white/10 pt-6 w-full">
@@ -34,7 +34,7 @@ export default async function PaymentStatusPage({ searchParams }: { searchParams
                 <CheckCircle2 className="w-16 h-16 text-green-500 mb-6" strokeWidth={1.5} />
                 <h1 className="text-2xl font-black text-white uppercase tracking-tighter mb-3">Your fight pass is active</h1>
                 <p className="text-gray-400 font-bold mb-8">Payment confirmed. You are ready for Fight Night.</p>
-                <Link href="/watch/kato-kasirye-2" className="w-full bg-[#eaff04] text-black font-black uppercase tracking-widest py-4 rounded-sm hover:bg-white transition-colors flex items-center justify-center gap-2">
+                <Link href="/watch/kato-kasirye-2" className="w-full bg-[#45E3FF] text-black font-black uppercase tracking-widest py-4 rounded-sm hover:bg-white transition-colors flex items-center justify-center gap-2">
                    <Play className="w-4 h-4 fill-black text-black" /> Watch Live
                 </Link>
              </div>

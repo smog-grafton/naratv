@@ -70,10 +70,10 @@ export default function PlayerControls({
             onValueChange={(val) => onSeek(val[0])}
           >
             <Slider.Track className="bg-white/30 relative grow rounded-full h-1.5 overflow-hidden transition-all group-hover:h-2 md:h-1 pr-2">
-               <Slider.Range className="absolute bg-[#eaff04] rounded-full h-full" />
+               <Slider.Range className="absolute bg-[#45E3FF] rounded-full h-full" />
             </Slider.Track>
             <Slider.Thumb 
-              className="block w-4 h-4 bg-[#eaff04] shadow-[0_2px_10px] shadow-blackA4 rounded-[10px] hover:bg-white focus:outline-none focus:shadow-[0_0_0_5px] focus:shadow-blackA8 opacity-0 group-hover:opacity-100 transition-opacity" 
+              className="block w-4 h-4 bg-[#45E3FF] shadow-[0_2px_10px] shadow-blackA4 rounded-[10px] hover:bg-white focus:outline-none focus:shadow-[0_0_0_5px] focus:shadow-blackA8 opacity-0 group-hover:opacity-100 transition-opacity" 
               aria-label="Volume" 
             />
           </Slider.Root>
@@ -83,7 +83,7 @@ export default function PlayerControls({
       {/* Controls Row */}
       <div className="flex items-center justify-between pointer-events-auto">
         <div className="flex items-center gap-2 md:gap-4">
-          <button onClick={togglePlay} className="text-white hover:text-[#eaff04] transition-colors p-2">
+          <button onClick={togglePlay} className="text-white hover:text-[#45E3FF] transition-colors p-2">
             {isPlaying ? <Pause className="w-6 h-6 md:w-7 md:h-7 fill-current" /> : <Play className="w-6 h-6 md:w-7 md:h-7 fill-current" />}
           </button>
 
@@ -112,7 +112,7 @@ export default function PlayerControls({
                 onValueChange={(val) => onVolumeChange(val[0])}
               >
                 <Slider.Track className="bg-white/30 relative grow rounded-full h-1">
-                  <Slider.Range className="absolute bg-[#eaff04] rounded-full h-full" />
+                  <Slider.Range className="absolute bg-[#45E3FF] rounded-full h-full" />
                 </Slider.Track>
                 <Slider.Thumb className="block w-3 h-3 bg-white rounded-full focus:outline-none" aria-label="Volume" />
               </Slider.Root>

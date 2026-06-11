@@ -32,7 +32,7 @@ export default async function SubscriptionsPage() {
               <div
                 key={plan.id}
                 className={`relative flex flex-col p-8 md:p-10 rounded-[2px] border ${
-                  popular ? 'border-nara-red bg-[#10141a]' : 'border-[#2A2B2E] bg-nara-black'
+                  popular ? 'border-nara-red bg-[#0B1626]' : 'border-[#172338] bg-nara-black'
                 }`}
               >
                 {popular && (
@@ -47,7 +47,7 @@ export default async function SubscriptionsPage() {
                 </div>
                 <p className="text-gray-400 text-sm mb-8 min-h-12">{plan.description || `${plan.duration_days} days of NaraTV access.`}</p>
 
-                <div className="border-t border-[#2A2B2E] pt-8 mb-10 flex-grow">
+                <div className="border-t border-[#172338] pt-8 mb-10 flex-grow">
                   <ul className="flex flex-col gap-5">
                     {(plan.features.length ? plan.features : [
                       plan.unlocks_live_events ? 'Live event access' : null,
@@ -76,7 +76,7 @@ export default async function SubscriptionsPage() {
         </div>
 
         {sortedPlans.length === 0 && (
-          <div className="w-full max-w-2xl border border-white/10 bg-[#10141a] p-10 text-center">
+          <div className="w-full max-w-2xl border border-white/10 bg-[#0B1626] p-10 text-center">
             <h3 className="text-xl font-black text-white uppercase">No active plans</h3>
             <p className="text-gray-400 mt-2">New NaraTV passes are being prepared. Check back soon for the next fight-night offer.</p>
           </div>

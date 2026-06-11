@@ -29,12 +29,12 @@ export default function HelpPage() {
     <main className="min-h-screen bg-[#050b12] pt-24 text-white">
       <section className="border-b border-white/10 px-4 pb-12 md:px-8">
         <div className="mx-auto max-w-6xl">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#eaff04]">Support</p>
+          <p className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-[#45E3FF]">Support</p>
           <h1 className="max-w-3xl text-4xl font-black tracking-tight md:text-6xl">Help Center</h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-zinc-300 md:text-lg">
             Find answers for playback, event access, payments, and account management.
           </p>
-          <Link href="/search" className="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-5 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#eaff04]">
+          <Link href="/search" className="mt-8 inline-flex items-center gap-2 rounded-sm bg-white px-5 py-3 text-sm font-black uppercase tracking-wider text-black hover:bg-[#45E3FF]">
             <Search className="h-4 w-4" /> Search NaraTV
           </Link>
         </div>
@@ -43,7 +43,7 @@ export default function HelpPage() {
       <section className="mx-auto grid max-w-6xl grid-cols-1 gap-4 px-4 py-12 md:grid-cols-3 md:px-8">
         {topics.map((topic) => (
           <article key={topic.title} className="border border-white/10 bg-white/[0.03] p-6">
-            <topic.icon className="mb-5 h-6 w-6 text-[#eaff04]" />
+            <topic.icon className="mb-5 h-6 w-6 text-[#45E3FF]" />
             <h2 className="mb-3 text-lg font-black">{topic.title}</h2>
             <p className="text-sm leading-relaxed text-zinc-300">{topic.body}</p>
           </article>

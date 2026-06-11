@@ -252,7 +252,7 @@ export default function NaraVideoPlayer({ src, poster, title, isLive = false, so
       {hasError && (
         <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/85 text-white">
           <div className="max-w-sm px-4 text-center">
-            <AlertTriangle className="mx-auto mb-4 h-9 w-9 text-[#eaff04]" />
+            <AlertTriangle className="mx-auto mb-4 h-9 w-9 text-[#45E3FF]" />
             <h3 className="mb-2 text-xl font-black uppercase">Stream temporarily unavailable</h3>
             <p className="text-sm leading-6 text-gray-400">We are getting this broadcast ready. Try again shortly or choose another fight-night feature.</p>
           </div>
@@ -261,7 +261,7 @@ export default function NaraVideoPlayer({ src, poster, title, isLive = false, so
 
       {isBuffering && !hasError && (
         <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-[#eaff04]" />
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-white/20 border-t-[#45E3FF]" />
         </div>
       )}
 
@@ -270,7 +270,7 @@ export default function NaraVideoPlayer({ src, poster, title, isLive = false, so
           <div className="mb-16 flex flex-col items-center text-center">
             <h2 className="mb-3 px-4 text-2xl font-bold tracking-tight text-white drop-shadow-lg md:text-4xl">{title}</h2>
             <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-gray-300 drop-shadow-md md:text-sm">
-              {isLive ? <span className="bg-red-600 px-2 py-0.5 text-white">Live</span> : <span className="bg-[#eaff04] px-2 py-0.5 text-black">NaraTV</span>}
+              {isLive ? <span className="bg-red-600 px-2 py-0.5 text-white">Live</span> : <span className="bg-[#45E3FF] px-2 py-0.5 text-black">NaraTV</span>}
               <span>Official broadcast</span>
             </div>
             <button

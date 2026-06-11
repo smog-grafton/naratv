@@ -32,10 +32,10 @@ export default async function PromoterPage({ params }: { params: Promise<{ slug:
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-              <button className="bg-[#eaff04] text-black font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-sm text-sm hover:bg-white transition-colors">
+              <button className="bg-[#45E3FF] text-black font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-sm text-sm hover:bg-white transition-colors">
                 Follow Promotion
               </button>
-              <Link href="/subscriptions" className="bg-[#2A2B2E]/80 backdrop-blur-md text-white border border-[#3A3B3E] font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-sm text-sm hover:bg-[#3A3B3E] transition-colors text-center text-nowrap">
+              <Link href="/subscriptions" className="bg-[#172338]/80 backdrop-blur-md text-white border border-[#22314B] font-bold uppercase tracking-wider py-4 md:py-4 px-10 rounded-sm text-sm hover:bg-[#22314B] transition-colors text-center text-nowrap">
                 Subscribe & Watch
               </Link>
             </div>

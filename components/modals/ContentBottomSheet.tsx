@@ -38,7 +38,7 @@ export default function ContentBottomSheet({ item, onClose, onAction }: Props) {
       
       <div 
         ref={bottomSheetRef}
-        className="fixed left-0 right-0 bottom-0 max-h-[90vh] bg-[#0a0a0c] z-[101] flex flex-col rounded-t-[12px] overflow-hidden translate-y-0 transition-transform duration-300"
+        className="fixed left-0 right-0 bottom-0 max-h-[90vh] bg-[#050B12] z-[101] flex flex-col rounded-t-[12px] overflow-hidden translate-y-0 transition-transform duration-300"
       >
         {/* Drag Handle & Close */}
         <div className="absolute top-0 left-0 right-0 flex justify-center p-3 z-20" onClick={onClose}>
@@ -53,13 +53,13 @@ export default function ContentBottomSheet({ item, onClose, onAction }: Props) {
         </button>
 
         <div className="overflow-y-auto w-full hide-scrollbar flex-1 pb-8">
-            <div className="relative w-full aspect-[16/9] bg-[#1a1b1e]">
+            <div className="relative w-full aspect-[16/9] bg-[#111D2E]">
               <img 
                 src={item.poster_url || item.thumbnail_url} 
                 alt={item.title}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050B12] via-[#050B12]/40 to-transparent" />
             </div>
 
             <div className="px-5 -mt-10 relative z-10">
@@ -71,7 +71,7 @@ export default function ContentBottomSheet({ item, onClose, onAction }: Props) {
                 </div>
               )}
               <h2 className="text-xl font-bold text-white leading-tight mb-1">{item.title}</h2>
-              <p className="text-[11px] font-bold text-[#f0c800] uppercase tracking-wider mb-6">
+              <p className="text-[11px] font-bold text-[#6F88FC] uppercase tracking-wider mb-6">
                  {item.category || (item.content_type === 'live_event' ? 'LIVE EVENT' : 'NARA TV')}
               </p>
               
@@ -83,7 +83,7 @@ export default function ContentBottomSheet({ item, onClose, onAction }: Props) {
                     <button
                       key={option.id || idx}
                       onClick={() => handleOptionClick(option)}
-                      className="w-full flex items-center justify-between p-4 rounded-[4px] bg-[#1a1b1e] border border-[#2a2b2e] active:bg-[#2a2b2e] text-left"
+                      className="w-full flex items-center justify-between p-4 rounded-[4px] bg-[#111D2E] border border-[#172338] active:bg-[#172338] text-left"
                     >
                       <div className="flex items-center gap-4">
                         <Play className="w-4 h-4 text-white" fill="currentColor" />
